@@ -5,6 +5,8 @@ package com.yh.video.pirate.utils
 import android.content.Context
 import android.content.ContextWrapper
 import android.widget.Toast
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import com.yh.video.pirate.app.ActivityLifecycleCallbacks
 import com.yh.video.pirate.app.Application
 
@@ -108,3 +110,9 @@ inline fun <reified T : Context> T.toast(text: String): Toast {
 inline fun <reified T : Context> T.longToast(text: String): Toast {
     return Toast.makeText(this, text, Toast.LENGTH_LONG).apply(Toast::show)
 }
+
+/**
+ * 获取Color
+ */
+inline fun <reified T:Context> T.getColorCompat(@ColorRes colorInt: Int): Int =
+    ContextCompat.getColor(this, colorInt)

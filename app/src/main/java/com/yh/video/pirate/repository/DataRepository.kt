@@ -5,6 +5,7 @@ import com.yh.video.pirate.repository.database.AppDatabase
 import com.yh.video.pirate.repository.network.Http
 import com.yh.video.pirate.repository.network.api.NetApi
 import com.yh.video.pirate.repository.network.result.CategoryResult
+import com.yh.video.pirate.repository.network.result.MainResult
 import com.yh.video.pirate.repository.network.result.RecommendedLikeResult
 import com.yh.video.pirate.repository.network.result.VideoResult
 import com.yh.video.pirate.repository.network.result.base.CaomeiPaged
@@ -36,5 +37,12 @@ object DataRepository {
     suspend fun getRecommendedLike(page: Int): Flow<CaomeiResponse<CaomeiPaged<RecommendedLikeResult>>> {
         val map = mapOf("page" to page)
         return mNetApi.getRecommendedLike(map)
+    }
+
+    /**
+     * 草莓主页列表
+     */
+    suspend fun getMainList(): Flow<CaomeiResponse<List<MainResult>>> {
+        return mNetApi.getMainList()
     }
 }

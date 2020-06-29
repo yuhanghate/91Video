@@ -155,7 +155,7 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : AppCompatActi
             .transparentStatusBar()
             .fitsSystemWindows(true)
             .statusBarColor(onStatusColor())     //状态栏颜色，不写默认透明色
-            .navigationBarColor(R.color.navigation_bar_color) //导航栏颜色，不写默认黑色
+            .navigationBarColor(onNavigationBarColor()) //导航栏颜色，不写默认黑色
             .init()
 
 //        StatusBarUtil.setTranslucent(this)
@@ -184,7 +184,11 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : AppCompatActi
      * 沉浸式颜色
      */
     open fun onStatusColor(): Int {
-        return Color.parseColor("#1A000000")
+        return R.color.md_grey_300
+    }
+
+    open fun onNavigationBarColor():Int{
+        return R.color.md_black_1000
     }
 
 

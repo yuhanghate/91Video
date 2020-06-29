@@ -1,6 +1,7 @@
 package com.yh.video.pirate.repository.network.api
 
 import com.yh.video.pirate.repository.network.result.CategoryResult
+import com.yh.video.pirate.repository.network.result.MainResult
 import com.yh.video.pirate.repository.network.result.RecommendedLikeResult
 import com.yh.video.pirate.repository.network.result.VideoResult
 import com.yh.video.pirate.repository.network.result.base.CaomeiPaged
@@ -28,4 +29,10 @@ interface NetApi {
      */
     @GET("api/videomaylike")
     suspend fun getRecommendedLike(@FieldMap parsms:Map<String, Any>):Flow<CaomeiResponse<CaomeiPaged<RecommendedLikeResult>>>
+
+    /**
+     * 草莓主页列表
+     */
+    @GET("api/videoindex")
+    suspend fun getMainList():Flow<CaomeiResponse<List<MainResult>>>
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/md_black_1000"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp">
+
+        <ImageView
+            android:id="@+id/bg_iv"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/bg_search" />
+
+        <ImageView
+            android:id="@+id/search_iv"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:scaleType="centerInside"
+            app:layout_constraintTop_toTopOf="@+id/bg_iv"
+            app:layout_constraintBottom_toBottomOf="@+id/bg_iv"
+            app:layout_constraintStart_toStartOf="@+id/bg_iv"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_search" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/bg_iv"
+            app:layout_constraintBottom_toBottomOf="@+id/bg_iv"
+            app:layout_constraintStart_toEndOf="@+id/search_iv"
+            android:layout_marginStart="10dp"
+            android:text="输入影片名称"
+            android:textColor="#ff999999"
+            android:textSize="14sp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/md_grey_800" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

@@ -10,7 +10,7 @@ import com.yh.video.pirate.repository.network.result.base.CaomeiPaged
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 
  fun <T:Any> ViewModel.pager(callback:  suspend (pageNum:Int, pageSize:Int)-> CaomeiResponse<CaomeiPaged<T>>) = Pager(
-     config = Http.pagingConfig,
-     pagingSourceFactory = {
-         return@Pager NetworkSoure(network = callback)
-     }).flow.cachedIn(viewModelScope)
+    config = Http.pagingConfig,
+    pagingSourceFactory = {
+        return@Pager NetworkSoure(network = callback)
+    }).flow.cachedIn(viewModelScope)

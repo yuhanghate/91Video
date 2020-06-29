@@ -111,4 +111,6 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     //动画库
     implementation 'com.airbnb.android:lottie:3.3.1'
+    //Tab库
+    implementation 'com.github.hackware1993:MagicIndicator:1.6.0'
 }

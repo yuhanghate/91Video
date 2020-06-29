@@ -1,6 +1,7 @@
 package com.yh.video.pirate.utils
 
 import android.view.View
+import android.widget.TextView
 
 /***
  * 设置延迟时间的View扩展
