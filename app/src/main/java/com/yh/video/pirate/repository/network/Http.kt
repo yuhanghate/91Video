@@ -1,5 +1,6 @@
 package com.yh.video.pirate.repository.network
 
+import androidx.paging.PagingConfig
 import com.yh.video.pirate.utils.gson
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
@@ -25,4 +26,7 @@ object Http : AbstractHttp() {
                 httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             })
         }
+
+    public override val pagingConfig: PagingConfig
+        get() = super.pagingConfig
 }

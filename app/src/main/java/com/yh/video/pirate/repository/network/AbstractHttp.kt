@@ -1,5 +1,6 @@
 package com.yh.video.pirate.repository.network
 
+import androidx.paging.PagingConfig
 import com.yh.video.pirate.BuildConfig
 import com.yh.video.pirate.repository.network.interceptor.AddHeaderInterceptor
 import com.yh.video.pirate.utils.application
@@ -76,6 +77,33 @@ abstract class AbstractHttp {
      * Okhttp缓存文件夹名称
      */
     protected open val cacheDir = "91Video"
+
+    /**
+     * 分页配置文件
+     */
+    protected open  val pagingConfig = PagingConfig(
+        // 每页显示的数据的大小
+        pageSize = 30,
+
+        // 开启占位符
+        enablePlaceholders = false,
+
+        // 预刷新的距离，距离最后一个 item 多远时加载数据
+        prefetchDistance = 5,
+
+
+        /**
+         * 初始化加载数量，默认为 pageSize * 3
+         *
+         * internal const val DEFAULT_INITIAL_PAGE_MULTIPLIER = 3
+         * val initialLoadSize: Int = pageSize * DEFAULT_INITIAL_PAGE_MULTIPLIER
+         */
+
+        initialLoadSize = 60,
+
+        // 一次应在内存中保存的最大数据
+        maxSize = 200
+    )
 
 
     val retrofit by lazy(LazyThreadSafetyMode.SYNCHRONIZED, ::createRetrofit)

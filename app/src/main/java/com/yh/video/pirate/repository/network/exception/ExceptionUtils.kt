@@ -1,6 +1,8 @@
 package com.yh.video.pirate.repository.network.exception
 
 import com.orhanobut.logger.Logger
+import com.yh.video.pirate.constant.HttpConstant.HTTP_SUCCESS
+import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 
 /**
  * 处理请求层的错误,对可能的已知的错误进行处理
@@ -21,14 +23,6 @@ enum class HttpError(val code: Int, val errorMsg: String?) {
 }
 
 
-
-// 简单说明:密封类结合when让可能情况都是已知的,代码维护性更高。
-sealed class HttpResponse
-
-data class Success<out T>(val data: T) : HttpResponse()
-data class Failure(val error: HttpError) : HttpResponse()
-
-
 /**
  * 处理响应层的错误
  */
@@ -39,6 +33,16 @@ fun handlingApiExceptions(e: HttpError) {
         // .. more
     }
 }
+
+
+// 简单说明:密封类结合when让可能情况都是已知的,代码维护性更高。
+sealed class HttpResponse
+
+data class Success<out T>(val data: T) : HttpResponse()
+data class Failure(val error: HttpError) : HttpResponse()
+
+
+
 
 /**
  * 处理HttpResponse

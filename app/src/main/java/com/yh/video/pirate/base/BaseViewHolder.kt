@@ -14,8 +14,7 @@ import com.bumptech.glide.RequestManager
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseViewHolder<in T : Any, D : ViewBinding>(
-    viewGroup: ViewGroup, @LayoutRes private val layoutId: Int,
-    val isExecute: Boolean = true) : RecyclerView.ViewHolder(
+    viewGroup: ViewGroup, @LayoutRes private val layoutId: Int) : RecyclerView.ViewHolder(
     LayoutInflater.from(viewGroup.context).inflate(layoutId, viewGroup, false)) {
 
     lateinit var mBinding: D
@@ -50,6 +49,9 @@ abstract class BaseViewHolder<in T : Any, D : ViewBinding>(
         }
     }
 
+    @Throws(Exception::class)
+    abstract fun bindData(data: T, position: Int)
+
     /**
      * view绑定
      */
@@ -70,5 +72,12 @@ abstract class BaseViewHolder<in T : Any, D : ViewBinding>(
      */
     fun <listener> getListener():listener?{
         return mListener as? listener
+    }
+
+    /**
+     * 数据绑定
+     */
+    interface OnBindDataListener<T : Any>{
+        fun  onBindData(obj : T, position:Int)
     }
 }

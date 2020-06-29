@@ -72,3 +72,9 @@ interface OnLazyClickListener : View.OnClickListener {
 
     fun onLazyClick(v: View)
 }
+
+inline var View.isVisible: Boolean
+    get() = visibility == View.VISIBLE
+    set(value) {
+        visibility = if (value) View.VISIBLE else View.GONE
+    }

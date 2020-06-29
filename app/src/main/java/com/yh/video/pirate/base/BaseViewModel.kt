@@ -5,13 +5,16 @@ import androidx.lifecycle.viewModelScope
 import com.yh.video.pirate.repository.DataRepository
 import kotlinx.coroutines.*
 
-class BaseViewModel:ViewModel() {
+open class BaseViewModel:ViewModel() {
 
     val mDataRepository by lazy { DataRepository }
 
     var mFragment: BaseFragment<*, *>? = null
 
     var mActivity: BaseActivity<*, *>? = null
+
+
+
 
     /**
      * @param tryBlock 尝试执行的挂起代码块
