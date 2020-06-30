@@ -3,10 +3,9 @@ package com.yh.video.pirate.ui.main.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseViewModel
-import com.yh.video.pirate.repository.network.exception.convertHttpRes
 import com.yh.video.pirate.repository.network.exception.handlingApiExceptions
 import com.yh.video.pirate.repository.network.exception.handlingExceptions
-import com.yh.video.pirate.repository.network.exception.handlingHttpResponse
+import com.yh.video.pirate.repository.network.exception.catchCode
 import com.yh.video.pirate.repository.network.result.CategoryResult
 import com.yh.video.pirate.repository.network.result.MainResult
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
@@ -16,7 +15,6 @@ import com.yh.video.pirate.ui.main.fragment.MainFragment
 import com.yh.video.pirate.ui.main.fragment.MeFragment
 import com.yh.video.pirate.utils.pager
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 
 class MainViewModel : BaseViewModel() {
 
@@ -46,10 +44,9 @@ class MainViewModel : BaseViewModel() {
         launchOnIO(
             tryBlock = {
                 mDataRepository.getCategoryList().run {
-                    handlingHttpResponse<CaomeiResponse<List<CategoryResult>>>(
-                        convertHttpRes(),
-                        successBlock = { category.postValue(this.rescont) },
-                        failureBlock = { error -> handlingApiExceptions(error) }
+                    catchCode<CaomeiResponse<List<CategoryResult>>>(
+                        success = { category.postValue(this.rescont) },
+                        error = { error -> handlingApiExceptions(error) }
                     )
                 }
             },

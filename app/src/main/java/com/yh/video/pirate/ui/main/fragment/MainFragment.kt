@@ -6,12 +6,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentMainBinding
-import com.yh.video.pirate.repository.network.exception.convertHttpRes
-import com.yh.video.pirate.repository.network.exception.handlingHttpResponse
+import com.yh.video.pirate.repository.network.exception.catchCode
 import com.yh.video.pirate.repository.network.result.MainResult
-import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
-import com.yh.video.pirate.utils.timelyToast
 import com.yh.video.pirate.utils.toast
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -44,14 +41,16 @@ class MainFragment:BaseFragment<FragmentMainBinding, MainViewModel>() ,
             mViewModel.getMainList()
                 .catch { activity?.toast("加载失败") }
                 .collect {
-                    handlingHttpResponse<CaomeiResponse<List<MainResult>>>(
-                        it.convertHttpRes(),
-                        successBlock = {},
-                        failureBlock = {}
+                    it.catchCode<List<MainResult>>(
+                        success = {
+
+                        },
+                        error = {}
                     )
                 }
         }
     }
+
 
 
     override fun initRefreshLayout() {

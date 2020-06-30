@@ -47,24 +47,28 @@ data class Failure(val error: HttpError) : HttpResponse()
 /**
  * 处理HttpResponse
  * @param res
- * @param successBlock 成功
- * @param failureBlock 失败
+ * @param success 成功
+ * @param error 失败
  */
-fun <T> handlingHttpResponse(
-    res: HttpResponse,
-    successBlock: (data: T) -> Unit,
-    failureBlock: ((error: HttpError) -> Unit)? = null
+fun <T> CaomeiResponse<*>.catchCode(
+    success: (data: T) -> Unit,
+    error: ((error: HttpError) -> Unit)? = null
 ) {
-    when (res) {
-        is Success<*> -> {
-            successBlock.invoke(res.data as T)
-        }
-        is Failure -> {
-            with(res) {
-                failureBlock?.invoke(error) ?: defaultErrorBlock.invoke(error)
-            }
-        }
+    if (this.code == HTTP_SUCCESS) {
+        success.invoke(this.rescont as T)
+    } else {
+        error?.invoke(HttpError.USER_EXIST) ?: defaultErrorBlock.invoke(HttpError.USER_EXIST)
     }
+//    when (this.convertHttpRes()) {
+//        is Success<*> -> {
+//            successBlock.invoke(res.data as T)
+//        }
+//        is Failure -> {
+//            with(res) {
+//                failureBlock?.invoke(error) ?: defaultErrorBlock.invoke(error)
+//            }
+//        }
+//    }
 }
 
 
