@@ -44,15 +44,11 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun onStatusColor(): Int {
         return R.color.md_black_1000
     }
+
     override fun initView() {
         super.initView()
         initMagicIndicator1()
         initViewPager()
-        lifecycleScope.launch {
-            mViewModel.pager.collect {
-
-            }
-        }
     }
 
 
@@ -154,45 +150,6 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
         mBinding.magicIndicator.navigator = commonNavigator
         mBinding.magicIndicator.bindViewPager(mBinding.viewPager)
-    }
-
-    /**
-     * 根据进度值进行变色和透明度处理。
-     *
-     * @param percentage 进度值，取值[0, 1]。
-     */
-    open fun setXPercentage(percentage: Float, tv: TextView, iv: ImageView) {
-        if (percentage < 0 || percentage > 1) {
-            return
-        }
-
-        // 1. 颜色变换
-        val finalColor: Int = evaluate(
-            percentage,
-            getColorCompat(R.color.md_grey_100),
-            getColorCompat(R.color.accent)
-        )
-        tv.setTextColor(finalColor)
-        iv.drawable.setTint(finalColor)
-
-        // 2. 透明度变换
-        if (percentage in 0.5..1.0) {
-            // 原理如下
-            // 进度值: 0.5 ~ 1
-            // 透明度: 0 ~ 1
-            // 公式: percentage - 1 = (alpha - 1) * 0.5
-            val alpha = ceil(255 * ((percentage - 1) * 2 + 1).toDouble()).toInt()
-            iv.drawable.alpha = 255 - alpha
-            tv.alpha = percentage
-//            mSelectedDrawable.setAlpha(alpha)
-        } else {
-            iv.drawable.alpha = 255
-//            mSelectedDrawable.setAlpha(0)
-            tv.alpha = 1f
-        }
-
-        // 3. 更新UI
-
     }
 
 }

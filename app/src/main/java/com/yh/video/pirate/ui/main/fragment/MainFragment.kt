@@ -12,6 +12,7 @@ import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
 import com.yh.video.pirate.utils.toast
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 
 class MainFragment:BaseFragment<FragmentMainBinding, MainViewModel>() ,
@@ -32,31 +33,20 @@ class MainFragment:BaseFragment<FragmentMainBinding, MainViewModel>() ,
 
     override fun initView() {
         super.initView()
-
+        initRecyclerView()
+        initRefreshLayout()
     }
 
     override fun initData() {
         super.initData()
-        lifecycleScope.launch {
-            mViewModel.getMainList()
-                .catch { activity?.toast("加载失败") }
-                .collect {
-                    it.catchCode<List<MainResult>>(
-                        success = {
 
-                        },
-                        error = {}
-                    )
-                }
-        }
     }
-
 
 
     override fun initRefreshLayout() {
         super.initRefreshLayout()
         mBinding.refreshLayout.setOnRefreshListener(this)
-        mBinding.refreshLayout.isRefreshing = true
+//        mBinding.refreshLayout.isRefreshing = true
     }
 
     override fun initRecyclerView() {
@@ -70,5 +60,18 @@ class MainFragment:BaseFragment<FragmentMainBinding, MainViewModel>() ,
     }
 
     override fun onRefresh() {
+        lifecycleScope.launch {
+            mViewModel.getMainList()
+                .catch { activity?.toast("加载失败") }
+                .onCompletion { mBinding.refreshLayout.isRefreshing = false }
+                .collect {
+                    it.catchCode<List<MainResult>>(
+                        success = {
+
+                        },
+                        error = {}
+                    )
+                }
+        }
     }
 }
