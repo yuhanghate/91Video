@@ -1,13 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_black_1000"
     android:gravity="center"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="25sp"
-        android:text="我的" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/md_grey_900"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nickname_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="96dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="48dp"
+                    android:text="凌晨一点半的汪"
+                    android:textColor="@color/primary_text"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/avatar_civ"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/avatar_civ"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@mipmap/ic_default_avatar"
+                    app:civ_border_color="@color/md_grey_300"
+                    app:civ_border_width="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/nickname_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/nickname_tv" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/md_black_1000" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/history_cl"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_material_item">
+
+                <ImageView
+                    android:id="@+id/history_iv"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/btn_history"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="播放记录"
+                    android:textColor="@color/primary_text"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/history_iv"
+                    app:layout_constraintStart_toEndOf="@+id/history_iv"
+                    app:layout_constraintTop_toTopOf="@+id/history_iv" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_item_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/md_grey_800" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/version_cl"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_material_item">
+
+                <ImageView
+                    android:id="@+id/version_iv"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_me_version"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="检查更新"
+                    android:textColor="@color/primary_text"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/version_iv"
+                    app:layout_constraintStart_toEndOf="@+id/version_iv"
+                    app:layout_constraintTop_toTopOf="@+id/version_iv" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_item_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/md_grey_800" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/share_cl"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_material_item">
+
+                <ImageView
+                    android:id="@+id/share_iv"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_me_share"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="分享App"
+                    android:textColor="@color/primary_text"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/share_iv"
+                    app:layout_constraintStart_toEndOf="@+id/share_iv"
+                    app:layout_constraintTop_toTopOf="@+id/share_iv" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_item_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/md_grey_800" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/agreement_cl"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_material_item">
+
+                <ImageView
+                    android:id="@+id/agreement_iv"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_me_agreement"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="免责声明"
+                    android:textColor="@color/primary_text"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/agreement_iv"
+                    app:layout_constraintStart_toEndOf="@+id/agreement_iv"
+                    app:layout_constraintTop_toTopOf="@+id/agreement_iv" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_item_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/md_grey_900"
+    android:orientation="vertical">
+
+    <com.yh.video.pirate.widget.roundImageView.RoundImageView
+        android:id="@+id/cover_iv"
+        android:layout_width="match_parent"
+        android:layout_height="194dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_default_round_cover"
+        app:corner_radius="5dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_play_amount" />
+
+        <TextView
+            android:id="@+id/amount_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            tools:text="4.5万次播放量"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/intro_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="15dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        tools:text="新海诚，1973年2月9日出生于日本长野县南佐久郡小海町，日本动画导演、编剧、漫画作家，毕业于日本长..."
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="25dp"
+        android:background="@color/md_black_1000" />
+</LinearLayout>

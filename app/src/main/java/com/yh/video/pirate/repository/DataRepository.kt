@@ -26,9 +26,12 @@ object DataRepository {
         return mNetApi.getVideoSort()
     }
 
+    /**
+     * 分类对应的视频列表
+     */
     suspend fun getVideoList(page:Int, categoryType:Int): CaomeiResponse<CaomeiPaged<VideoResult>> {
-        val map = mapOf<String, Int>("page" to page, "per_page" to categoryType)
-        return mNetApi.getVideoList()
+        val map = mapOf("page" to page, "per_page" to categoryType)
+        return mNetApi.getVideoList(map)
     }
 
     /**

@@ -12,7 +12,7 @@ import com.yuhang.novel.pirate.base.BaseViewHolder
 abstract class BaseAdapter<T : Any>(diffCallback: DiffUtil.ItemCallback<T>) :
     PagingDataAdapter<T, BaseViewHolder<T, *>>(diffCallback = diffCallback) {
 
-    var mListener: Any? = null
+    private var mListener: Any? = null
 
     /**
      * 最后一次点击item角标
@@ -25,10 +25,10 @@ abstract class BaseAdapter<T : Any>(diffCallback: DiffUtil.ItemCallback<T>) :
      */
     private var mList: ArrayList<T> = arrayListOf()
 
-    /**
-     * 获取列表
-     */
-    fun getList() = mList
+//    /**
+//     * 获取列表
+//     */
+//    fun getList() = mList
 
     private var mLastClickTime: Long = 0
 
@@ -42,33 +42,33 @@ abstract class BaseAdapter<T : Any>(diffCallback: DiffUtil.ItemCallback<T>) :
         return this
     }
 
-    /**
-     * 加载更多
-     */
-    fun loadMore(list: List<T>) {
-        if (list.isEmpty()) return
-        val startPosition = mList.size
-        mList.addAll(list)
-        notifyItemRangeInserted(startPosition, mList.size)
-        notifyItemChanged(startPosition - 1)
-    }
-
-    /**
-     * 下拉刷新
-     */
-    fun setRefersh(list: List<T>) {
+//    /**
+//     * 加载更多
+//     */
+//    fun loadMore(list: List<T>) {
 //        if (list.isEmpty()) return
-        mList.clear()
-        mList.addAll(list)
-        notifyDataSetChanged()
-    }
+//        val startPosition = mList.size
+//        mList.addAll(list)
+//        notifyItemRangeInserted(startPosition, mList.size)
+//        notifyItemChanged(startPosition - 1)
+//    }
 
-    /**
-     * 初始化数据
-     */
-    open fun initData(list: List<T>) {
-        mList.addAll(list)
-    }
+//    /**
+//     * 下拉刷新
+//     */
+//    fun setRefersh(list: List<T>) {
+////        if (list.isEmpty()) return
+//        mList.clear()
+//        mList.addAll(list)
+//        notifyDataSetChanged()
+//    }
+
+//    /**
+//     * 初始化数据
+//     */
+//    open fun initData(list: List<T>) {
+//        mList.addAll(list)
+//    }
 
     open fun getObj(position: Int): T {
         return getItem(position) as T

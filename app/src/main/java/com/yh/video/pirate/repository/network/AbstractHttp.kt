@@ -86,10 +86,10 @@ abstract class AbstractHttp {
         pageSize = 30,
 
         // 开启占位符
-        enablePlaceholders = false
+        enablePlaceholders = true,
 
         // 预刷新的距离，距离最后一个 item 多远时加载数据
-//        prefetchDistance = 1
+        prefetchDistance = 1,
 
 
         /**
@@ -99,10 +99,10 @@ abstract class AbstractHttp {
          * val initialLoadSize: Int = pageSize * DEFAULT_INITIAL_PAGE_MULTIPLIER
          */
 
-//        initialLoadSize = 60,
+        initialLoadSize = 2,
 
         // 一次应在内存中保存的最大数据
-//        maxSize = 200
+        maxSize = 400
     )
 
 

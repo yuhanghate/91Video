@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.gyf.immersionbar.ImmersionBar
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseActivity
 import com.yh.video.pirate.databinding.ActivityMainBinding
@@ -42,6 +43,14 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onNavigationBarColor(): Int {
         return R.color.md_grey_900
+    }
+
+    override fun initStatusTool() {
+        ImmersionBar.with(this)
+            .transparentStatusBar()
+            .fitsSystemWindows(false)
+            .navigationBarColor(R.color.md_grey_900) //导航栏颜色，不写默认黑色
+            .init()
     }
 
     override fun initView() {

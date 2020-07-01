@@ -59,10 +59,6 @@ class MainViewModel : BaseViewModel() {
     //主页适配器
     val adapter by lazy { MainAdapter().loadStateAdapter() }
 
-    val pager by lazy {
-        pager { pageNum, _ -> mDataRepository.getVideoList(pageNum, 3) }
-    }
-
     val mMainList = pagerSingle(
         callback = {
             mDataRepository.getMainList2()

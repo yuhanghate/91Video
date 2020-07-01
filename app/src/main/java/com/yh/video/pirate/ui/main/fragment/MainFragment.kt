@@ -2,31 +2,20 @@ package com.yh.video.pirate.ui.main.fragment
 
 import android.graphics.Rect
 import android.view.View
-import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.orhanobut.logger.Logger
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.constant.RefreshState
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentMainBinding
-import com.yh.video.pirate.repository.mapper.Any2MainResult
-import com.yh.video.pirate.repository.network.result.MainResult
 import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
-import com.yh.video.pirate.ui.main.viewmodel.MainViewModel2
+import com.yh.video.pirate.utils.BarConfig
 import com.yh.video.pirate.utils.dp
-import com.yh.video.pirate.utils.timelyToast
-import com.yh.video.pirate.utils.toast
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 
 class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefreshListener {
@@ -46,9 +35,19 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
 
     override fun initView() {
         super.initView()
-        mBinding.stateLayout.showError()
         initRecyclerView()
         initRefreshLayout()
+        initStatusBar()
+    }
+
+    /**
+     * 初始化状态栏
+     */
+    private fun initStatusBar() {
+        val statusBarHeight = BarConfig(requireActivity()).statusBarHeight
+        val layoutParams = mBinding.statusBar.layoutParams
+        layoutParams.height = statusBarHeight
+        mBinding.statusBar.layoutParams = layoutParams
     }
 
     override fun initData() {
