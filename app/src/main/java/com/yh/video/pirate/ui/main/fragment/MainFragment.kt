@@ -106,7 +106,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
                 is LoadState.Loading -> { // 正在加载
                     if (mBinding.refreshLayout.state == RefreshState.None) {
                         mBinding.refreshLayout.autoRefreshAnimationOnly()
-                    }else if (mBinding.stateLayout.isContent) {
+                    } else if (mBinding.stateLayout.isContent && mBinding.refreshLayout.state != RefreshState.Refreshing) {
                         mBinding.stateLayout.showLoading()
                     }
                 }

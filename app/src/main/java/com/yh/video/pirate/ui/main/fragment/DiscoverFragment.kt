@@ -1,5 +1,7 @@
 package com.yh.video.pirate.ui.main.fragment
 
+import android.view.View
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import com.yh.video.pirate.ui.main.viewmodel.DiscoverViewModel
 import com.yh.video.pirate.utils.BarConfig
 import com.yh.video.pirate.utils.dp
 import com.yh.video.pirate.utils.toDp
+import com.yh.video.pirate.widget.DoubleClickListener
 import com.yh.video.pirate.widget.SpaceItemDecoration
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -31,9 +34,6 @@ class DiscoverFragment : BaseFragment<FragmentDiscoverBinding, DiscoverViewModel
         return R.layout.fragment_discover
     }
 
-    override fun onStatusColor(): Int {
-        return super.onStatusColor()
-    }
 
     override fun initView() {
         super.initView()
@@ -51,7 +51,7 @@ class DiscoverFragment : BaseFragment<FragmentDiscoverBinding, DiscoverViewModel
         layoutParams.height = statusBarHeight
         mBinding.statusBar.layoutParams = layoutParams
 
-        mBinding.recyclerView.setPadding(0, statusBarHeight + 56.dp, 0, 0)
+        mBinding.recyclerView.updatePadding(top = statusBarHeight / 2 + 56.dp)
 
         //设置下拉偏移量
         mBinding.refreshLayout.setHeaderInsetStart(statusBarHeight.toDp + 56f)
@@ -83,7 +83,7 @@ class DiscoverFragment : BaseFragment<FragmentDiscoverBinding, DiscoverViewModel
                 is LoadState.Loading -> { // 正在加载
                     if (mBinding.refreshLayout.state == RefreshState.None) {
                         mBinding.refreshLayout.autoRefreshAnimationOnly()
-                    } else if (mBinding.stateLayout.isContent) {
+                    } else if (mBinding.stateLayout.isContent && mBinding.refreshLayout.state != RefreshState.Refreshing) {
                         mBinding.stateLayout.showLoading()
                     }
                 }
@@ -95,6 +95,17 @@ class DiscoverFragment : BaseFragment<FragmentDiscoverBinding, DiscoverViewModel
         }
         mBinding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         mBinding.recyclerView.adapter = mViewModel.adapter
+    }
+
+    override fun onClick() {
+        super.onClick()
+
+        /**
+         * 双击置顶
+         */
+        mBinding.titleTv.setOnClickListener(DoubleClickListener(DoubleClickListener.DoubleClickCallBack {
+            onTopRecyclerView(mBinding.refreshLayout, mBinding.recyclerView, 10)
+        }))
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

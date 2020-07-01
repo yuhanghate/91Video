@@ -19,10 +19,10 @@ class NetworkSoure<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->Cao
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
                 //过滤数据源
                 val list = filter.invoke(invoke)
-                delay(5000L)
+//                delay(5000L)
                 return LoadResult.Page(
                     data = list,
-                    prevKey = if (page == 0) null else page - 1,
+                    prevKey = if (page == 1) null else page - 1,
                     nextKey = if (invoke.rescont?.total!! - invoke.rescont.to > 0) page + 1 else null
                 )
             } else {
@@ -41,7 +41,7 @@ class NetworkSoure<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->Cao
  */
 class NetworkSoureSingle<T:Any>(val network:  suspend ()->CaomeiResponse<List<T>>, val filter:suspend (CaomeiResponse<List<T>>)->List<T>):PagingSource<Int, T>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
-        val page = params.key ?: 0
+        val page = params.key ?: 1
         return try {
             //从网络获取数据
             val invoke = network.invoke()
@@ -51,7 +51,7 @@ class NetworkSoureSingle<T:Any>(val network:  suspend ()->CaomeiResponse<List<T>
 //                delay(3000L)
                 return LoadResult.Page(
                     data = list,
-                    prevKey = if (page == 0) null else page - 1,
+                    prevKey = if (page == 1) null else page - 1,
                     nextKey = null
                 )
             } else {

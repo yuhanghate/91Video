@@ -83,13 +83,13 @@ abstract class AbstractHttp {
      */
     protected open  val pagingConfig = PagingConfig(
         // 每页显示的数据的大小
-        pageSize = 30,
+        pageSize = 20,
 
         // 开启占位符
-        enablePlaceholders = true,
+        enablePlaceholders = false,
 
         // 预刷新的距离，距离最后一个 item 多远时加载数据
-        prefetchDistance = 1,
+        prefetchDistance = 10,
 
 
         /**
@@ -99,7 +99,7 @@ abstract class AbstractHttp {
          * val initialLoadSize: Int = pageSize * DEFAULT_INITIAL_PAGE_MULTIPLIER
          */
 
-        initialLoadSize = 2,
+        initialLoadSize = 60,
 
         // 一次应在内存中保存的最大数据
         maxSize = 400
