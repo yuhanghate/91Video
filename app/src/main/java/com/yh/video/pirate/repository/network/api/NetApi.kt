@@ -34,5 +34,11 @@ interface NetApi {
      * 草莓主页列表
      */
     @GET("api/videoindex")
-    suspend fun getMainList():Flow<CaomeiResponse<List<MainResult>>>
+     fun getMainList():Flow<CaomeiResponse<List<MainResult>>>
+
+    /**
+     * 草莓主页列表
+     */
+    @GET("api/videoindex")
+    suspend fun getMainList2():CaomeiResponse<List<MainResult>>
 }

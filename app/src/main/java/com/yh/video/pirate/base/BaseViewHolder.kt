@@ -57,6 +57,7 @@ abstract class BaseViewHolder<in T : Any, D : ViewBinding>(
      */
     open fun onBindViewHolder(obj: T, position: Int){
         initBinding()
+        bindData(obj, position)
     }
 
     /**

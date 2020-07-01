@@ -1,7 +1,10 @@
 package com.yh.video.pirate.utils
 
+import android.content.Context
+import android.graphics.Point
 import android.view.View
-import android.widget.TextView
+import android.view.WindowManager
+import androidx.core.view.ViewCompat
 
 /***
  * 设置延迟时间的View扩展
@@ -79,3 +82,16 @@ inline var View.isVisible: Boolean
     set(value) {
         visibility = if (value) View.VISIBLE else View.GONE
     }
+
+/**
+ * 获取屏幕宽度
+ */
+inline fun <reified T : View> T.getScreenRealWidth():Int {
+    (this.context.getSystemService(
+        Context.WINDOW_SERVICE
+    ) as (WindowManager)).defaultDisplay
+    val display = ViewCompat.getDisplay(this) ?: return 0
+    val outSize = Point()
+    display.getRealSize(outSize)
+    return outSize.x
+}

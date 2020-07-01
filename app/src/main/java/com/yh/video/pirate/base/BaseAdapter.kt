@@ -33,9 +33,9 @@ abstract class BaseAdapter<T : Any>(diffCallback: DiffUtil.ItemCallback<T>) :
     private var mLastClickTime: Long = 0
 
 
-    override fun getItemCount(): Int {
-        return mList.size
-    }
+//    override fun getItemCount(): Int {
+//        return mList.size
+//    }
 
     fun setListener(listener: Any?): BaseAdapter<T> {
         mListener = listener
@@ -71,7 +71,7 @@ abstract class BaseAdapter<T : Any>(diffCallback: DiffUtil.ItemCallback<T>) :
     }
 
     open fun getObj(position: Int): T {
-        return getList()[position]
+        return getItem(position) as T
     }
 
 

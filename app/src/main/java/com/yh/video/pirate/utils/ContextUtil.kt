@@ -4,9 +4,15 @@ package com.yh.video.pirate.utils
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.graphics.Point
+import android.view.Display
+import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewCompat.getDisplay
 import com.yh.video.pirate.app.ActivityLifecycleCallbacks
 import com.yh.video.pirate.app.Application
 
@@ -116,3 +122,20 @@ inline fun <reified T : Context> T.longToast(text: String): Toast {
  */
 inline fun <reified T:Context> T.getColorCompat(@ColorRes colorInt: Int): Int =
     ContextCompat.getColor(this, colorInt)
+
+inline fun <reified T : Context> T.getDisplay(): Display {
+    val windowManager = this.getSystemService(
+        Context.WINDOW_SERVICE
+    ) as (WindowManager)
+    return windowManager.defaultDisplay
+}
+
+/**
+ * 获取屏幕宽度
+ */
+inline fun <reified T : Context> T.getScreenRealWidth():Int {
+    val display = this.display
+    val outSize = Point()
+    display?.getRealSize(outSize)
+    return outSize.x
+}

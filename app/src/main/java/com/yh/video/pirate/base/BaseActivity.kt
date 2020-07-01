@@ -29,12 +29,13 @@ import com.yh.video.pirate.repository.preferences.PreferenceUtil
 import com.yh.video.pirate.utils.ThemeHelper
 import com.yh.video.pirate.utils.TopSmoothScroller
 import com.yh.video.pirate.utils.viewbinding.ActivityViewBinderUtils
+import me.yokeyword.fragmentation.SupportActivity
 import org.greenrobot.eventbus.EventBus
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 
 
-abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : AppCompatActivity() {
+abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivity() {
     lateinit var mBinding: D
     lateinit var mViewModel: VM
 

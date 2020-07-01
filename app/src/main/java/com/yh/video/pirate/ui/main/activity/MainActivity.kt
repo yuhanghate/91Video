@@ -1,11 +1,9 @@
 package com.yh.video.pirate.ui.main.activity
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseActivity
@@ -15,15 +13,12 @@ import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
 import com.yh.video.pirate.utils.bindViewPager
 import com.yh.video.pirate.utils.evaluate
 import com.yh.video.pirate.utils.getColorCompat
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView.OnPagerTitleChangeListener
-import kotlin.math.ceil
 
 /**
  * 主页
@@ -42,7 +37,11 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun onStatusColor(): Int {
-        return R.color.md_black_1000
+        return R.color.md_grey_900
+    }
+
+    override fun onNavigationBarColor(): Int {
+        return R.color.md_grey_900
     }
 
     override fun initView() {
@@ -86,12 +85,12 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 commonPagerTitleView.onPagerTitleChangeListener = object :
                     OnPagerTitleChangeListener {
                     override fun onSelected(index: Int, totalCount: Int) {
-                        titleText.setTextColor(getColorCompat(R.color.accent))
+                        titleText.setTextColor(getColorCompat(R.color.md_yellow_600))
                         titleImg.setImageResource(mViewModel.tabPresseds[index])
                     }
 
                     override fun onDeselected(index: Int, totalCount: Int) {
-                        titleText.setTextColor(getColorCompat(R.color.md_grey_100))
+                        titleText.setTextColor(getColorCompat(R.color.md_grey_300))
                         titleImg.setImageResource(mViewModel.tabNormals[index])
                     }
 
@@ -101,7 +100,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         leavePercent: Float,
                         leftToRight: Boolean
                     ) {
-                        val scaleImage = 1.0f + (0.9f - 1.0f) * leavePercent
+                        val scaleImage = 1.0f + (0.8f - 1.0f) * leavePercent
                         val scaleText = 1.15f + (1f - 1.15f) * leavePercent
                         titleImg.scaleX = scaleImage
                         titleImg.scaleY = scaleImage
@@ -110,8 +109,8 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         // 1. 颜色变换
                         val finalColor: Int = evaluate(
                             leavePercent,
-                            getColorCompat(R.color.accent),
-                            getColorCompat(R.color.md_grey_100)
+                            getColorCompat(R.color.md_yellow_600),
+                            getColorCompat(R.color.md_grey_300)
 
                         )
                         titleText.setTextColor(finalColor)
@@ -125,7 +124,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         enterPercent: Float,
                         leftToRight: Boolean
                     ) {
-                        val scaleImage = 0.9f + (1.0f - 0.9f) * enterPercent
+                        val scaleImage = 0.8f + (1.0f - 0.8f) * enterPercent
                         val scaleText = 1f + (1.15f - 1f) * enterPercent
                         titleImg.scaleX = scaleImage
                         titleImg.scaleY = scaleImage
@@ -133,8 +132,8 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         titleText.scaleY = scaleText
                         val finalColor: Int = evaluate(
                             enterPercent,
-                            getColorCompat(R.color.md_grey_100),
-                            getColorCompat(R.color.accent)
+                            getColorCompat(R.color.md_grey_300),
+                            getColorCompat(R.color.md_yellow_600)
                         )
                         titleText.setTextColor(finalColor)
                         titleImg.drawable.setTint(finalColor)
@@ -150,6 +149,10 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
         mBinding.magicIndicator.navigator = commonNavigator
         mBinding.magicIndicator.bindViewPager(mBinding.viewPager)
+    }
+
+    override fun onBackPressedSupport() {
+
     }
 
 }

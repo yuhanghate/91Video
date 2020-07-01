@@ -11,7 +11,7 @@ import com.yh.video.pirate.R
 /**
  * 加载更多底部/加载中/重试
  */
-class LoadStateAdapter(private val adapter: BaseAdapter<*>): LoadStateAdapter<LoadStateViewHolder>(){
+class LoadStateAdapter<T:Any>(private val adapter: BaseAdapter<T>): LoadStateAdapter<LoadStateViewHolder>(){
     override fun onBindViewHolder(holderState: LoadStateViewHolder, loadState: LoadState) {
         holderState.onBindData(loadState, 0)
     }
@@ -25,4 +25,5 @@ class LoadStateAdapter(private val adapter: BaseAdapter<*>): LoadStateAdapter<Lo
         val layoutInflater = LayoutInflater.from(viewGroup.context)
         return layoutInflater.inflate(viewType, viewGroup, false)
     }
+
 }

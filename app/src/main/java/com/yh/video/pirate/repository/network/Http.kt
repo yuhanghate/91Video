@@ -1,9 +1,11 @@
 package com.yh.video.pirate.repository.network
 
 import androidx.paging.PagingConfig
+import com.yh.video.pirate.repository.network.adapter.FlowCallAdapterFactory
 import com.yh.video.pirate.utils.gson
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -16,8 +18,13 @@ object Http : AbstractHttp() {
         get() = mapOf("Accept-Language" to "zh-cn,zh;q=0.8")
 
     override val convertersFactories: Iterable<Converter.Factory> = listOf(
-        GsonConverterFactory.create(gson)
+        GsonConverterFactory.create()
     )
+
+    override val callAdapterFactories: Iterable<CallAdapter.Factory>
+        get() = listOf(
+            FlowCallAdapterFactory()
+        )
 
     override val interceptors: Iterable<Interceptor>
         get() {

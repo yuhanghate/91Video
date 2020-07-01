@@ -1,23 +1,36 @@
 package com.yh.video.pirate.ui.main.fragment
 
+import android.graphics.Rect
+import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.RecyclerView
+import com.orhanobut.logger.Logger
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.constant.RefreshState
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentMainBinding
-import com.yh.video.pirate.repository.network.exception.catchCode
+import com.yh.video.pirate.repository.mapper.Any2MainResult
 import com.yh.video.pirate.repository.network.result.MainResult
 import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
+import com.yh.video.pirate.ui.main.viewmodel.MainViewModel2
+import com.yh.video.pirate.utils.dp
+import com.yh.video.pirate.utils.timelyToast
 import com.yh.video.pirate.utils.toast
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 
-class MainFragment:BaseFragment<FragmentMainBinding, MainViewModel>() ,
-    SwipeRefreshLayout.OnRefreshListener {
-    companion object{
+class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefreshListener {
+    companion object {
         fun newInstance(): MainFragment {
             return MainFragment()
         }
@@ -33,20 +46,26 @@ class MainFragment:BaseFragment<FragmentMainBinding, MainViewModel>() ,
 
     override fun initView() {
         super.initView()
+        mBinding.stateLayout.showError()
         initRecyclerView()
         initRefreshLayout()
     }
 
     override fun initData() {
         super.initData()
-
+        lifecycleScope.launch {
+            mViewModel.mMainList
+                .collect {
+                    mViewModel.adapter.submitData(lifecycle, it)
+                }
+        }
     }
-
 
     override fun initRefreshLayout() {
         super.initRefreshLayout()
         mBinding.refreshLayout.setOnRefreshListener(this)
-//        mBinding.refreshLayout.isRefreshing = true
+        mBinding.refreshLayout.setEnableLoadMore(false)
+//        mBinding.refreshLayout.autoRefreshAnimationOnly()
     }
 
     override fun initRecyclerView() {
@@ -54,24 +73,70 @@ class MainFragment:BaseFragment<FragmentMainBinding, MainViewModel>() ,
         val gridLayoutManager = GridLayoutManager(activity, 2)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return 1
+                val obj = mViewModel.adapter.getObj(position)
+                return if (obj.id != null) 1 else 2
             }
         }
+        mBinding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+            ) {
+                super.getItemOffsets(outRect, view, parent, state)
+                val layoutParams = view.layoutParams as GridLayoutManager.LayoutParams
+                val spanSize = layoutParams.spanSize //占用的跨度数
+                val spanIndex = layoutParams.spanIndex //最终跨度位置。应介于0（含）和 spanCount之间
+
+                outRect.top = 15.dp
+                //如果不是占满一行的
+                //如果不是占满一行的
+                if (spanSize != gridLayoutManager.spanCount) {
+                    if (spanIndex == 0) {
+                        outRect.left = 15.dp
+                    }
+                    outRect.right = 15.dp
+                }
+            }
+        })
+        mBinding.recyclerView.layoutManager = gridLayoutManager
+        mViewModel.adapter.addLoadStateListener { listener ->
+            when (listener.refresh) {
+                is LoadState.Error -> { // 加载失败
+                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.stateLayout.showError()
+                }
+                is LoadState.Loading -> { // 正在加载
+                    if (mBinding.refreshLayout.state == RefreshState.None) {
+                        mBinding.refreshLayout.autoRefreshAnimationOnly()
+                    }else if (mBinding.stateLayout.isContent) {
+                        mBinding.stateLayout.showLoading()
+                    }
+                }
+                is LoadState.NotLoading -> { // 当前未加载中
+                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.stateLayout.showContent()
+                }
+            }
+
+        }
+//        lifecycleScope.launch {
+//            @OptIn(ExperimentalCoroutinesApi::class)
+//            mViewModel.adapter.loadStateFlow.collectLatest {
+//                Logger.t("addLoadStateListener").i("loadStateFlow ${it.refresh.toString()}")
+//                if(it.refresh !is LoadState.Loading){
+//                    mBinding.refreshLayout.finishRefresh()
+//                }
+//            }
+//        }
+
+        mBinding.recyclerView.adapter = mViewModel.adapter
     }
 
-    override fun onRefresh() {
-        lifecycleScope.launch {
-            mViewModel.getMainList()
-                .catch { activity?.toast("加载失败") }
-                .onCompletion { mBinding.refreshLayout.isRefreshing = false }
-                .collect {
-                    it.catchCode<List<MainResult>>(
-                        success = {
+    override fun onClick() {
+        super.onClick()
+        mBinding.stateLayout.setRetryListener { mViewModel.adapter.retry() }
+    }
 
-                        },
-                        error = {}
-                    )
-                }
-        }
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        mViewModel.adapter.refresh()
     }
 }

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,10 +19,11 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.yh.video.pirate.R
 import com.yh.video.pirate.utils.TopSmoothScroller
 import com.yh.video.pirate.utils.viewbinding.FragmentViewBinderUtils
+import me.yokeyword.fragmentation.SupportFragment
 import org.greenrobot.eventbus.EventBus
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : Fragment() {
+abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : SupportFragment() {
 
     var mActivity: BaseActivity<*, *>? = null
 
@@ -45,11 +45,11 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         if (!::mViewModel.isInitialized) {
-            mViewModel = ViewModelProviders.of(this)
-                .get(getViewModelClass())
+            mViewModel = ViewModelProviders.of(this).get(getViewModelClass())
             mViewModel.mFragment = this
             initView()
             initData()
+            onClick()
         }
 
 
@@ -115,6 +115,13 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : Fragment() {
 
     }
 
+    /**
+     * 点击事件
+     */
+    open fun onClick() {
+
+    }
+
 
     open fun isSelect(select: Boolean) {
 
@@ -136,7 +143,7 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : Fragment() {
      */
     fun replaceFragment(
         id: Int,
-        fragment: Fragment
+        fragment: SupportFragment
     ) {
         mActivity?.supportFragmentManager?.beginTransaction()
             ?.replace(id, fragment)
@@ -149,11 +156,11 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : Fragment() {
      */
     fun addFragmentList(
         id: Int,
-        fragmentList: List<Fragment>, showIndex: Int
+        fragmentList: List<SupportFragment>, showIndex: Int
     ) {
         val beginTransaction = activity?.supportFragmentManager?.beginTransaction()
         fragmentList.forEach { beginTransaction?.add(id, it) }
-        (0 until fragmentList.size).forEachIndexed { index, _ ->
+        (fragmentList.indices).forEachIndexed { index, _ ->
             if (index == showIndex) {
                 beginTransaction?.show(fragmentList[index])
             } else {
@@ -168,7 +175,7 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : Fragment() {
      * 显示Fragment
      */
     fun showFragment(
-        fragmentList: List<Fragment>,
+        fragmentList: List<SupportFragment>,
         showIndex: Int
     ) {
         val beginTransaction = activity?.supportFragmentManager?.beginTransaction()

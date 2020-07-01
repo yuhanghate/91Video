@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/md_black_1000"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp">
+        android:layout_height="60dp"
+        android:background="@color/md_grey_900">
 
         <ImageView
             android:id="@+id/bg_iv"
             android:layout_width="0dp"
-            android:layout_height="30dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="90dp"
+            android:src="@drawable/bg_search"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="80dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/bg_search" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/search_iv"
             android:layout_width="16dp"
             android:layout_height="16dp"
+            android:layout_marginStart="10dp"
             android:scaleType="centerInside"
-            app:layout_constraintTop_toTopOf="@+id/bg_iv"
+            android:src="@drawable/ic_search"
             app:layout_constraintBottom_toBottomOf="@+id/bg_iv"
             app:layout_constraintStart_toStartOf="@+id/bg_iv"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/ic_search" />
+            app:layout_constraintTop_toTopOf="@+id/bg_iv" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/bg_iv"
-            app:layout_constraintBottom_toBottomOf="@+id/bg_iv"
-            app:layout_constraintStart_toEndOf="@+id/search_iv"
             android:layout_marginStart="10dp"
             android:text="输入影片名称"
             android:textColor="#ff999999"
             android:textSize="14sp"
-            />
+            app:layout_constraintBottom_toBottomOf="@+id/bg_iv"
+            app:layout_constraintStart_toEndOf="@+id/search_iv"
+            app:layout_constraintTop_toTopOf="@+id/bg_iv" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/btn_history"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
@@ -51,14 +60,23 @@
         android:layout_height="1px"
         android:background="@color/md_grey_800" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <com.yh.video.pirate.widget.StateLayout
+            android:id="@+id/state_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/md_grey_900" />
+        </com.yh.video.pirate.widget.StateLayout>
+
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

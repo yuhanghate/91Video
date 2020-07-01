@@ -42,7 +42,14 @@ object DataRepository {
     /**
      * 草莓主页列表
      */
-    suspend fun getMainList(): Flow<CaomeiResponse<List<MainResult>>> {
+      fun getMainList(): Flow<CaomeiResponse<List<MainResult>>> {
         return mNetApi.getMainList()
+    }
+
+    /**
+     * 草莓主页列表
+     */
+    suspend fun getMainList2(): CaomeiResponse<List<MainResult>> {
+        return mNetApi.getMainList2()
     }
 }

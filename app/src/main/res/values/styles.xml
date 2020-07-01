@@ -5,6 +5,91 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/primary_light</item>
+        <item name="android:windowBackground">@color/md_black_1000</item>
+        <item name="android:navigationBarColor">@color/md_black_1000</item>
     </style>
 
+
+
+    <item name="error_text" type="id"/>
+    <item name="retry_button" type="id"/>
+
+    <attr name="styleLoadingLayout" format="reference"/>
+
+    <style name="LoadingLayout">
+    </style>
+
+    <style name="LoadingLayout.Style">
+        <item name="llEmptyResId">@layout/layout_empty</item>
+        <item name="llLoadingResId">@layout/layout_loading</item>
+        <item name="llErrorResId">@layout/layout_error</item>
+
+        <item name="llErrorText">出错啦~</item>
+        <item name="llRetryText">点击重试</item>
+    </style>
+
+
+    <declare-styleable name="LoadingLayout">
+        <!-- 空布局资源id -->
+        <attr name="llEmptyResId" format="reference"/>
+        <!-- 加载中布局资源id -->
+        <attr name="llLoadingResId" format="reference"/>
+        <!-- 错误布局资源id -->
+        <attr name="llErrorResId" format="reference"/>
+
+
+        <!-- 错误布局文本 -->
+        <attr name="llErrorText" format="string"/>
+        <!-- 错误布局重试按钮文本 -->
+        <attr name="llRetryText" format="string"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="StateButton">
+
+        <!--text color-->
+        <attr name="normalTextColor" format="color|reference"/>
+        <attr name="pressedTextColor" format="color|reference"/>
+        <attr name="unableTextColor" format="color|reference"/>
+
+        <!--stroke width and color, dash width, dash gap-->
+        <attr name="strokeDashWidth" format="dimension|reference"/>
+        <attr name="strokeDashGap" format="dimension|reference"/>
+        <attr name="normalStrokeWidth" format="dimension|reference"/>
+        <attr name="pressedStrokeWidth" format="dimension|reference"/>
+        <attr name="unableStrokeWidth" format="dimension|reference"/>
+        <attr name="normalStrokeColor" format="color|reference"/>
+        <attr name="pressedStrokeColor" format="color|reference"/>
+        <attr name="unableStrokeColor" format="color|reference"/>
+
+        <!--background color-->
+        <attr name="normalBackgroundColor" format="color|reference"/>
+        <attr name="pressedBackgroundColor" format="color|reference"/>
+        <attr name="unableBackgroundColor" format="color|reference"/>
+
+        <!--background radius-->
+        <attr name="radius" format="dimension|reference"/>
+        <attr name="round" format="boolean|reference"/>
+
+        <!--animation duration-->
+        <attr name="animationDuration" format="integer|reference"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="StateImageView">
+        <attr name="normalBackground" format="color|reference"/>
+        <attr name="pressedBackground" format="color|reference"/>
+        <attr name="unableBackground" format="color|reference"/>
+
+        <!--animation duration-->
+        <attr name="AnimationDuration" format="integer|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="corner_radius" format="dimension" />
+        <attr name="top_start" format="boolean" />
+        <attr name="top_end" format="boolean" />
+        <attr name="bottom_start" format="boolean" />
+        <attr name="bottom_end" format="boolean" />
+    </declare-styleable>
 </resources>
