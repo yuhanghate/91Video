@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2.ORIENTATION_VERTICAL
 import com.gyf.immersionbar.ImmersionBar
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseActivity
@@ -13,8 +14,10 @@ import com.yh.video.pirate.databinding.ActivityMainBinding
 import com.yh.video.pirate.databinding.LayoutMainTabBinding
 import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
 import com.yh.video.pirate.utils.bindViewPager
+import com.yh.video.pirate.utils.enforceSingleScrollDirection
 import com.yh.video.pirate.utils.evaluate
 import com.yh.video.pirate.utils.getColorCompat
+import kotlinx.android.synthetic.main.fragment_main.view.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
@@ -61,6 +64,9 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
 
+    /**
+     * 初始化ViewPager
+     */
     private fun initViewPager() {
         mBinding.viewPager.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int {
@@ -72,14 +78,14 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        //增加ViewPager2滑动阻力,防止左右滑和上下滑动误触
-        val recyclerViewField = mBinding.viewPager::class.java.getDeclaredField("mRecyclerView")
-        recyclerViewField.isAccessible = true
-        val recyclerView = recyclerViewField.get(mBinding.viewPager) as RecyclerView
-
-        val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
-        touchSlopField.isAccessible = true
-        touchSlopField.set(recyclerView, 98)
+//        //增加ViewPager2滑动阻力,防止左右滑和上下滑动误触
+//        val recyclerViewField = mBinding.viewPager::class.java.getDeclaredField("mRecyclerView")
+//        recyclerViewField.isAccessible = true
+//        val recyclerView = recyclerViewField.get(mBinding.viewPager) as RecyclerView
+//
+//        val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+//        touchSlopField.isAccessible = true
+//        touchSlopField.set(recyclerView, 96)
     }
 
     private fun initMagicIndicator1() {

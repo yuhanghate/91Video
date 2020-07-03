@@ -1,13 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:gravity="center"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <View
+        android:id="@+id/status_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="25sp"
-        android:text="分类" />
+        android:background="@color/md_grey_900" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/md_grey_900">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="分类"
+            android:textColor="@color/primary_text"
+            android:textSize="17sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/md_grey_800" />
+
+    <com.yh.video.pirate.widget.NestedScrollableHost
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.yh.video.pirate.widget.StateLayout
+                android:id="@+id/stateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:paddingBottom="15dp"
+                    android:clipToPadding="false"
+                    android:layout_height="match_parent"
+                    android:background="@color/md_black_1000" />
+            </com.yh.video.pirate.widget.StateLayout>
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    </com.yh.video.pirate.widget.NestedScrollableHost>
+
+
 </LinearLayout>

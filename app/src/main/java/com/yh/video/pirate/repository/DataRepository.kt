@@ -4,10 +4,7 @@ import androidx.lifecycle.asLiveData
 import com.yh.video.pirate.repository.database.AppDatabase
 import com.yh.video.pirate.repository.network.Http
 import com.yh.video.pirate.repository.network.api.NetApi
-import com.yh.video.pirate.repository.network.result.CategoryResult
-import com.yh.video.pirate.repository.network.result.MainResult
-import com.yh.video.pirate.repository.network.result.RecommendedLikeResult
-import com.yh.video.pirate.repository.network.result.VideoResult
+import com.yh.video.pirate.repository.network.result.*
 import com.yh.video.pirate.repository.network.result.base.CaomeiPaged
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 import com.yh.video.pirate.utils.application
@@ -42,17 +39,18 @@ object DataRepository {
         return mNetApi.getRecommendedLike(map)
     }
 
-    /**
-     * 草莓主页列表
-     */
-      fun getMainList(): Flow<CaomeiResponse<List<MainResult>>> {
-        return mNetApi.getMainList()
-    }
 
     /**
      * 草莓主页列表
      */
     suspend fun getMainList2(): CaomeiResponse<List<MainResult>> {
         return mNetApi.getMainList2()
+    }
+
+    /**
+     * 视频类型:國產自拍/家庭亂倫
+     */
+    suspend fun getVideoType(): CaomeiResponse<List<VideoTypeResult>> {
+        return mNetApi.getVideoType()
     }
 }

@@ -1,16 +1,8 @@
 package com.yh.video.pirate.ui.main.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseViewModel
-import com.yh.video.pirate.base.LoadStateAdapter
 import com.yh.video.pirate.repository.mapper.Any2MainResult
-import com.yh.video.pirate.repository.network.exception.handlingApiExceptions
-import com.yh.video.pirate.repository.network.exception.handlingExceptions
-import com.yh.video.pirate.repository.network.exception.catchCode
-import com.yh.video.pirate.repository.network.result.CategoryResult
 import com.yh.video.pirate.repository.network.result.MainResult
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 import com.yh.video.pirate.ui.main.adapter.MainAdapter
@@ -18,8 +10,8 @@ import com.yh.video.pirate.ui.main.fragment.CategoryFragment
 import com.yh.video.pirate.ui.main.fragment.DiscoverFragment
 import com.yh.video.pirate.ui.main.fragment.MainFragment
 import com.yh.video.pirate.ui.main.fragment.MeFragment
-import com.yh.video.pirate.utils.*
-import kotlinx.coroutines.flow.Flow
+import com.yh.video.pirate.utils.loadStateAdapter
+import com.yh.video.pirate.utils.pagerSingle
 
 class MainViewModel : BaseViewModel() {
 
@@ -65,15 +57,8 @@ class MainViewModel : BaseViewModel() {
         },
         filter = {
                 getFilterList(it)
-//            it.rescont?: arrayListOf()
         })
 
-    /**
-     * 首页列表
-     */
-    fun getMainList(): Flow<CaomeiResponse<List<MainResult>>> {
-        return mDataRepository.getMainList()
-    }
 
     /**
      * 过滤草莓广告

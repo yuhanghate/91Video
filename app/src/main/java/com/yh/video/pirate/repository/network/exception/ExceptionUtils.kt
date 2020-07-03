@@ -59,16 +59,6 @@ fun <T> CaomeiResponse<*>.catchCode(
     } else {
         error?.invoke(HttpError.USER_EXIST) ?: defaultErrorBlock.invoke(HttpError.USER_EXIST)
     }
-//    when (this.convertHttpRes()) {
-//        is Success<*> -> {
-//            successBlock.invoke(res.data as T)
-//        }
-//        is Failure -> {
-//            with(res) {
-//                failureBlock?.invoke(error) ?: defaultErrorBlock.invoke(error)
-//            }
-//        }
-//    }
 }
 
 

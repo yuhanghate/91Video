@@ -1,9 +1,6 @@
 package com.yh.video.pirate.repository.network.api
 
-import com.yh.video.pirate.repository.network.result.CategoryResult
-import com.yh.video.pirate.repository.network.result.MainResult
-import com.yh.video.pirate.repository.network.result.RecommendedLikeResult
-import com.yh.video.pirate.repository.network.result.VideoResult
+import com.yh.video.pirate.repository.network.result.*
 import com.yh.video.pirate.repository.network.result.base.CaomeiPaged
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 import kotlinx.coroutines.flow.Flow
@@ -14,9 +11,15 @@ import retrofit2.http.QueryMap
 interface NetApi {
 
     /**
+     * 视频类型:國產自拍/家庭亂倫
+     */
+    @GET("api/videosort")
+    suspend fun getVideoType():CaomeiResponse<List<VideoTypeResult>>
+
+    /**
      * 分类列表
      */
-    @GET("/api/videosort")
+    @GET("api/videosort")
     suspend fun getVideoSort(): CaomeiResponse<List<CategoryResult>>
 
     /**
@@ -30,12 +33,6 @@ interface NetApi {
      */
     @GET("api/videomaylike")
     suspend fun getRecommendedLike(@QueryMap parsms: Map<String, Any>):@JvmSuppressWildcards Flow<CaomeiResponse<CaomeiPaged<RecommendedLikeResult>>>
-
-    /**
-     * 草莓主页列表
-     */
-    @GET("api/videoindex")
-    fun getMainList(): Flow<CaomeiResponse<List<MainResult>>>
 
     /**
      * 草莓主页列表

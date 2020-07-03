@@ -17,13 +17,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <com.yh.video.pirate.widget.NestedScrollableHost
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingTop="56dp"
-                tools:listitem="@layout/item_discover" />
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="56dp"
+                    tools:listitem="@layout/item_discover" />
+            </com.yh.video.pirate.widget.NestedScrollableHost>
+
         </com.yh.video.pirate.widget.StateLayout>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
