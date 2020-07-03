@@ -68,7 +68,7 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
         }
     }
 
-    private fun onClick() {
+     override fun onClick() {
         mBinding.countDownTv.setOnClickListener {
             if (mBinding.countDownTv.text == "跳过") {
                 startMainActivity()

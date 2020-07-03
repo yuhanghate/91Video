@@ -61,6 +61,7 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
         initStatusTool()
         initView()
         initData()
+        onClick()
     }
 
     /**
@@ -335,6 +336,13 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
      * 初始化下拉刷新
      */
     open fun initRefreshLayout() {
+    }
+
+    /**
+     * 点击事件
+     */
+    open fun onClick() {
+
     }
 
 

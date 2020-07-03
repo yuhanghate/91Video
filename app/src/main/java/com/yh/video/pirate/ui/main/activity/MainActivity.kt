@@ -79,7 +79,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
         touchSlopField.isAccessible = true
-        touchSlopField.set(recyclerView, 95)
+        touchSlopField.set(recyclerView, 98)
     }
 
     private fun initMagicIndicator1() {

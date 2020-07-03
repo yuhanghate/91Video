@@ -19,44 +19,167 @@
             android:background="@color/md_grey_900"
             android:orientation="vertical">
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:paddingBottom="55dp">
 
-                <TextView
-                    android:id="@+id/nickname_tv"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="96dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginBottom="48dp"
-                    android:text="凌晨一点半的汪"
-                    android:textColor="@color/primary_text"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/avatar_civ"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/avatar_civ"
+                    app:layout_constraintStart_toEndOf="@+id/avatar_civ"
+                    app:layout_constraintTop_toTopOf="@+id/avatar_civ">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_vip" />
+
+                        <TextView
+                            android:id="@+id/nickname_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="成长中的汪"
+                            android:textColor="@color/primary_text"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="简介: 爱情可以通过学习去了解"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/avatar_civ"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="70dp"
                     android:layout_marginEnd="15dp"
                     android:src="@mipmap/ic_default_avatar"
                     app:civ_border_color="@color/md_grey_300"
                     app:civ_border_width="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/nickname_tv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_qr_code"
+                    android:layout_width="58dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_qr_code"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/nickname_tv" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 android:background="@color/md_black_1000" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <ImageView
+                    android:id="@+id/vip_iv"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="15dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_vip2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/vip_iv"
+                    app:layout_constraintStart_toEndOf="@+id/vip_iv"
+                    app:layout_constraintTop_toTopOf="@+id/vip_iv">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="开通VIP会员"
+                        android:textColor="@color/primary_text"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="高速线路/独家影片/超清画质"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+
+                <com.yh.video.pirate.widget.statebutton.StateButton
+                    android:id="@+id/btn_payment"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="充值"
+                    android:textColor="@color/md_grey_100"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+
+                    app:animationDuration="200"
+                    app:layout_constraintBottom_toBottomOf="parent"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5"
+
+                    app:normalBackgroundColor="#FFB300"
+                    app:normalStrokeWidth="2dp"
+                    app:normalTextColor="@color/md_grey_100"
+                    app:pressedBackgroundColor="#B3FFB300"
+                    app:pressedStrokeWidth="2dp"
+
+                    app:pressedTextColor="@color/md_grey_100"
+                    app:radius="8dp"
+                    app:round="true"
+
+                    app:strokeDashGap="2dp"
+                    app:strokeDashWidth="5dp"
+                    app:unableBackgroundColor="#CCCCCC"
+
+                    app:unableStrokeWidth="2dp"
+                    app:unableTextColor="@color/md_grey_100" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/md_grey_800" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/history_cl"

@@ -24,6 +24,9 @@ import kotlinx.coroutines.launch
 class DiscoverFragment : BaseFragment<FragmentDiscoverBinding, DiscoverViewModel>(),
     OnRefreshListener {
 
+    //第一次加载
+    var isCreate = false
+
     companion object {
         fun newInstance(): DiscoverFragment {
             return DiscoverFragment()
@@ -81,11 +84,13 @@ class DiscoverFragment : BaseFragment<FragmentDiscoverBinding, DiscoverViewModel
                     mBinding.stateLayout.showError()
                 }
                 is LoadState.Loading -> { // 正在加载
-                    if (mBinding.refreshLayout.state == RefreshState.None) {
-                        mBinding.refreshLayout.autoRefreshAnimationOnly()
-                    } else if (mBinding.stateLayout.isContent && mBinding.refreshLayout.state != RefreshState.Refreshing) {
+                    if (!isCreate) {
                         mBinding.stateLayout.showLoading()
+                        isCreate = true
+                    } else {
+                        mBinding.refreshLayout.autoRefreshAnimationOnly()
                     }
+
                 }
                 is LoadState.NotLoading -> { // 当前未加载中
                     mBinding.refreshLayout.finishRefresh()

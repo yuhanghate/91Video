@@ -19,6 +19,9 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefreshListener {
+
+    //第一次加载
+    var isCreate = false
     companion object {
         fun newInstance(): MainFragment {
             return MainFragment()
@@ -64,7 +67,6 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
         super.initRefreshLayout()
         mBinding.refreshLayout.setOnRefreshListener(this)
         mBinding.refreshLayout.setEnableLoadMore(false)
-//        mBinding.refreshLayout.autoRefreshAnimationOnly()
     }
 
     override fun initRecyclerView() {
@@ -104,10 +106,11 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
                     mBinding.stateLayout.showError()
                 }
                 is LoadState.Loading -> { // 正在加载
-                    if (mBinding.refreshLayout.state == RefreshState.None) {
-                        mBinding.refreshLayout.autoRefreshAnimationOnly()
-                    } else if (mBinding.stateLayout.isContent && mBinding.refreshLayout.state != RefreshState.Refreshing) {
+                    if (!isCreate) {
                         mBinding.stateLayout.showLoading()
+                        isCreate = true
+                    } else {
+                        mBinding.refreshLayout.autoRefreshAnimationOnly()
                     }
                 }
                 is LoadState.NotLoading -> { // 当前未加载中
@@ -117,16 +120,6 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
             }
 
         }
-//        lifecycleScope.launch {
-//            @OptIn(ExperimentalCoroutinesApi::class)
-//            mViewModel.adapter.loadStateFlow.collectLatest {
-//                Logger.t("addLoadStateListener").i("loadStateFlow ${it.refresh.toString()}")
-//                if(it.refresh !is LoadState.Loading){
-//                    mBinding.refreshLayout.finishRefresh()
-//                }
-//            }
-//        }
-
         mBinding.recyclerView.adapter = mViewModel.adapter
     }
 

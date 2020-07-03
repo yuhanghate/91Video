@@ -32,6 +32,8 @@
         </activity>
 
         <activity android:name=".ui.main.activity.MainActivity"/>
+        <activity android:name=".ui.payment.activity.PaymentActivity" />
+        <activity android:name=".ui.settings.activity.ShareQrcodeActivity" />
     </application>
 
 </manifest>
