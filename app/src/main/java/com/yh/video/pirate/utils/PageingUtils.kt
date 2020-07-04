@@ -38,3 +38,4 @@ fun <T:Any> ViewModel.pagerSingle(callback:  suspend ()-> CaomeiResponse<List<T>
         return@Pager NetworkSoureSingle(network = callback)
     }).flow.cachedIn(viewModelScope)
 
+

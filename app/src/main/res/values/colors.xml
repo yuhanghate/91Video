@@ -12,6 +12,8 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
+    <color name="transparent">#80000000</color>
+
 
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>

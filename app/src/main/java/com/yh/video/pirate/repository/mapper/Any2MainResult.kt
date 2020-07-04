@@ -1,10 +1,10 @@
 package com.yh.video.pirate.repository.mapper
 
-import com.yh.video.pirate.repository.network.result.MainResult
+import com.yh.video.pirate.repository.network.result.Main
 
-class Any2MainResult : Mapper<Any, MainResult> {
-    override fun map(input: Any): MainResult {
-        return MainResult(
+class Any2MainResult : Mapper<Any, Main> {
+    override fun map(input: Any): Main {
+        return Main(
             id = null,
             title = null,
             coverpath = null,

@@ -3,22 +3,18 @@ package com.yh.video.pirate.base
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
-import android.content.Context
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.TypedArray
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.TimingLogger
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import com.idescout.sql.SqlScoutServer
@@ -69,7 +65,7 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
      */
     private fun initSqlScoutServer() {
         try {
-            SqlScoutServer.create(this, packageName)
+//            SqlScoutServer.create(this, packageName)
         } catch (e: IOException) {
 
         }
@@ -160,14 +156,6 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
             .navigationBarColor(onNavigationBarColor()) //导航栏颜色，不写默认黑色
             .init()
 
-//        StatusBarUtil.setTranslucent(this)
-//        StatusBarUtil.setColor(this, ContextCompat.getColor(this, onStatusColor()), 90)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-//            window?.decorView?.rootView?.setPadding(
-//                    0, -StatusBarUtil.getStatusBarHeight(this), 0, 0
-//            )
-        }
     }
 
     override fun onDestroy() {
@@ -372,7 +360,7 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
         position: Int
     ) {
 
-        val manager = recyclerView.layoutManager as? VirtualLayoutManager
+        val manager = recyclerView.layoutManager as? LinearLayoutManager
         val firstItem = manager?.findFirstVisibleItemPosition()
         //刷新
         if (firstItem == 0) {

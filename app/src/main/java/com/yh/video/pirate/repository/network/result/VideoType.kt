@@ -5,24 +5,24 @@ import androidx.recyclerview.widget.DiffUtil
 /**
  * 视频类型:國產自拍/家庭亂倫
  */
-data class VideoTypeResult(
+data class VideoType(
     var icopath: String?,//图片
     var id: Int?,//类型id
     var name: String?,//类型名称
     var order: Int?//优先级
 ){
     companion object{
-        val diffCallback = object : DiffUtil.ItemCallback<VideoTypeResult>() {
+        val diffCallback = object : DiffUtil.ItemCallback<VideoType>() {
             override fun areItemsTheSame(
-                oldItem: VideoTypeResult,
-                newItem: VideoTypeResult
+                oldItem: VideoType,
+                newItem: VideoType
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: VideoTypeResult,
-                newItem: VideoTypeResult
+                oldItem: VideoType,
+                newItem: VideoType
             ): Boolean {
                 return oldItem == newItem
             }

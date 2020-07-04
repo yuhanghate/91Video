@@ -1,34 +1,21 @@
 package com.yh.video.pirate.ui.main.fragment
 
-import android.content.Context
-import android.graphics.Color
 import android.graphics.Rect
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentCategoryBinding
-import com.yh.video.pirate.repository.network.exception.catchCode
-import com.yh.video.pirate.repository.network.result.VideoTypeResult
 import com.yh.video.pirate.ui.main.viewmodel.CategoryViewModel
 import com.yh.video.pirate.utils.BarConfig
-import com.yh.video.pirate.utils.bindViewPager
 import com.yh.video.pirate.utils.dp
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.WrapPagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 
 class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel>(),
     OnRefreshListener {

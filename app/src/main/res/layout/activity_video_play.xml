@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_grey_900"
+    android:orientation="vertical">
+
+
+    <com.yh.video.pirate.widget.StateLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.yh.video.pirate.video.videoview.ExoVideoView
+                android:id="@+id/videoView"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                app:layout_constraintDimensionRatio="16:10"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:marqueeRepeatLimit="1"
+                        android:singleLine="true"
+                        android:textColor="@color/primary_text"
+                        android:textSize="17sp"
+                        tools:text="火星救援" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="15dp">
+
+                        <TextView
+                            android:id="@+id/type_name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="类型："
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/play_amount_name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="观看次数："
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="@+id/type_name_tv"
+                            app:layout_constraintTop_toBottomOf="@+id/type_name_tv" />
+
+                        <TextView
+                            android:id="@+id/create_time_name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="上架时间："
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="@+id/play_amount_name_tv"
+                            app:layout_constraintTop_toBottomOf="@+id/play_amount_name_tv" />
+
+
+                        <TextView
+                            android:id="@+id/create_time_value_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="2015/10/20"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/create_time_name_tv"
+                            app:layout_constraintStart_toEndOf="@+id/create_time_name_tv"
+                            app:layout_constraintTop_toTopOf="@+id/create_time_name_tv" />
+
+                        <TextView
+                            android:id="@+id/play_amount_value_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="245万"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/play_amount_name_tv"
+                            app:layout_constraintStart_toStartOf="@+id/create_time_value_tv"
+                            app:layout_constraintTop_toTopOf="@+id/play_amount_name_tv" />
+
+                        <TextView
+                            android:id="@+id/type_value_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="國產自拍"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/type_name_tv"
+                            app:layout_constraintStart_toStartOf="@+id/create_time_value_tv"
+                            app:layout_constraintTop_toTopOf="@+id/type_name_tv" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/synopsis_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="30dp"
+                        android:text="女神级极品性感美女人妻洗完澡出来发现老公喝醉了,被他好友趁机强行奸污,在老公旁边强忍着呻吟被操"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="center_vertical"
+                            android:text="标签: "
+                            android:textColor="@color/primary_text"
+                            android:textSize="15sp" />
+
+                        <com.google.android.flexbox.FlexboxLayout
+                            android:id="@+id/flexboxLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            app:alignContent="flex_start"
+                            app:alignItems="flex_start"
+                            app:flexDirection="row"
+                            app:flexWrap="wrap"
+                            app:justifyContent="flex_start"
+                            app:showDivider="beginning|middle|end" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/md_black_1000" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="3dp"
+                            android:layout_height="15dp"
+                            android:background="@color/md_blue_500" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="猜你喜欢"
+                            android:textColor="@color/primary_text"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
+
+    </com.yh.video.pirate.widget.StateLayout>
+
+</LinearLayout>

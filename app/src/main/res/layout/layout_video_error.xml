@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="出了点小问题,请稍后重试"
+            android:textColor="@android:color/white" />
+
+
+        <com.yh.video.pirate.widget.statebutton.StateButton
+            android:id="@+id/status_btn"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:text="重试"
+            android:textColor="@color/md_grey_100"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:animationDuration="200"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+
+            app:normalBackgroundColor="#2196F3"
+            app:normalStrokeWidth="2dp"
+            app:normalTextColor="@color/md_grey_100"
+            app:pressedBackgroundColor="#B32196F3"
+            app:pressedStrokeWidth="2dp"
+
+            app:pressedTextColor="@color/md_grey_100"
+            app:radius="8dp"
+            app:round="true"
+
+            app:strokeDashGap="2dp"
+            app:strokeDashWidth="5dp"
+            app:unableBackgroundColor="#CCCCCC"
+
+            app:unableStrokeWidth="2dp"
+            app:unableTextColor="@color/md_grey_100" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

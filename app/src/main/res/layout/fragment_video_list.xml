@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/md_black_1000">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,5 +19,5 @@
                 android:layout_height="match_parent" />
         </com.yh.video.pirate.widget.StateLayout>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

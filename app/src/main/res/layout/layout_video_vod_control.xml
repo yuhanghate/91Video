@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_container"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:background="@drawable/bg_video_top"
+        android:layout_height="70dp">
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/bg_material_20dp"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/btn_back_white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:paddingStart="15dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="15dp"
+        android:layout_gravity="bottom"
+        android:gravity="center_vertical"
+        android:background="@drawable/ic_video_botton"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:padding="12dp"
+            android:background="@drawable/bg_material_20dp"
+            android:src="@drawable/btn_video_paly" />
+
+        <TextView
+            android:id="@+id/curr_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            tools:text="00:00" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:max="1000"
+            android:maxHeight="2dp"
+            android:minHeight="2dp"
+            android:paddingEnd="0dp"
+            android:paddingStart="0dp"
+            android:progressDrawable="@drawable/ic_video_progress_bar"
+            android:thumb="@drawable/ic_video_seekbar_thumb"
+            android:thumbOffset="0dp" />
+
+        <TextView
+            android:id="@+id/total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            tools:text="00:00" />
+
+        <ImageView
+            android:id="@+id/fullscreen"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:padding="12dp"
+            android:src="@drawable/btn_video_full_screen" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/bottom_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="bottom"
+        android:max="1000"
+        android:progressDrawable="@drawable/ic_layer_progress_bar"
+        android:visibility="gone" />
+
+</FrameLayout>

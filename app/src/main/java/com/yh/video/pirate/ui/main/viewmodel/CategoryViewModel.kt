@@ -1,10 +1,8 @@
 package com.yh.video.pirate.ui.main.viewmodel
 
-import androidx.paging.Pager
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.base.BaseViewModel
-import com.yh.video.pirate.repository.network.result.VideoTypeResult
-import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
+import com.yh.video.pirate.repository.network.result.VideoType
 import com.yh.video.pirate.ui.main.adapter.CategoryAdapter
 import com.yh.video.pirate.ui.main.fragment.VideoListFragment
 import com.yh.video.pirate.utils.pagerSingle
@@ -17,7 +15,7 @@ class CategoryViewModel : BaseViewModel() {
     /**
      * 初始化所有类型Fragment
      */
-    fun initFragments(list: List<VideoTypeResult>) {
+    fun initFragments(list: List<VideoType>) {
         fragments.addAll(list.filter { it.id != null }
             .map { VideoListFragment.newInstance(it.id!!) }.toList())
     }
