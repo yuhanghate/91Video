@@ -1,9 +1,6 @@
 package com.yh.video.pirate.ui.launch.activity
 
 import android.Manifest
-import android.os.Handler
-import android.os.Looper
-import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.gyf.immersionbar.ImmersionBar
@@ -15,10 +12,10 @@ import com.yh.video.pirate.ui.main.activity.MainActivity
 import com.yh.video.pirate.utils.AppManagerUtils
 import com.yh.video.pirate.utils.isVisible
 import com.yh.video.pirate.utils.permissions.requestMultiplePermissions
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 /**
@@ -48,16 +45,16 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
     private fun initCountDown() {
         mBinding.countDownTv.isVisible = false
         lifecycleScope.launch {
-            flowOf(5, 4, 3, 2, 1, 0, -1, -2).onEach { delay(100) }.collect {
-                if (it == 5) {
+            flowOf( 3, 2, 1, 0).onEach { delay(1000) }.collect {
+                if (it == 3) {
                     mBinding.countDownTv.isVisible = true
                     mBinding.countDownTv.start()
                 }
                 when {
-                    it == -2 -> {
+                    it == 0 -> {
                         startMainActivity()
                     }
-                    it <= 0 -> {
+                    it <= 1 -> {
                         mBinding.countDownTv.text = "跳过"
                     }
                     else -> {

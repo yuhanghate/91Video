@@ -2,15 +2,16 @@ package com.yh.video.pirate.repository.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.yh.video.pirate.common.Identifiable
 
 /**
  * 分类: 國產自拍/高清無碼
  */
 @Entity
-class VideoSortEntity {
+class VideoSortEntity: Identifiable<Int> {
 
     @PrimaryKey(autoGenerate = true)
-    var id:Int = 0
+    override var id:Int = 0
 
     /**
      * 分类id

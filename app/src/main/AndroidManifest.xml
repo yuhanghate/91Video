@@ -22,8 +22,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
         <!--允许绘制到oppo、vivo刘海屏机型的刘海区域 -->
         <meta-data
             android:name="android.max_aspect"
@@ -46,14 +45,28 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.main.activity.MainActivity" />
-        <activity android:name=".ui.payment.activity.PaymentActivity" />
-        <activity android:name=".ui.settings.activity.ShareQrcodeActivity" />
+        <activity
+            android:name=".ui.main.activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.payment.activity.PaymentActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.settings.activity.ShareQrcodeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.video.activity.VideoPlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.history.activity.HistoryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.search.activity.SearchActivity" />
     </application>
 
 </manifest>

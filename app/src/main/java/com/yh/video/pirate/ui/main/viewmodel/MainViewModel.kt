@@ -11,7 +11,7 @@ import com.yh.video.pirate.ui.main.fragment.DiscoverFragment
 import com.yh.video.pirate.ui.main.fragment.MainFragment
 import com.yh.video.pirate.ui.main.fragment.MeFragment
 import com.yh.video.pirate.utils.loadStateAdapter
-import com.yh.video.pirate.utils.pagerSingle
+import com.yh.video.pirate.utils.pagerSingleByList
 
 class MainViewModel : BaseViewModel() {
 
@@ -51,7 +51,7 @@ class MainViewModel : BaseViewModel() {
     //主页适配器
     val adapter by lazy { MainAdapter().loadStateAdapter() }
 
-    val mMainList = pagerSingle(
+    val mMainList = pagerSingleByList(
         callback = {
             mDataRepository.getMainList2()
         },

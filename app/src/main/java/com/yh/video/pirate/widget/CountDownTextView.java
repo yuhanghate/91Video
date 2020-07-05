@@ -20,7 +20,7 @@ import com.yh.video.pirate.R;
 public class CountDownTextView extends AppCompatTextView {
 
     // 倒计时
-    private int duration = 5000;
+    private int duration = 3000;
 
     // 扫过的角度
     private int mSweepAngle = 360;

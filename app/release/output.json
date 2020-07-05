@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.yh.video.pirate",
+  "applicationId": "com.yh.video91",
   "variantName": "release",
   "elements": [
     {
@@ -14,7 +14,7 @@
       "versionCode": 1,
       "versionName": "1",
       "enabled": true,
-      "outputFile": "app-release.apk"
+      "outputFile": "91视频_v1.0_c1.apk"
     }
   ]
 }

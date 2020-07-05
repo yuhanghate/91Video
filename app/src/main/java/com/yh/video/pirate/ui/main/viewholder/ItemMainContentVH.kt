@@ -13,12 +13,6 @@ class ItemMainContentVH(parent: ViewGroup) :
 
     override fun bindData(data: Main, position: Int) {
         mBinding.titleTv.text = data.title
-
-//        val screenRealWidth = (mContext.getScreenRealWidth() - 15.dp * 3) / 2 - 3.dp
-//        val layoutParams = mBinding.coverIv.layoutParams
-//        layoutParams.width = screenRealWidth
-//        mBinding.coverIv.layoutParams = layoutParams
-
         mBinding.coverIv.loadImage(mContext, data.coverpath)
 
         mBinding.root.setOnClickListener {

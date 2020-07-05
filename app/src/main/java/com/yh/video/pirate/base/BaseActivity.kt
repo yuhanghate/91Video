@@ -65,7 +65,7 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
      */
     private fun initSqlScoutServer() {
         try {
-//            SqlScoutServer.create(this, packageName)
+            SqlScoutServer.create(this, packageName)
         } catch (e: IOException) {
 
         }

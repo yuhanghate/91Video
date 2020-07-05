@@ -5,7 +5,7 @@ import com.yh.video.pirate.base.BaseViewModel
 import com.yh.video.pirate.repository.network.result.VideoType
 import com.yh.video.pirate.ui.main.adapter.CategoryAdapter
 import com.yh.video.pirate.ui.main.fragment.VideoListFragment
-import com.yh.video.pirate.utils.pagerSingle
+import com.yh.video.pirate.utils.pagerSingleByList
 
 class CategoryViewModel : BaseViewModel() {
 
@@ -26,7 +26,7 @@ class CategoryViewModel : BaseViewModel() {
     /**
      * 视频分类
      */
-    val mVideoType = pagerSingle(
+    val mVideoType = pagerSingleByList(
         callback = {
             mDataRepository.getVideoType()
         }

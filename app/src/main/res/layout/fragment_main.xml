@@ -12,6 +12,7 @@
         android:background="@color/md_grey_900" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/search_cl"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/md_grey_900">
@@ -51,6 +52,7 @@
             app:layout_constraintTop_toTopOf="@+id/bg_iv" />
 
         <ImageView
+            android:id="@+id/btn_history"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="20dp"

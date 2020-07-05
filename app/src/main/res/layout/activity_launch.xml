@@ -59,8 +59,8 @@
     <com.yh.video.pirate.widget.CountDownTextView
         android:id="@+id/count_down_tv"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/bg_count_down"

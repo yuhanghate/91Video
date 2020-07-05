@@ -1,7 +1,7 @@
 package com.yh.video.pirate.ui.main.viewmodel
 
 import com.yh.video.pirate.base.BaseViewModel
-import com.yh.video.pirate.repository.network.result.Video
+import com.yh.video.pirate.repository.network.result.Discover
 import com.yh.video.pirate.repository.network.result.base.CaomeiPaged
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 import com.yh.video.pirate.ui.main.adapter.DiscoverAdapter
@@ -23,7 +23,7 @@ class DiscoverViewModel : BaseViewModel() {
     /**
      * 过滤草莓广告
      */
-    private fun getFilterList(data: CaomeiResponse<CaomeiPaged<Video>>): List<Video> {
+    private fun getFilterList(data: CaomeiResponse<CaomeiPaged<Discover>>): List<Discover> {
         data.rescont ?: return emptyList()
         return data.rescont.data.filter { it.is_ad != 1 }.map { it }.toList()
     }

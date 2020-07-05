@@ -97,8 +97,10 @@ abstract class BaseAdapter<T : Any>(diffCallback: DiffUtil.ItemCallback<T>) :
 
         holder.lastClickItemPosition = lastClickItemPosition
         //绑定View
+//        holder.setListener(mListener).bindData(getObj(position), position)
         holder.setListener(mListener).onBindViewHolder(getObj(position), position)
     }
+
 
 
 }

@@ -7,6 +7,8 @@ import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dueeeke.videoplayer.player.VideoView
 import com.gyf.immersionbar.ImmersionBar
 import com.yh.video.pirate.R
@@ -15,7 +17,7 @@ import com.yh.video.pirate.databinding.ActivityVideoPlayBinding
 import com.yh.video.pirate.databinding.LayoutVideoLabelBinding
 import com.yh.video.pirate.repository.network.exception.catchCode
 import com.yh.video.pirate.repository.network.result.Label
-import com.yh.video.pirate.repository.network.result.VideoPlay
+import com.yh.video.pirate.repository.network.result.Video
 import com.yh.video.pirate.ui.main.viewholder.intChange2Str
 import com.yh.video.pirate.ui.video.viewmodel.VideoPlayViewModel
 import com.yh.video.pirate.utils.loadImage
@@ -23,7 +25,6 @@ import com.yh.video.pirate.video.cache.ProgressManagerImpl
 import com.yh.video.pirate.video.controller.StandardVideoController
 import com.yh.video.pirate.video.controller.component.*
 import kotlinx.android.synthetic.main.activity_video_play.*
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -31,8 +32,6 @@ import kotlinx.coroutines.launch
  * 视频播放页面
  */
 class VideoPlayActivity : BaseActivity<ActivityVideoPlayBinding, VideoPlayViewModel>() {
-    private val THUMB =
-        "https://cms-bucket.nosdn.127.net/eb411c2810f04ffa8aaafc42052b233820180418095416.jpeg"
 
     lateinit var controller: StandardVideoController
 
@@ -78,6 +77,43 @@ class VideoPlayActivity : BaseActivity<ActivityVideoPlayBinding, VideoPlayViewMo
     override fun initView() {
         super.initView()
 
+        initRecyclerView()
+        initPlay()
+    }
+
+    override fun initData() {
+        super.initData()
+        //视频播放信息
+        lifecycleScope.launchWhenCreated {
+            mViewModel.getVideoPlay(getVideoId())
+                .onStart { mBinding.stateLayout.showLoading() }
+                .catch { mBinding.stateLayout.showError() }
+                .onCompletion { mBinding.stateLayout.showContent() }
+                .collect {
+                    it.catchCode<Video>(
+                        success = {
+                            startPlay(it)
+                            initMovieInfoView(it)
+                        },
+                        error = {
+                            mBinding.stateLayout.showError()
+                        }
+                    )
+                }
+        }
+        //猜你喜欢
+        lifecycleScope.launch {
+            mViewModel.getRecommendedLike
+                .collect {
+                    mViewModel.adapter.submitData(it)
+                }
+        }
+    }
+
+    /**
+     * 初始化播放器
+     */
+    private fun initPlay() {
         controller = StandardVideoController(this)
         //根据屏幕方向自动进入/退出全屏
         //根据屏幕方向自动进入/退出全屏
@@ -139,26 +175,17 @@ class VideoPlayActivity : BaseActivity<ActivityVideoPlayBinding, VideoPlayViewMo
         mBinding.videoView.setCacheEnabled(true)
     }
 
-    override fun initData() {
-        super.initData()
-        lifecycleScope.launchWhenCreated {
-            mViewModel.getVideoPlay(getVideoId())
-                .onStart { mBinding.stateLayout.showLoading() }
-                .catch { mBinding.stateLayout.showError() }
-                .onCompletion { mBinding.stateLayout.showContent() }
-                .collect {
-                    it.catchCode<VideoPlay>(
-                        success = {
-                            startPlay(it)
-                            initMovieInfoView(it)
-                        },
-                        error = {
-                            mBinding.stateLayout.showError()
-                        }
-                    )
+    override fun initRecyclerView() {
+        super.initRecyclerView()
+        mViewModel.adapter.addLoadStateListener { listener ->
+            when (listener.refresh) {
+                is LoadState.NotLoading -> { // 当前未加载中
+                    mBinding.stateLayout.showContent()
                 }
-
+            }
         }
+        mBinding.recyclerView.layoutManager = LinearLayoutManager(this)
+        mBinding.recyclerView.adapter = mViewModel.adapter
     }
 
     override fun onClick() {
@@ -192,8 +219,12 @@ class VideoPlayActivity : BaseActivity<ActivityVideoPlayBinding, VideoPlayViewMo
     /**
      * 播放视频
      */
-    private fun startPlay(data:VideoPlay) {
-        mConverView.loadImage(this@VideoPlayActivity, data.coverpath)
+    private fun startPlay(data: Video) {
+        mConverView.loadImage(
+            this@VideoPlayActivity,
+            data.coverpath,
+            placeholder = R.color.md_black_1000
+        )
         mTitleView.text = data.title
         mBinding.videoView.setUrl(data.videopath)
         mBinding.videoView.start()
@@ -203,7 +234,7 @@ class VideoPlayActivity : BaseActivity<ActivityVideoPlayBinding, VideoPlayViewMo
     /**
      * 加载影片信息
      */
-    private fun initMovieInfoView(data:VideoPlay) {
+    private fun initMovieInfoView(data: Video) {
 //        mBinding.nameTv.isSelected = true
         mBinding.nameTv.text = data.title
         mBinding.synopsisTv.text = data.introduction
@@ -214,13 +245,13 @@ class VideoPlayActivity : BaseActivity<ActivityVideoPlayBinding, VideoPlayViewMo
         initLabelView(data.labls)
         Handler(Looper.getMainLooper()).postDelayed({
             mBinding.nameTv.isSelected = true
-        },1000)
+        }, 1000)
     }
 
     /**
      * 加载标签
      */
-    private fun initLabelView(list:List<Label>?) {
+    private fun initLabelView(list: List<Label>?) {
         mBinding.flexboxLayout.removeAllViews()
         list?.forEach {
             val inflate = LayoutVideoLabelBinding.inflate(layoutInflater, null, false)

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/label_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/bg_label_search"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp">
+
+        <TextView
+            android:id="@+id/label_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:textColor="@color/md_grey_100"
+            android:textSize="14sp"
+            tools:text="口交" />
+    </LinearLayout>
+
+<!--    <com.yh.video.pirate.widget.statebutton.StateButton-->
+<!--        android:id="@+id/label_tv"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="36dp"-->
+<!--        android:layout_marginEnd="15dp"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        android:lines="1"-->
+<!--        android:paddingStart="15dp"-->
+<!--        android:paddingEnd="15dp"-->
+<!--        android:text="重试"-->
+<!--        android:textColor="@color/md_grey_100"-->
+<!--        android:textSize="13sp"-->
+<!--        android:textStyle="normal"-->
+<!--        android:gravity="center"-->
+<!--        app:animationDuration="200"-->
+
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.5"-->
+
+<!--        app:normalBackgroundColor="#039BE5"-->
+<!--        app:normalTextColor="@color/md_grey_100"-->
+<!--        app:pressedBackgroundColor="#B3039BE5"-->
+
+<!--        app:pressedTextColor="@color/md_grey_100"-->
+<!--        app:round="true"-->
+
+<!--        app:unableBackgroundColor="#CCCCCC"-->
+
+<!--        app:unableTextColor="@color/md_grey_100" />-->
+
+
+</LinearLayout>

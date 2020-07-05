@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_black_1000"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:background="@color/md_grey_900" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/md_grey_900"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/bg_material_20dp"
+            android:src="@drawable/btn_back_white" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_search"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
+            app:layout_constraintStart_toEndOf="@+id/btn_resouce"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/search_et"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="start|center_vertical"
+                android:hint="搜索书名或作者"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
+                android:textColor="@color/md_grey_800"
+                android:textColorHint="#ff999999"
+                android:textCursorDrawable="@drawable/bg_edittext"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/btn_clear"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:padding="6dp"
+                android:layout_marginEnd="7dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/btn_search_close"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/bg_material_20dp"
+            android:text="搜索"
+            android:textColor="@color/primary_text"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/md_grey_800" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@color/md_grey_900"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/history_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/md_grey_900"
+                android:orientation="vertical"
+                android:paddingTop="15dp"
+                android:paddingBottom="30dp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="搜索历史"
+                        android:textColor="@color/primary_text"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/btn_history_clean"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="13dp"
+                        android:background="@drawable/bg_material_40dp"
+                        android:gravity="center"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="清空记录"
+                        android:textColor="@color/primary_text"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/local_fl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="15dp"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start"
+                    app:showDivider="beginning|middle|end" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:text="热门搜索"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/hot_fl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="15dp"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start"
+                    app:showDivider="beginning|middle|end" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:text="推荐"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/recommend_fl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="15dp"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start"
+                    app:showDivider="beginning|middle|end" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/md_grey_900"
+            android:visibility="gone" />
+
+    </FrameLayout>
+</LinearLayout>

@@ -12,7 +12,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentMainBinding
+import com.yh.video.pirate.ui.history.activity.HistoryActivity
 import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
+import com.yh.video.pirate.ui.search.activity.SearchActivity
 import com.yh.video.pirate.utils.BarConfig
 import com.yh.video.pirate.utils.dp
 import kotlinx.coroutines.flow.collect
@@ -52,6 +54,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
         layoutParams.height = statusBarHeight
         mBinding.statusBar.layoutParams = layoutParams
     }
+
 
     override fun initData() {
         super.initData()
@@ -125,7 +128,12 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
 
     override fun onClick() {
         super.onClick()
+        //重试
         mBinding.stateLayout.setRetryListener { mViewModel.adapter.retry() }
+        //历史记录
+        mBinding.btnHistory.setOnClickListener { HistoryActivity.start(requireContext()) }
+        //搜索
+        mBinding.searchCl.setOnClickListener { SearchActivity.start(requireContext()) }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

@@ -4,6 +4,7 @@ import android.content.Intent
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentMeBinding
+import com.yh.video.pirate.ui.history.activity.HistoryActivity
 import com.yh.video.pirate.ui.main.viewmodel.MeViewModel
 import com.yh.video.pirate.ui.payment.activity.PaymentActivity
 import com.yh.video.pirate.ui.settings.activity.ShareQrcodeActivity
@@ -30,7 +31,7 @@ class MeFragment:BaseFragment<FragmentMeBinding, MeViewModel>() {
         //隐私协议
         mBinding.agreementCl.setOnClickListener {  }
         //历史记录
-        mBinding.historyCl.setOnClickListener {  }
+        mBinding.historyCl.setOnClickListener { HistoryActivity.start(requireContext()) }
         mBinding.shareCl.setOnClickListener { shareTo("分享","91视频下载地址:   \nhttp://xz.cmspapp36.xyz/\n" +
                 "（如果链接打不开请复制到浏览器中打开）\n") }
         //版本

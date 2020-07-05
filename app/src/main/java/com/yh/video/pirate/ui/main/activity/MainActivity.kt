@@ -1,12 +1,9 @@
 package com.yh.video.pirate.ui.main.activity
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2.ORIENTATION_VERTICAL
 import com.gyf.immersionbar.ImmersionBar
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseActivity
@@ -14,10 +11,8 @@ import com.yh.video.pirate.databinding.ActivityMainBinding
 import com.yh.video.pirate.databinding.LayoutMainTabBinding
 import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
 import com.yh.video.pirate.utils.bindViewPager
-import com.yh.video.pirate.utils.enforceSingleScrollDirection
 import com.yh.video.pirate.utils.evaluate
 import com.yh.video.pirate.utils.getColorCompat
-import kotlinx.android.synthetic.main.fragment_main.view.*
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
@@ -62,6 +57,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         initMagicIndicator1()
         initViewPager()
     }
+
 
 
     /**
@@ -164,7 +160,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         titleImg.drawable.setTint(finalColor)
                     }
                 }
-                commonPagerTitleView.setOnClickListener { mBinding.viewPager.currentItem = index }
+                commonPagerTitleView.setOnClickListener { mBinding.viewPager.setCurrentItem(index, false) }
                 return commonPagerTitleView
             }
 

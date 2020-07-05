@@ -3,15 +3,15 @@ package com.yh.video.pirate.ui.main.viewholder
 import android.view.ViewGroup
 import com.yh.video.pirate.R
 import com.yh.video.pirate.databinding.ItemDiscoverBinding
-import com.yh.video.pirate.repository.network.result.Video
+import com.yh.video.pirate.repository.network.result.Discover
 import com.yh.video.pirate.ui.video.activity.VideoPlayActivity
 import com.yh.video.pirate.utils.loadImage
 import com.yuhang.novel.pirate.base.BaseViewHolder
 import java.math.BigDecimal
 
 class ItemDiscoverVH(parent: ViewGroup) :
-    BaseViewHolder<Video, ItemDiscoverBinding>(parent, R.layout.item_discover) {
-    override fun bindData(data: Video, position: Int) {
+    BaseViewHolder<Discover, ItemDiscoverBinding>(parent, R.layout.item_discover) {
+    override fun bindData(data: Discover, position: Int) {
         val amount = data.pageviews ?: 12000
         mBinding.coverIv.loadImage(mContext, data.coverpath)
         mBinding.introTv.text = data.title

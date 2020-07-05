@@ -36,6 +36,35 @@ class NetworkSoure<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->Cao
     }
 }
 
+class NetworkSourePage<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->CaomeiResponse<CaomeiPaged<T>>
+                          ):PagingSource<Int, T>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
+        val page = params.key ?: 1
+        // 每一页的数据长度
+        val pageSize = params.loadSize
+        return try {
+            val invoke = network.invoke(page, pageSize)
+            if (invoke.code == HttpConstant.HTTP_SUCCESS) {
+                //过滤数据源
+//                delay(5000L)
+                return LoadResult.Page(
+                    data = invoke.rescont?.data?: arrayListOf(),
+                    prevKey = if (page == 1) null else page - 1,
+                    nextKey = if (invoke.rescont?.total!! - invoke.rescont.to > 0) page + 1 else null
+                )
+            } else {
+                LoadResult.Error(CaomeiException(HttpError.USER_EXIST))
+            }
+
+
+        } catch (e: Exception) {
+            LoadResult.Error(e)
+        }
+    }
+}
+
+
+
 /**
  * 不分页
  */
@@ -76,6 +105,31 @@ class NetworkSoureSingle<T:Any>(val network:  suspend ()->CaomeiResponse<List<T>
 //                delay(3000L)
                 return LoadResult.Page(
                     data = invoke.rescont?: arrayListOf(),
+                    prevKey = if (page == 1) null else page - 1,
+                    nextKey = null
+                )
+            } else {
+                LoadResult.Error(CaomeiException(HttpError.USER_EXIST))
+            }
+        } catch (e: Exception) {
+            LoadResult.Error(e)
+        }
+    }
+}
+
+/**
+ * 不分页
+ */
+class NetworkSoureSingleByCaomeiPaged<T:Any>(val network:  suspend ()->CaomeiResponse<CaomeiPaged<T>>):PagingSource<Int, T>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
+        val page = params.key ?: 1
+        return try {
+            //从网络获取数据
+            val invoke = network.invoke()
+            if (invoke.code == HttpConstant.HTTP_SUCCESS) {
+//                delay(3000L)
+                return LoadResult.Page(
+                    data = invoke.rescont?.data?: arrayListOf(),
                     prevKey = if (page == 1) null else page - 1,
                     nextKey = null
                 )

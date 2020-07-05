@@ -84,7 +84,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 val spanSize = layoutParams.spanSize //占用的跨度数
                 val spanIndex = layoutParams.spanIndex //最终跨度位置。应介于0（含）和 spanCount之间
 
-                outRect.top = 10.dp
+                outRect.top = 15.dp
                 //如果不是占满一行的
                 if (spanSize != gridLayoutManager.spanCount) {
                     if (spanIndex == 0) {
@@ -93,7 +93,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                     if (spanIndex == gridLayoutManager.spanCount) {
                         outRect.right = 15.dp
                     } else {
-                        outRect.right = 8.dp
+                        outRect.right = 15.dp
                     }
 
 

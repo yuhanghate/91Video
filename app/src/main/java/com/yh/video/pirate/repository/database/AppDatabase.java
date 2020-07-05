@@ -7,6 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.yh.video.pirate.repository.database.dao.SearchHistoryDao;
+import com.yh.video.pirate.repository.database.entity.SearchHistoryEntity;
 import com.yh.video.pirate.repository.database.entity.VideoSortEntity;
 
 
@@ -17,8 +19,8 @@ import com.yh.video.pirate.repository.database.entity.VideoSortEntity;
  *
  * @author yuhang
  */
-@Database(entities = {VideoSortEntity.class},
-        version = 23, exportSchema = false)
+@Database(entities = {VideoSortEntity.class, SearchHistoryEntity.class},
+        version = 1, exportSchema = false)
 @TypeConverters({ConvertersFactory.class})
 public abstract class AppDatabase
         extends RoomDatabase {
@@ -33,14 +35,15 @@ public abstract class AppDatabase
         if (INSTANCE == null) {
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)
-                            .addMigrations(
-                            )
                             .fallbackToDestructiveMigration()
                             .build();
         }
         return INSTANCE;
     }
 
-
-
+    /**
+     * 搜索关键字历史
+     * @return
+     */
+    public abstract SearchHistoryDao getSearchHistoryDao();
 }

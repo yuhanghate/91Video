@@ -26,13 +26,13 @@ interface NetApi {
      * 分类对应的视频列表
      */
     @GET("api/videoexplore")
-    suspend fun getVideoList(@QueryMap parsms: Map<String, Int>): CaomeiResponse<CaomeiPaged<Video>>
+    suspend fun getVideoList(@QueryMap parsms: Map<String, Int>): CaomeiResponse<CaomeiPaged<Discover>>
 
     /**
      * 猜你喜欢
      */
     @GET("api/videomaylike")
-    suspend fun getRecommendedLike(@QueryMap parsms: Map<String, Any>): @JvmSuppressWildcards Flow<CaomeiResponse<CaomeiPaged<RecommendedLike>>>
+    suspend fun getRecommendedLike(@QueryMap parsms: Map<String, Int>): @JvmSuppressWildcards CaomeiResponse<CaomeiPaged<RecommendedLike>>
 
     /**
      * 草莓主页列表
@@ -45,7 +45,24 @@ interface NetApi {
      */
     @GET("api/videoplay/{id}")
     fun getVideoPlay(
-        @Path("id") id: Long,
-        @QueryMap parsms: Map<String, String>
-    ): Flow<CaomeiResponse<VideoPlay>>
+        @Path("id") id: Long, @QueryMap parsms: Map<String, String>
+    ): Flow<CaomeiResponse<Video>>
+
+    /**
+     * 历史记录
+     */
+    @GET("api/userseen")
+    suspend fun getHistoryList(@QueryMap parsms: Map<String, String>):CaomeiResponse<CaomeiPaged<Video>>
+
+    /**
+     * 获取搜索关键字
+     */
+    @GET("api/videoSearchHot")
+     fun getSearchKeyword(@QueryMap parsms: Map<String, String>):Flow<CaomeiResponse<List<SearchKeywords>>>
+
+    /**
+     * 搜索
+     */
+    @GET("api/videosort/0")
+    suspend fun getSearch(@QueryMap parsms: Map<String, String>):CaomeiResponse<CaomeiPaged<Search>>
 }

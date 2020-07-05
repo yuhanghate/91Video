@@ -1,6 +1,5 @@
 package com.yh.video.pirate.video.controller.component
 
-import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Build
@@ -17,7 +16,6 @@ import com.dueeeke.videoplayer.controller.ControlWrapper
 import com.dueeeke.videoplayer.controller.IControlComponent
 import com.dueeeke.videoplayer.player.VideoView
 import com.dueeeke.videoplayer.util.PlayerUtils
-import com.gyf.immersionbar.ImmersionBar
 import com.yh.video.pirate.R
 import com.yh.video.pirate.databinding.LayoutVideoVodControlBinding
 
@@ -74,11 +72,6 @@ class VodControlView : FrameLayout, IControlComponent, View.OnClickListener,
             if (mIsShowBottomProgress) {
                 mBinding.bottomProgress.visibility = View.GONE
             }
-//            ImmersionBar.showStatusBar((context as Activity).window)
-//            mBinding.topContainer.visibility = View.VISIBLE
-//            val animation = AlphaAnimation(0f, 1f)
-//            animation.duration = 200
-//            mBinding.topContainer.startAnimation(animation)
         } else {
             mBinding.bottomContainer.visibility = View.GONE
             if (anim != null) {
@@ -90,12 +83,6 @@ class VodControlView : FrameLayout, IControlComponent, View.OnClickListener,
                 animation.duration = 300
                 mBinding.bottomProgress.startAnimation(animation)
             }
-            ImmersionBar.hideStatusBar((context as Activity).window)
-
-//            val animation = AlphaAnimation(1f, 0f)
-//            animation.duration = 200
-//            mBinding.topContainer.startAnimation(animation)
-//            mBinding.topContainer.visibility = View.GONE
         }
     }
 
