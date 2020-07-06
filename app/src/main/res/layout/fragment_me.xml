@@ -310,13 +310,13 @@
                 android:background="@color/md_grey_800" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/agreement_cl"
+                android:id="@+id/fqa_cl"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/bg_material_item">
 
                 <ImageView
-                    android:id="@+id/agreement_iv"
+                    android:id="@+id/fqa_iv"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="15dp"
@@ -329,12 +329,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="免责声明"
+                    android:text="常见问题"
                     android:textColor="@color/primary_text"
                     android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/agreement_iv"
-                    app:layout_constraintStart_toEndOf="@+id/agreement_iv"
-                    app:layout_constraintTop_toTopOf="@+id/agreement_iv" />
+                    app:layout_constraintBottom_toBottomOf="@+id/fqa_iv"
+                    app:layout_constraintStart_toEndOf="@+id/fqa_iv"
+                    app:layout_constraintTop_toTopOf="@+id/fqa_iv" />
 
                 <ImageView
                     android:layout_width="15dp"

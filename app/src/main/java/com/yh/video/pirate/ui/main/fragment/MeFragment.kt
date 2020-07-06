@@ -7,6 +7,7 @@ import com.yh.video.pirate.databinding.FragmentMeBinding
 import com.yh.video.pirate.ui.history.activity.HistoryActivity
 import com.yh.video.pirate.ui.main.viewmodel.MeViewModel
 import com.yh.video.pirate.ui.payment.activity.PaymentActivity
+import com.yh.video.pirate.ui.settings.activity.FAQActivity
 import com.yh.video.pirate.ui.settings.activity.ShareQrcodeActivity
 
 
@@ -28,8 +29,8 @@ class MeFragment:BaseFragment<FragmentMeBinding, MeViewModel>() {
 
     override fun onClick() {
         super.onClick()
-        //隐私协议
-        mBinding.agreementCl.setOnClickListener {  }
+        //常见问题
+        mBinding.fqaCl.setOnClickListener { FAQActivity.start(requireContext()) }
         //历史记录
         mBinding.historyCl.setOnClickListener { HistoryActivity.start(requireContext()) }
         mBinding.shareCl.setOnClickListener { shareTo("分享","91视频下载地址:   \nhttp://xz.cmspapp36.xyz/\n" +
