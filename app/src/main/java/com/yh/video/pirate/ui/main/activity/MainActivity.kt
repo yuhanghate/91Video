@@ -73,15 +73,6 @@ open class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 return mViewModel.fragments[position]
             }
         }
-
-//        //增加ViewPager2滑动阻力,防止左右滑和上下滑动误触
-//        val recyclerViewField = mBinding.viewPager::class.java.getDeclaredField("mRecyclerView")
-//        recyclerViewField.isAccessible = true
-//        val recyclerView = recyclerViewField.get(mBinding.viewPager) as RecyclerView
-//
-//        val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
-//        touchSlopField.isAccessible = true
-//        touchSlopField.set(recyclerView, 96)
     }
 
     private fun initMagicIndicator1() {

@@ -65,4 +65,11 @@ interface NetApi {
      */
     @GET("api/videosort/0")
     suspend fun getSearch(@QueryMap parsms: Map<String, String>):CaomeiResponse<CaomeiPaged<Search>>
+
+
+    /**
+     * 分类列表
+     */
+    @GET("api/videosort/{id}}")
+    suspend fun getCategoryList(@Path("id") id:Int, @QueryMap parsms: Map<String, String>):CaomeiResponse<CaomeiPaged<CategoryList>>
 }

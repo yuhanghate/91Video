@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
  * 搜索
  */
 class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
-    TextView.OnEditorActionListener , OnClickItemListener {
+    TextView.OnEditorActionListener, OnClickItemListener {
     private var LONG_SEARCH_SUGGES = System.currentTimeMillis()
 
     companion object {
@@ -82,7 +82,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
         mBinding.searchEt.doAfterTextChanged { s ->
             if (TextUtils.isEmpty(s?.toString())) {
                 mBinding.btnClear.visibility = View.GONE
-                mBinding.recyclerView.visibility = View.GONE
+                mBinding.stateLayout.visibility = View.GONE
                 return@doAfterTextChanged
             }
             mBinding.btnClear.visibility = View.VISIBLE
@@ -124,12 +124,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
     override fun initRecyclerView() {
         super.initRecyclerView()
         val gridLayoutManager = GridLayoutManager(this, 2)
-        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                val obj = mViewModel.adapter.getObj(position)
-                return if (obj.id != null) 1 else 2
-            }
-        }
         mBinding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
@@ -139,7 +133,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
                 val spanSize = layoutParams.spanSize //占用的跨度数
                 val spanIndex = layoutParams.spanIndex //最终跨度位置。应介于0（含）和 spanCount之间
 
-                outRect.top = 15.dp
+                outRect.top = 20.dp
                 //如果不是占满一行的
                 //如果不是占满一行的
                 if (spanSize != gridLayoutManager.spanCount) {
@@ -151,19 +145,14 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
             }
         })
 
-//        mViewModel.adapter.addLoadStateListener { listener ->
-//            when (listener.refresh) {
-//                is LoadState.Error -> { // 加载失败
-//                    mBinding.recyclerView.isVisible = false
-//                }
-//                is LoadState.Loading -> { // 正在加载
-//                }
-//                is LoadState.NotLoading -> { // 当前未加载中
-//                    mBinding.recyclerView.isVisible = true
-//                }
-//            }
-//
-//        }
+        mBinding.stateLayout.showContent()
+        mViewModel.adapter.addLoadStateListener { listener ->
+            if (listener.refresh == LoadState.Loading) {
+                mBinding.stateLayout.showContent()
+            } else {
+                mBinding.stateLayout.showContent()
+            }
+        }
         mViewModel.adapter.setListener(this)
         mBinding.recyclerView.layoutManager = gridLayoutManager
         mBinding.recyclerView.adapter = mViewModel.adapter
@@ -180,7 +169,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
                 val inflate = LayoutSearchLabelBinding.inflate(layoutInflater, null, false)
                 inflate.labelTv.text = label
                 mBinding.hotFl.addView(inflate.root)
-                inflate.labelLl.setOnClickListener { mBinding.searchEt.setText(label, null) }
+                inflate.labelLl.setOnClickListener {
+                    mViewModel.insertSearchKeywords(label)
+                    mBinding.searchEt.setText(label, null)
+                    mBinding.searchEt.clearFocus()
+                }
             }
         }
         if (list.size == 2) {
@@ -190,7 +183,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
                 val inflate = LayoutSearchLabelBinding.inflate(layoutInflater, null, false)
                 inflate.labelTv.text = label
                 mBinding.recommendFl.addView(inflate.root)
-                inflate.labelLl.setOnClickListener { mBinding.searchEt.setText(label, null) }
+                inflate.labelLl.setOnClickListener {
+                    mViewModel.insertSearchKeywords(label)
+                    mBinding.searchEt.setText(label, null)
+                    mBinding.searchEt.clearFocus()
+                }
             }
         }
     }
@@ -204,7 +201,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
             val inflate = LayoutSearchLabelBinding.inflate(layoutInflater, null, false)
             inflate.labelTv.text = entity.keyword
             mBinding.localFl.addView(inflate.root)
-            inflate.labelLl.setOnClickListener { mBinding.searchEt.setText(entity.keyword, null) }
+            inflate.labelLl.setOnClickListener {
+                mViewModel.insertSearchKeywords(entity.keyword)
+                mBinding.searchEt.setText(entity.keyword, null)
+                mBinding.searchEt.clearFocus()
+            }
         }
     }
 
@@ -234,10 +235,10 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
      */
     private fun netServiceSearchSuggest(keyword: String?) {
         if (keyword.isNullOrEmpty()) {
-            mBinding.recyclerView.isVisible = false
+            mBinding.stateLayout.isVisible = false
             return
         }
-        mBinding.recyclerView.isVisible = true
+        mBinding.stateLayout.isVisible = true
         //搜索视频列表
         lifecycleScope.launch {
             mViewModel.getSearch(keyword)
@@ -262,8 +263,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
 
     override fun onBackPressedSupport() {
         //隐藏搜索结果页
-        if (mBinding.recyclerView.isVisible) {
-            mBinding.recyclerView.isVisible = false
+        if (mBinding.stateLayout.isVisible) {
+            mBinding.stateLayout.isVisible = false
             return
         }
 

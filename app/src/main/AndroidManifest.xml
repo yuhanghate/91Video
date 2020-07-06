@@ -67,6 +67,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.search.activity.SearchActivity" />
+        <activity android:name=".ui.category.activity.CategoryListActivity" />
     </application>
 
 </manifest>

@@ -17,12 +17,6 @@ object DataRepository {
 
     val mDatabase by lazy { AppDatabase.getInstance(application) }
 
-    /**
-     * 分类列表
-     */
-    suspend fun getCategoryList(): CaomeiResponse<List<Category>> {
-        return mNetApi.getVideoSort()
-    }
 
     /**
      * 分类对应的视频列表
@@ -110,9 +104,17 @@ object DataRepository {
      * 关键词保存本地
      */
     suspend fun insertSearchKeywords(keyword: String) {
-        mDatabase.searchHistoryDao.insert(SearchHistoryEntity().apply {
-            this.keyword = keyword
-        })
+        if (keyword.isEmpty()) return
+
+        val entity = mDatabase.searchHistoryDao.query(keyword)
+        if (entity == null) {
+            mDatabase.searchHistoryDao.insert(SearchHistoryEntity().apply {
+                this.keyword = keyword
+            })
+        } else {
+            mDatabase.searchHistoryDao.update(entity.update())
+        }
+
     }
 
     /**
@@ -120,5 +122,23 @@ object DataRepository {
      */
     suspend fun cleanSearchkeywords() {
         mDatabase.searchHistoryDao.clear()
+    }
+
+    /**
+     * 分类列表
+     */
+    suspend fun getCategoryList(
+        id: Int,
+        type: String,
+        pageNum: Int
+    ): CaomeiResponse<CaomeiPaged<CategoryList>> {
+        val map = mapOf<String, String>(
+            "orderby" to type,
+            "page" to pageNum.toString(),
+            "uuid" to "31649453ca3bb198",
+            "device" to "0"
+        )
+        return mNetApi.getCategoryList(id, map)
+
     }
 }

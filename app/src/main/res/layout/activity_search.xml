@@ -136,7 +136,7 @@
                         android:paddingEnd="8dp"
                         android:text="清空记录"
                         android:textColor="@color/primary_text"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
 
 
@@ -204,12 +204,21 @@
         </androidx.core.widget.NestedScrollView>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <com.yh.video.pirate.widget.StateLayout
+            android:id="@+id/stateLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:visibility="gone"
             android:background="@color/md_grey_900"
-            android:visibility="gone" />
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:paddingBottom="30dp"
+                android:clipToPadding="false"
+                android:layout_height="match_parent"
+                 />
+        </com.yh.video.pirate.widget.StateLayout>
+
 
     </FrameLayout>
 </LinearLayout>

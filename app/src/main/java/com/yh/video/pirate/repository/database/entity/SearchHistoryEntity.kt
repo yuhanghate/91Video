@@ -21,5 +21,10 @@ class SearchHistoryEntity: Identifiable<Int>{
      * 搜索的更新时间
      */
     var updateTime: Long = System.currentTimeMillis() / 1000
+
+    fun update():SearchHistoryEntity {
+        updateTime = System.currentTimeMillis() / 1000
+        return this
+    }
 }
 
