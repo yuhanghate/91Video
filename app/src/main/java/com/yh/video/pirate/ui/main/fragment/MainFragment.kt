@@ -3,7 +3,6 @@ package com.yh.video.pirate.ui.main.fragment
 import android.graphics.Rect
 import android.view.View
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yh.video.pirate.R

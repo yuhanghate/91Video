@@ -48,6 +48,7 @@ class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>()
     override fun onClick() {
         super.onClick()
         mBinding.btnBack.setOnClickListener { onBackPressedSupport() }
+        mBinding.stateLayout.setRetryListener { mViewModel.adapter.retry() }
     }
 
     override fun initData() {

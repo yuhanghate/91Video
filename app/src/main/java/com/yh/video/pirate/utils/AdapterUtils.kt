@@ -40,7 +40,10 @@ fun <T : BaseAdapter<*>> T.addDefaultStateListener(
                     stateLayout.showLoading()
                     fragment.isCreateLoading = true
                 } else {
-                    refreshLayout.isRefreshing = true
+                    if (!stateLayout.isLoading) {
+                        refreshLayout.isRefreshing = true
+                    }
+
                 }
             }
             is LoadState.NotLoading -> { // 当前未加载中

@@ -2,13 +2,15 @@ package com.yh.video.pirate.ui.main.fragment
 
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentDiscoverBinding
 import com.yh.video.pirate.ui.main.viewmodel.DiscoverViewModel
-import com.yh.video.pirate.utils.*
+import com.yh.video.pirate.utils.BarConfig
+import com.yh.video.pirate.utils.addDefaultStateListener
+import com.yh.video.pirate.utils.dp
+import com.yh.video.pirate.utils.loadFooterAdapter
 import com.yh.video.pirate.widget.DoubleClickListener
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -88,5 +90,7 @@ class DiscoverFragment : BaseFragment<FragmentDiscoverBinding, DiscoverViewModel
         mBinding.titleTv.setOnClickListener(DoubleClickListener(DoubleClickListener.DoubleClickCallBack {
             onTopRecyclerView(mBinding.refreshLayout, mBinding.recyclerView, 10)
         }))
+
+        mBinding.stateLayout.setRetryListener { mViewModel.adapter.retry() }
     }
 }
