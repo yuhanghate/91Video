@@ -32,6 +32,7 @@ import com.yh.video.pirate.ui.search.viewmodel.SearchViewModel
 import com.yh.video.pirate.ui.video.activity.VideoPlayActivity
 import com.yh.video.pirate.utils.clickWithTrigger
 import com.yh.video.pirate.utils.dp
+import com.yh.video.pirate.utils.loadFooterAdapter
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -124,6 +125,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
     override fun initRecyclerView() {
         super.initRecyclerView()
         val gridLayoutManager = GridLayoutManager(this, 2)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (mViewModel.adapter.itemCount == position)  2 else 1
+            }
+        }
         mBinding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
@@ -155,7 +161,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
         }
         mViewModel.adapter.setListener(this)
         mBinding.recyclerView.layoutManager = gridLayoutManager
-        mBinding.recyclerView.adapter = mViewModel.adapter
+        mBinding.recyclerView.adapter = mViewModel.adapter.loadFooterAdapter()
     }
 
     /**

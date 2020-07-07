@@ -5,13 +5,12 @@ import com.yh.video.pirate.base.BaseViewModel
 import com.yh.video.pirate.repository.network.result.CategoryList
 import com.yh.video.pirate.ui.category.adapter.CategoryListAdapter
 import com.yh.video.pirate.ui.category.fragment.CategoryListFragment
-import com.yh.video.pirate.utils.loadStateAdapter
 import com.yh.video.pirate.utils.pager
 import kotlinx.coroutines.flow.Flow
 
 class CategoryListViewModel : BaseViewModel() {
 
-    val adapter by lazy { CategoryListAdapter().loadStateAdapter() }
+    val adapter by lazy { CategoryListAdapter() }
 
     private val mFragmens:ArrayList<CategoryListFragment> = arrayListOf()
 

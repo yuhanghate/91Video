@@ -6,9 +6,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.constant.RefreshState
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentMainBinding
@@ -20,10 +17,11 @@ import com.yh.video.pirate.utils.dp
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefreshListener {
+class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
     //第一次加载
     var isCreate = false
+
     companion object {
         fun newInstance(): MainFragment {
             return MainFragment()
@@ -40,8 +38,8 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
 
     override fun initView() {
         super.initView()
-        initRecyclerView()
         initRefreshLayout()
+        initRecyclerView()
         initStatusBar()
     }
 
@@ -68,8 +66,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
 
     override fun initRefreshLayout() {
         super.initRefreshLayout()
-        mBinding.refreshLayout.setOnRefreshListener(this)
-        mBinding.refreshLayout.setEnableLoadMore(false)
+        mBinding.refreshLayout.setOnRefreshListener { mViewModel.adapter.refresh() }
     }
 
     override fun initRecyclerView() {
@@ -105,7 +102,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
         mViewModel.adapter.addLoadStateListener { listener ->
             when (listener.refresh) {
                 is LoadState.Error -> { // 加载失败
-                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.refreshLayout.isRefreshing = false
                     mBinding.stateLayout.showError()
                 }
                 is LoadState.Loading -> { // 正在加载
@@ -113,17 +110,30 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
                         mBinding.stateLayout.showLoading()
                         isCreate = true
                     } else {
-                        mBinding.refreshLayout.autoRefreshAnimationOnly()
+                        mBinding.refreshLayout.isRefreshing = true
                     }
+
+//                    mBinding.refreshLayout.isRefreshing = true
                 }
                 is LoadState.NotLoading -> { // 当前未加载中
-                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.refreshLayout.isRefreshing = false
                     mBinding.stateLayout.showContent()
                 }
             }
 
+            ///adapter.addLoadStateListener {
+            //    // show a retry button outside the list when refresh hits an error
+            //    retryButton.isVisible = it.refresh is LoadState.Error
+            //
+            //    // swipeRefreshLayout displays whether refresh is occurring
+            //    swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
+            //
+            //    // show an empty state over the list when loading initially, before items are loaded
+            //    emptyState.isVisible = it.refresh is LoadState.Loading && adapter.itemCount == 0
+            //}
+
         }
-        mBinding.recyclerView.adapter = mViewModel.adapter
+        mBinding.recyclerView.adapter = mViewModel.adapterFooter
     }
 
     override fun onClick() {
@@ -136,7 +146,4 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(), OnRefre
         mBinding.searchCl.setOnClickListener { SearchActivity.start(requireContext()) }
     }
 
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        mViewModel.adapter.refresh()
-    }
 }

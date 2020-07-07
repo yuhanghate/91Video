@@ -2,24 +2,20 @@ package com.yh.video.pirate.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.pm.ActivityInfo
 import android.content.res.TypedArray
 import android.os.Build
 import android.os.Bundle
-import android.util.TimingLogger
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import com.idescout.sql.SqlScoutServer
 import com.orhanobut.logger.Logger
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.yh.video.pirate.R
 import com.yh.video.pirate.repository.preferences.PreferenceUtil
 import com.yh.video.pirate.utils.ThemeHelper
@@ -34,8 +30,6 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivity() {
     lateinit var mBinding: D
     lateinit var mViewModel: VM
-
-    lateinit var mProgressbar: ProgressDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +89,8 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
         var isTranslucentOrFloating = false
         try {
             val styleableRes =
-                Class.forName("com.android.internal.R\$styleable").getField("Window").get(null) as IntArray
+                Class.forName("com.android.internal.R\$styleable").getField("Window")
+                    .get(null) as IntArray
             val ta = obtainStyledAttributes(styleableRes)
             val m = ActivityInfo::class.java.getMethod(
                 "isTranslucentOrFloating",
@@ -123,7 +118,7 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
      * 初始化ViewModel
      */
     private fun initViewModel() {
-        mViewModel = ViewModelProviders.of(this).get(getViewModelClass())
+        mViewModel = ViewModelProvider(this)[getViewModelClass()]
         mViewModel.mActivity = this
     }
 
@@ -177,7 +172,7 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
         return R.color.md_grey_300
     }
 
-    open fun onNavigationBarColor():Int{
+    open fun onNavigationBarColor(): Int {
         return R.color.md_black_1000
     }
 
@@ -211,42 +206,6 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
 
 
     /**
-     * 打开进度等待条
-     */
-    fun showProgressbar(message: String = "加载中", cancel: Boolean = false) {
-        if (!::mProgressbar.isInitialized) {
-            mProgressbar = ProgressDialog(this)
-        }
-        if (!mProgressbar.isShowing) {
-            mProgressbar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressbar.setMessage(message)
-            mProgressbar.setCancelable(cancel)
-            mProgressbar.show()
-        }
-    }
-
-    /**
-     * 关闭等待条
-     */
-    fun closeProgressbar() {
-        if (!::mProgressbar.isInitialized) {
-            mProgressbar = ProgressDialog(this)
-        }
-
-        if (mProgressbar.isShowing) {
-            mProgressbar.dismiss()
-        }
-    }
-
-    /**
-     * 是否显示进度条
-     */
-    fun hasProgressbar(): Boolean {
-        return mProgressbar.isShowing
-    }
-
-
-    /**
      * 替换Fragment
      */
     fun replaceFragment(id: Int, fragment: Fragment) {
@@ -264,7 +223,7 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
     ) {
         val beginTransaction = supportFragmentManager.beginTransaction()
         fragmentList.forEach { beginTransaction.add(id, it) }
-        (0 until fragmentList.size).forEachIndexed { index, i ->
+        (fragmentList.indices).forEachIndexed { index, i ->
             if (index == showIndex) {
                 beginTransaction.show(fragmentList[index])
             } else {
@@ -283,7 +242,7 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
         showIndex: Int
     ) {
         val beginTransaction = supportFragmentManager.beginTransaction()
-        (0 until fragmentList.size).forEachIndexed { index, i ->
+        (fragmentList.indices).forEachIndexed { index, i ->
             if (index == showIndex) {
                 beginTransaction.show(fragmentList[index])
             } else {
@@ -351,26 +310,6 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
 
     }
 
-    /**
-     * 双击置顶 + 刷新
-     */
-    fun onTopRecyclerView(
-        refreshLayout: SmartRefreshLayout,
-        recyclerView: RecyclerView,
-        position: Int
-    ) {
-
-        val manager = recyclerView.layoutManager as? LinearLayoutManager
-        val firstItem = manager?.findFirstVisibleItemPosition()
-        //刷新
-        if (firstItem == 0) {
-            refreshLayout.autoRefresh()
-            return
-        }
-
-        //置顶
-        onTopRecyclerView(recyclerView, position)
-    }
 
     /**
      * 双击置顶
@@ -385,5 +324,4 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
     /**************************** 子类调用 end **************************/
 
 
-    fun getLogger() = TimingLogger(this::class.java.simpleName, "")
 }

@@ -213,8 +213,6 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:paddingBottom="30dp"
-                android:clipToPadding="false"
                 android:layout_height="match_parent"
                  />
         </com.yh.video.pirate.widget.StateLayout>

@@ -1,6 +1,5 @@
 package com.yh.video.pirate.base
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
@@ -10,12 +9,12 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.yh.video.pirate.R
 import com.yh.video.pirate.utils.TopSmoothScroller
 import com.yh.video.pirate.utils.viewbinding.FragmentViewBinderUtils
@@ -31,7 +30,6 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : SupportFragme
 
     lateinit var mViewModel: VM
 
-    lateinit var mProgressbar: ProgressDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +43,7 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : SupportFragme
         super.onActivityCreated(savedInstanceState)
 
         if (!::mViewModel.isInitialized) {
-            mViewModel = ViewModelProviders.of(this).get(getViewModelClass())
+            mViewModel = ViewModelProvider(this)[getViewModelClass()]
             mViewModel.mFragment = this
             initView()
             initData()
@@ -179,7 +177,7 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : SupportFragme
         showIndex: Int
     ) {
         val beginTransaction = activity?.supportFragmentManager?.beginTransaction()
-        (0 until fragmentList.size).forEachIndexed { index, i ->
+        (fragmentList.indices).forEachIndexed { index, i ->
             if (index == showIndex) {
                 beginTransaction?.show(fragmentList[index])
             } else {
@@ -190,33 +188,6 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : SupportFragme
     }
 
 
-    /**
-     * 打开进度等待条
-     */
-    fun showProgressbar(message: String = "加载中") {
-        if (!::mProgressbar.isInitialized) {
-            mProgressbar = ProgressDialog(mActivity!!)
-        }
-        if (!mProgressbar.isShowing) {
-            mProgressbar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressbar.setMessage(message)
-            mProgressbar.setCancelable(false)
-            mProgressbar.show()
-        }
-    }
-
-    /**
-     * 关闭等待条
-     */
-    fun closeProgressbar() {
-        if (!::mProgressbar.isInitialized) {
-            mProgressbar = ProgressDialog(mActivity!!)
-        }
-
-        if (mProgressbar.isShowing) {
-            mProgressbar.dismiss()
-        }
-    }
 
     /**
      * 打开Popup框
@@ -227,7 +198,7 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : SupportFragme
         dismissListener: PopupMenu.OnDismissListener? = null
     ): PopupMenu {
         // 这里的view代表popupMenu需要依附的view
-        val popupMenu = PopupMenu(activity!!, view)
+        val popupMenu = PopupMenu(requireContext(), view)
         // 获取布局文件
         popupMenu.menuInflater.inflate(layout, popupMenu.menu)
         popupMenu.gravity = Gravity.END
@@ -297,11 +268,12 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : SupportFragme
 
     }
 
+
     /**
      * 双击置顶
      */
     fun onTopRecyclerView(
-        refreshLayout: SmartRefreshLayout,
+        refreshLayout: SwipeRefreshLayout,
         recyclerView: RecyclerView,
         position: Int
     ) {
@@ -310,7 +282,7 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : SupportFragme
         val firstItem = manager?.findFirstVisibleItemPosition()
         //刷新
         if (firstItem == 0) {
-            refreshLayout.autoRefresh()
+            refreshLayout.isRefreshing = true
             return
         }
 

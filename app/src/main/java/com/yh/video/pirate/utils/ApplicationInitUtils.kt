@@ -3,10 +3,7 @@ package com.yh.video.pirate.utils
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
-import com.scwang.smartrefresh.header.MaterialHeader
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.yh.video.pirate.BuildConfig
-import com.yh.video.pirate.R
 import com.yh.video.pirate.repository.preferences.PreferenceUtil
 import me.yokeyword.fragmentation.Fragmentation
 
@@ -48,7 +45,7 @@ fun initFragmentManger() {
 
 fun initRefreshLayout() {
     //设置全局的Header构建器
-    SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, _ ->
-        MaterialHeader(context).setColorSchemeResources(R.color.primary)//.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
-    }
+//    SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, _ ->
+//        MaterialHeader(context).setColorSchemeResources(R.color.primary)//.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
+//    }
 }

@@ -23,7 +23,7 @@ abstract class BaseAdapter<T : Any>(diffCallback: DiffUtil.ItemCallback<T>) :
     /**
      * 数据集
      */
-    private var mList: ArrayList<T> = arrayListOf()
+//    private var mList: ArrayList<T> = arrayListOf()
 
 //    /**
 //     * 获取列表

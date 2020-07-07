@@ -8,14 +8,13 @@ import com.yh.video.pirate.repository.network.result.Search
 import com.yh.video.pirate.repository.network.result.SearchKeywords
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 import com.yh.video.pirate.ui.search.adapter.SearchAdapter
-import com.yh.video.pirate.utils.loadStateAdapter
 import com.yh.video.pirate.utils.pager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class SearchViewModel:BaseViewModel() {
 
-    val adapter by lazy { SearchAdapter().loadStateAdapter() }
+    val adapter by lazy { SearchAdapter() }
 
     /**
      * 点击联想功能以后关键字

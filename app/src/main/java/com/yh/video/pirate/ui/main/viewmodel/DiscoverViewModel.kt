@@ -5,12 +5,11 @@ import com.yh.video.pirate.repository.network.result.Discover
 import com.yh.video.pirate.repository.network.result.base.CaomeiPaged
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 import com.yh.video.pirate.ui.main.adapter.DiscoverAdapter
-import com.yh.video.pirate.utils.loadStateAdapter
 import com.yh.video.pirate.utils.pager
 
 class DiscoverViewModel : BaseViewModel() {
 
-    val adapter by lazy { DiscoverAdapter().loadStateAdapter() }
+    val adapter by lazy { DiscoverAdapter() }
 
     /**
      * 获取列表数据

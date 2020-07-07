@@ -7,18 +7,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentCategoryListBinding
 import com.yh.video.pirate.ui.category.viewmodel.CategoryListViewModel
 import com.yh.video.pirate.utils.dp
+import com.yh.video.pirate.utils.loadFooterAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryListViewModel>(),
-    OnRefreshListener {
+class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryListViewModel>()
+     {
 
     /**
      * 第一次加载
@@ -54,8 +53,8 @@ class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryL
 
     override fun initView() {
         super.initView()
-        initRecyclerView()
         initRefreshLayout()
+        initRecyclerView()
     }
 
     override fun onClick() {
@@ -76,13 +75,18 @@ class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryL
 
     override fun initRefreshLayout() {
         super.initRefreshLayout()
-        mBinding.refreshLayout.setOnRefreshListener(this)
-        mBinding.refreshLayout.setEnableLoadMore(false)
+        mBinding.refreshLayout.setOnRefreshListener { mViewModel.adapter.refresh() }
     }
 
     override fun initRecyclerView() {
         super.initRecyclerView()
         val gridLayoutManager = GridLayoutManager(activity, 2)
+
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (mViewModel.adapter.itemCount == position)  2 else 1
+            }
+        }
         mBinding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
@@ -107,7 +111,7 @@ class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryL
         mViewModel.adapter.addLoadStateListener { listener ->
             when (listener.refresh) {
                 is LoadState.Error -> { // 加载失败
-                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.refreshLayout.isRefreshing = false
                     mBinding.stateLayout.showError()
                 }
                 is LoadState.Loading -> { // 正在加载
@@ -115,20 +119,16 @@ class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryL
                         mBinding.stateLayout.showLoading()
                         isCreate = true
                     } else {
-                        mBinding.refreshLayout.autoRefreshAnimationOnly()
+                        mBinding.refreshLayout.isRefreshing = true
                     }
                 }
                 is LoadState.NotLoading -> { // 当前未加载中
-                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.refreshLayout.isRefreshing = false
                     mBinding.stateLayout.showContent()
                 }
             }
 
         }
-        mBinding.recyclerView.adapter = mViewModel.adapter
-    }
-
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        mViewModel.adapter.refresh()
+        mBinding.recyclerView.adapter = mViewModel.adapter.loadFooterAdapter()
     }
 }

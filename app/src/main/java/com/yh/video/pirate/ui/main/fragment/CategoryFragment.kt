@@ -6,8 +6,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentCategoryBinding
@@ -17,8 +15,7 @@ import com.yh.video.pirate.utils.dp
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel>(),
-    OnRefreshListener {
+class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel>(){
 
     private var isCreate = false
 
@@ -58,19 +55,13 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
     override fun initRefreshLayout() {
         super.initRefreshLayout()
-        mBinding.refreshLayout.setOnRefreshListener(this)
-        mBinding.refreshLayout.setEnableLoadMore(false)
+        mBinding.refreshLayout.setOnRefreshListener { mViewModel.adapter.refresh() }
     }
 
     override fun onClick() {
         super.onClick()
         mBinding.stateLayout.setRetryListener { mViewModel.adapter.retry() }
     }
-
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        mViewModel.adapter.refresh()
-    }
-
 
     override fun initRecyclerView() {
         super.initRecyclerView()
@@ -104,7 +95,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
         mViewModel.adapter.addLoadStateListener { listener ->
             when (listener.refresh) {
                 is LoadState.Error -> { // 加载失败
-                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.refreshLayout.isRefreshing = false
                     mBinding.stateLayout.showError()
                 }
                 is LoadState.Loading -> { // 正在加载
@@ -112,11 +103,11 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                         mBinding.stateLayout.showLoading()
                         isCreate = true
                     } else {
-                        mBinding.refreshLayout.autoRefreshAnimationOnly()
+                        mBinding.refreshLayout.isRefreshing = true
                     }
                 }
                 is LoadState.NotLoading -> { // 当前未加载中
-                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.refreshLayout.isRefreshing = false
                     mBinding.stateLayout.showContent()
                 }
             }

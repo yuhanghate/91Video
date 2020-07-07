@@ -6,19 +6,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gyf.immersionbar.ImmersionBar
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseActivity
 import com.yh.video.pirate.databinding.ActivityHistoryBinding
 import com.yh.video.pirate.ui.history.viewmodel.HistoryViewModel
+import com.yh.video.pirate.utils.loadFooterAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
  * 历史记录
  */
-class HistoryActivity:BaseActivity<ActivityHistoryBinding,HistoryViewModel>(), OnRefreshListener {
+class HistoryActivity:BaseActivity<ActivityHistoryBinding,HistoryViewModel>() {
 
     var isCreate = false
     companion object{
@@ -62,8 +61,7 @@ class HistoryActivity:BaseActivity<ActivityHistoryBinding,HistoryViewModel>(), O
 
     override fun initRefreshLayout() {
         super.initRefreshLayout()
-        mBinding.refreshLayout.setOnRefreshListener(this)
-        mBinding.refreshLayout.setEnableLoadMore(false)
+        mBinding.refreshLayout.setOnRefreshListener { mViewModel.adapter.refresh() }
     }
 
     override fun initRecyclerView() {
@@ -71,7 +69,7 @@ class HistoryActivity:BaseActivity<ActivityHistoryBinding,HistoryViewModel>(), O
         mViewModel.adapter.addLoadStateListener { listener ->
             when (listener.refresh) {
                 is LoadState.Error -> { // 加载失败
-                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.refreshLayout.isRefreshing = false
                     mBinding.stateLayout.showError()
                 }
                 is LoadState.Loading -> { // 正在加载
@@ -79,21 +77,17 @@ class HistoryActivity:BaseActivity<ActivityHistoryBinding,HistoryViewModel>(), O
                         mBinding.stateLayout.showLoading()
                         isCreate = true
                     } else {
-                        mBinding.refreshLayout.autoRefreshAnimationOnly()
+                        mBinding.refreshLayout.isRefreshing = true
                     }
 
                 }
                 is LoadState.NotLoading -> { // 当前未加载中
-                    mBinding.refreshLayout.finishRefresh()
+                    mBinding.refreshLayout.isRefreshing = false
                     mBinding.stateLayout.showContent()
                 }
             }
         }
         mBinding.recyclerView.layoutManager = LinearLayoutManager(this)
-        mBinding.recyclerView.adapter = mViewModel.adapter
-    }
-
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        mViewModel.adapter.refresh()
+        mBinding.recyclerView.adapter = mViewModel.adapter.loadFooterAdapter()
     }
 }

@@ -23,7 +23,7 @@ class LoadStateAdapter<T:Any>(private val adapter: BaseAdapter<T>): LoadStateAda
 
     private fun inflateView(viewGroup: ViewGroup, @LayoutRes viewType: Int): View {
         val layoutInflater = LayoutInflater.from(viewGroup.context)
-        return layoutInflater.inflate(viewType, null, false)
+        return layoutInflater.inflate(viewType, viewGroup, false)
     }
 
 }
