@@ -68,6 +68,7 @@
         android:layout_height="1px"
         android:background="@color/md_grey_800" />
 
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
@@ -78,9 +79,11 @@
             android:id="@+id/state_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <com.yh.video.pirate.widget.NestedScrollableHost
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
@@ -92,4 +95,5 @@
 
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </LinearLayout>

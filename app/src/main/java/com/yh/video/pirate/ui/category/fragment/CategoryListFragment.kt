@@ -4,20 +4,19 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentCategoryListBinding
 import com.yh.video.pirate.ui.category.viewmodel.CategoryListViewModel
+import com.yh.video.pirate.utils.addDefaultStateListener
 import com.yh.video.pirate.utils.dp
 import com.yh.video.pirate.utils.loadFooterAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryListViewModel>()
-     {
+class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryListViewModel>() {
 
     /**
      * 第一次加载
@@ -84,7 +83,7 @@ class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryL
 
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return if (mViewModel.adapter.itemCount == position)  2 else 1
+                return if (mViewModel.adapter.itemCount == position) 2 else 1
             }
         }
         mBinding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -108,27 +107,11 @@ class CategoryListFragment : BaseFragment<FragmentCategoryListBinding, CategoryL
             }
         })
         mBinding.recyclerView.layoutManager = gridLayoutManager
-        mViewModel.adapter.addLoadStateListener { listener ->
-            when (listener.refresh) {
-                is LoadState.Error -> { // 加载失败
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showError()
-                }
-                is LoadState.Loading -> { // 正在加载
-                    if (!isCreate) {
-                        mBinding.stateLayout.showLoading()
-                        isCreate = true
-                    } else {
-                        mBinding.refreshLayout.isRefreshing = true
-                    }
-                }
-                is LoadState.NotLoading -> { // 当前未加载中
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showContent()
-                }
-            }
-
-        }
+        mViewModel.adapter.addDefaultStateListener(
+            this,
+            mBinding.refreshLayout,
+            mBinding.stateLayout
+        )
         mBinding.recyclerView.adapter = mViewModel.adapter.loadFooterAdapter()
     }
 }

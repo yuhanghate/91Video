@@ -3,13 +3,13 @@ package com.yh.video.pirate.ui.history.activity
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gyf.immersionbar.ImmersionBar
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseActivity
 import com.yh.video.pirate.databinding.ActivityHistoryBinding
 import com.yh.video.pirate.ui.history.viewmodel.HistoryViewModel
+import com.yh.video.pirate.utils.addDefaultStateListener
 import com.yh.video.pirate.utils.loadFooterAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -17,10 +17,11 @@ import kotlinx.coroutines.launch
 /**
  * 历史记录
  */
-class HistoryActivity:BaseActivity<ActivityHistoryBinding,HistoryViewModel>() {
+class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>() {
 
     var isCreate = false
-    companion object{
+
+    companion object {
         fun start(context: Context) {
             val intent = Intent(context, HistoryActivity::class.java)
             context.startActivity(intent)
@@ -66,27 +67,11 @@ class HistoryActivity:BaseActivity<ActivityHistoryBinding,HistoryViewModel>() {
 
     override fun initRecyclerView() {
         super.initRecyclerView()
-        mViewModel.adapter.addLoadStateListener { listener ->
-            when (listener.refresh) {
-                is LoadState.Error -> { // 加载失败
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showError()
-                }
-                is LoadState.Loading -> { // 正在加载
-                    if (!isCreate) {
-                        mBinding.stateLayout.showLoading()
-                        isCreate = true
-                    } else {
-                        mBinding.refreshLayout.isRefreshing = true
-                    }
-
-                }
-                is LoadState.NotLoading -> { // 当前未加载中
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showContent()
-                }
-            }
-        }
+        mViewModel.adapter.addDefaultStateListener(
+            this,
+            mBinding.refreshLayout,
+            mBinding.stateLayout
+        )
         mBinding.recyclerView.layoutManager = LinearLayoutManager(this)
         mBinding.recyclerView.adapter = mViewModel.adapter.loadFooterAdapter()
     }

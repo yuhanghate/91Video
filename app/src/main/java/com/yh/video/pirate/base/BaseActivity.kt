@@ -32,6 +32,11 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
     lateinit var mViewModel: VM
 
 
+    /**
+     * 是否首次加载数据
+     */
+    var isCreateLoading = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
 

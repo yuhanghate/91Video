@@ -30,6 +30,11 @@ abstract class BaseFragment<D : ViewBinding, VM : BaseViewModel> : SupportFragme
 
     lateinit var mViewModel: VM
 
+    /**
+     * 是否首次加载数据
+     */
+    var isCreateLoading = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

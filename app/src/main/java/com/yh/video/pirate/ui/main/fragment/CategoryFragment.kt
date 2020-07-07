@@ -11,11 +11,12 @@ import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentCategoryBinding
 import com.yh.video.pirate.ui.main.viewmodel.CategoryViewModel
 import com.yh.video.pirate.utils.BarConfig
+import com.yh.video.pirate.utils.addDefaultStateListener
 import com.yh.video.pirate.utils.dp
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel>(){
+class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel>() {
 
     private var isCreate = false
 
@@ -92,27 +93,11 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             }
         })
         mBinding.recyclerView.layoutManager = gridLayoutManager
-        mViewModel.adapter.addLoadStateListener { listener ->
-            when (listener.refresh) {
-                is LoadState.Error -> { // 加载失败
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showError()
-                }
-                is LoadState.Loading -> { // 正在加载
-                    if (!isCreate) {
-                        mBinding.stateLayout.showLoading()
-                        isCreate = true
-                    } else {
-                        mBinding.refreshLayout.isRefreshing = true
-                    }
-                }
-                is LoadState.NotLoading -> { // 当前未加载中
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showContent()
-                }
-            }
-
-        }
+        mViewModel.adapter.addDefaultStateListener(
+            this,
+            mBinding.refreshLayout,
+            mBinding.stateLayout
+        )
         mBinding.recyclerView.adapter = mViewModel.adapter
     }
 

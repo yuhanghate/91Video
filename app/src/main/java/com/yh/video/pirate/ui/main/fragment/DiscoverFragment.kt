@@ -8,10 +8,7 @@ import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentDiscoverBinding
 import com.yh.video.pirate.ui.main.viewmodel.DiscoverViewModel
-import com.yh.video.pirate.utils.BarConfig
-import com.yh.video.pirate.utils.dp
-import com.yh.video.pirate.utils.loadFooterAdapter
-import com.yh.video.pirate.utils.toDp
+import com.yh.video.pirate.utils.*
 import com.yh.video.pirate.widget.DoubleClickListener
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -54,11 +51,10 @@ class DiscoverFragment : BaseFragment<FragmentDiscoverBinding, DiscoverViewModel
         val endOffset = mBinding.refreshLayout.progressViewEndOffset
         val startOffset = mBinding.refreshLayout.progressViewStartOffset
         val offset = statusBarHeight + 48.dp
-//        mBinding.refreshLayout.setProgressViewEndTarget(false, startOffset + offset)
         mBinding.refreshLayout.setProgressViewOffset(
             false,
             startOffset + offset,
-            endOffset + offset
+            endOffset + 48.dp
         )
     }
 
@@ -78,27 +74,7 @@ class DiscoverFragment : BaseFragment<FragmentDiscoverBinding, DiscoverViewModel
 
     override fun initRecyclerView() {
         super.initRecyclerView()
-        mViewModel.adapter.addLoadStateListener { listener ->
-            when (listener.refresh) {
-                is LoadState.Error -> { // 加载失败
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showError()
-                }
-                is LoadState.Loading -> { // 正在加载
-                    if (!isCreate) {
-                        mBinding.stateLayout.showLoading()
-                        isCreate = true
-                    } else {
-                        mBinding.refreshLayout.isRefreshing = true
-                    }
-
-                }
-                is LoadState.NotLoading -> { // 当前未加载中
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showContent()
-                }
-            }
-        }
+        mViewModel.adapter.addDefaultStateListener(this,mBinding.refreshLayout,mBinding.stateLayout)
         mBinding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         mBinding.recyclerView.adapter = mViewModel.adapter.loadFooterAdapter()
     }

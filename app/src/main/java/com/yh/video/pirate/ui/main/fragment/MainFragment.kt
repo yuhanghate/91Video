@@ -13,6 +13,7 @@ import com.yh.video.pirate.ui.history.activity.HistoryActivity
 import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
 import com.yh.video.pirate.ui.search.activity.SearchActivity
 import com.yh.video.pirate.utils.BarConfig
+import com.yh.video.pirate.utils.addDefaultStateListener
 import com.yh.video.pirate.utils.dp
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -99,40 +100,11 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             }
         })
         mBinding.recyclerView.layoutManager = gridLayoutManager
-        mViewModel.adapter.addLoadStateListener { listener ->
-            when (listener.refresh) {
-                is LoadState.Error -> { // 加载失败
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showError()
-                }
-                is LoadState.Loading -> { // 正在加载
-                    if (!isCreate) {
-                        mBinding.stateLayout.showLoading()
-                        isCreate = true
-                    } else {
-                        mBinding.refreshLayout.isRefreshing = true
-                    }
-
-//                    mBinding.refreshLayout.isRefreshing = true
-                }
-                is LoadState.NotLoading -> { // 当前未加载中
-                    mBinding.refreshLayout.isRefreshing = false
-                    mBinding.stateLayout.showContent()
-                }
-            }
-
-            ///adapter.addLoadStateListener {
-            //    // show a retry button outside the list when refresh hits an error
-            //    retryButton.isVisible = it.refresh is LoadState.Error
-            //
-            //    // swipeRefreshLayout displays whether refresh is occurring
-            //    swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
-            //
-            //    // show an empty state over the list when loading initially, before items are loaded
-            //    emptyState.isVisible = it.refresh is LoadState.Loading && adapter.itemCount == 0
-            //}
-
-        }
+        mViewModel.adapter.addDefaultStateListener(
+            this,
+            mBinding.refreshLayout,
+            mBinding.stateLayout
+        )
         mBinding.recyclerView.adapter = mViewModel.adapterFooter
     }
 
