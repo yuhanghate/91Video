@@ -110,6 +110,8 @@ abstract class AbstractHttp {
 
     val okHttpClient by lazy(LazyThreadSafetyMode.SYNCHRONIZED, ::createOkHttpClient)
 
+    val okGlide by lazy(LazyThreadSafetyMode.SYNCHRONIZED, ::createOkHttpClient)
+
     /**
      * 默认的构建Retrofit的方法，若无法满足需求，请重写此方法
      */
@@ -138,9 +140,9 @@ abstract class AbstractHttp {
         return OkHttpClient.Builder()
             .installHttpsCertificates()
             .dns(HttpDns())
-            .readTimeout(timeout, TimeUnit.SECONDS)
-            .writeTimeout(timeout, TimeUnit.SECONDS)
-            .connectTimeout(timeout, TimeUnit.SECONDS)
+//            .readTimeout(timeout, TimeUnit.SECONDS)
+//            .writeTimeout(timeout, TimeUnit.SECONDS)
+//            .connectTimeout(timeout, TimeUnit.SECONDS)
             .addInterceptor(AddHeaderInterceptor(header))
             .retryOnConnectionFailure(true)
             .cache(Cache(File(application.cacheDir, cacheDir), maxSize))

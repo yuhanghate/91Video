@@ -1,6 +1,7 @@
 package com.yh.video.pirate.paging
 
 import androidx.paging.PagingSource
+import com.orhanobut.logger.Logger
 import com.yh.video.pirate.constant.HttpConstant
 import com.yh.video.pirate.repository.network.exception.CaomeiException
 import com.yh.video.pirate.repository.network.exception.HttpError
@@ -15,7 +16,9 @@ class NetworkSoure<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->Cao
         // 每一页的数据长度
         val pageSize = params.loadSize
         return try {
+            Logger.t("OkHttp").i("NetworkSoure")
             val invoke = network.invoke(page, pageSize)
+            Logger.t("OkHttp").i("NetworkSoure -> end")
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
                 //过滤数据源
                 val list = filter.invoke(invoke)
@@ -42,7 +45,9 @@ class NetworkSourePage<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)-
         // 每一页的数据长度
         val pageSize = params.loadSize
         return try {
+            Logger.t("OkHttp").i("NetworkSourePage")
             val invoke = network.invoke(page, pageSize)
+            Logger.t("OkHttp").i("NetworkSourePage -> end")
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
                 //过滤数据源
 //                delay(5000L)
@@ -72,7 +77,9 @@ class NetworkSoureSingleByFilter<T:Any>(val network:  suspend ()->CaomeiResponse
         val page = params.key ?: 1
         return try {
             //从网络获取数据
+            Logger.t("OkHttp").i("NetworkSoureSingleByFilter")
             val invoke = network.invoke()
+            Logger.t("OkHttp").i("NetworkSoureSingleByFilter -> end")
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
                 //过滤数据源
                 val list = filter.invoke(invoke)
@@ -99,7 +106,9 @@ class NetworkSoureSingle<T:Any>(val network:  suspend ()->CaomeiResponse<List<T>
         val page = params.key ?: 1
         return try {
             //从网络获取数据
+            Logger.t("OkHttp").i("NetworkSoureSingle")
             val invoke = network.invoke()
+            Logger.t("OkHttp").i("NetworkSoureSingle -> end")
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
 //                delay(3000L)
                 return LoadResult.Page(
@@ -124,7 +133,9 @@ class NetworkSoureSingleByCaomeiPaged<T:Any>(val network:  suspend ()->CaomeiRes
         val page = params.key ?: 1
         return try {
             //从网络获取数据
+            Logger.t("OkHttp").i("NetworkSoureSingleByCaomeiPaged")
             val invoke = network.invoke()
+            Logger.t("OkHttp").i("NetworkSoureSingleByCaomeiPaged -> end")
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
 //                delay(3000L)
                 return LoadResult.Page(

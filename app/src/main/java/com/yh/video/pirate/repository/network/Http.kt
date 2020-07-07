@@ -36,4 +36,12 @@ object Http : AbstractHttp() {
 
     public override val pagingConfig: PagingConfig
         get() = super.pagingConfig
+
+    /**
+     * 不预加载
+     */
+    public val pagingConfigOnePage: PagingConfig = PagingConfig(
+        // 每页显示的数据的大小
+        pageSize = 20
+    )
 }

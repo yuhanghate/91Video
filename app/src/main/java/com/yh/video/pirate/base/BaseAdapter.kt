@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import com.yh.video.pirate.listenter.OnClickItemListener
 import com.yh.video.pirate.listenter.OnClickItemLongListener
 import com.yh.video.pirate.utils.clickWithTrigger
-import com.yuhang.novel.pirate.base.BaseViewHolder
 
 
 abstract class BaseAdapter<T : Any>(diffCallback: DiffUtil.ItemCallback<T>) :

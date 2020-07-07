@@ -17,12 +17,6 @@ interface NetApi {
     suspend fun getVideoType(): CaomeiResponse<List<VideoType>>
 
     /**
-     * 分类列表
-     */
-    @GET("api/videosort")
-    suspend fun getVideoSort(): CaomeiResponse<List<Category>>
-
-    /**
      * 分类对应的视频列表
      */
     @GET("api/videoexplore")

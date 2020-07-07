@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import com.yh.video.pirate.base.BaseAdapter
 import com.yh.video.pirate.repository.network.result.RecommendedLike
 import com.yh.video.pirate.ui.video.viewholder.ItemRecommendLikeVH
-import com.yuhang.novel.pirate.base.BaseViewHolder
+import com.yh.video.pirate.base.BaseViewHolder
 
 /**
  * 猜你喜欢

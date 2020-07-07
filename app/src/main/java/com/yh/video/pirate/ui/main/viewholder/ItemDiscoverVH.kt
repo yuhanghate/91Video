@@ -6,7 +6,7 @@ import com.yh.video.pirate.databinding.ItemDiscoverBinding
 import com.yh.video.pirate.repository.network.result.Discover
 import com.yh.video.pirate.ui.video.activity.VideoPlayActivity
 import com.yh.video.pirate.utils.loadImage
-import com.yuhang.novel.pirate.base.BaseViewHolder
+import com.yh.video.pirate.base.BaseViewHolder
 import java.math.BigDecimal
 
 class ItemDiscoverVH(parent: ViewGroup) :

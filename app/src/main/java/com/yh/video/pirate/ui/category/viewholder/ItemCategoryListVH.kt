@@ -6,9 +6,10 @@ import com.yh.video.pirate.databinding.ItemCategoryListBinding
 import com.yh.video.pirate.repository.network.result.CategoryList
 import com.yh.video.pirate.ui.video.activity.VideoPlayActivity
 import com.yh.video.pirate.utils.loadImage
-import com.yuhang.novel.pirate.base.BaseViewHolder
+import com.yh.video.pirate.base.BaseViewHolder
 
-class ItemCategoryListVH(parent:ViewGroup):BaseViewHolder<CategoryList, ItemCategoryListBinding>(parent, R.layout.item_category_list) {
+class ItemCategoryListVH(parent:ViewGroup):
+    BaseViewHolder<CategoryList, ItemCategoryListBinding>(parent, R.layout.item_category_list) {
 
     override fun bindData(data: CategoryList, position: Int) {
 

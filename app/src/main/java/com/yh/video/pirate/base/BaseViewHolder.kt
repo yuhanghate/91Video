@@ -1,4 +1,4 @@
-package com.yuhang.novel.pirate.base
+package com.yh.video.pirate.base
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -63,7 +63,7 @@ abstract class BaseViewHolder<in T : Any, D : ViewBinding>(
     /**
      * VH所有的点击事件
      */
-    fun setListener(listener: Any?):BaseViewHolder<T,*> {
+    fun setListener(listener: Any?): BaseViewHolder<T, *> {
         mListener = listener
         return this
     }

@@ -31,7 +31,7 @@ fun <T:Any> ViewModel.pager(callback:  suspend (pageNum:Int, pageSize:Int)-> Cao
  * 不分页+过滤
  */
 fun <T:Any> ViewModel.pagerSingleByList(callback:  suspend ()-> CaomeiResponse<List<T>>, filter:suspend (CaomeiResponse<List<T>>)->List<T>) = Pager(
-    config = Http.pagingConfig,
+    config = Http.pagingConfigOnePage,
     pagingSourceFactory = {
         return@Pager NetworkSoureSingleByFilter(network = callback, filter = filter)
     }).flow.cachedIn(viewModelScope)
@@ -40,7 +40,7 @@ fun <T:Any> ViewModel.pagerSingleByList(callback:  suspend ()-> CaomeiResponse<L
  * 不分页
  */
 fun <T:Any> ViewModel.pagerSingleByList(callback:  suspend ()-> CaomeiResponse<List<T>>) = Pager(
-    config = Http.pagingConfig,
+    config = Http.pagingConfigOnePage,
     pagingSourceFactory = {
         return@Pager NetworkSoureSingle(network = callback)
     }).flow.cachedIn(viewModelScope)
@@ -49,7 +49,7 @@ fun <T:Any> ViewModel.pagerSingleByList(callback:  suspend ()-> CaomeiResponse<L
  * 不分页
  */
 fun <T:Any> ViewModel.pagerSingleByCaomeiPaged(callback:  suspend ()-> CaomeiResponse<CaomeiPaged<T>>) = Pager(
-    config = Http.pagingConfig,
+    config = Http.pagingConfigOnePage,
     pagingSourceFactory = {
         return@Pager NetworkSoureSingleByCaomeiPaged(network = callback)
     }).flow.cachedIn(viewModelScope)

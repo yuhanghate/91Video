@@ -7,9 +7,9 @@ import com.yh.video.pirate.repository.network.result.Video
 import com.yh.video.pirate.ui.main.viewholder.intChange2Str
 import com.yh.video.pirate.ui.video.activity.VideoPlayActivity
 import com.yh.video.pirate.utils.loadImage
-import com.yuhang.novel.pirate.base.BaseViewHolder
+import com.yh.video.pirate.base.BaseViewHolder
 
-class ItemHistoryVH(parent:ViewGroup):BaseViewHolder<Video, ItemHistoryBinding>(parent, R.layout.item_history) {
+class ItemHistoryVH(parent:ViewGroup): BaseViewHolder<Video, ItemHistoryBinding>(parent, R.layout.item_history) {
     override fun bindData(data: Video, position: Int) {
         mBinding.nameTv.text = data.title
         mBinding.coverIv.loadImage(mContext, data.coverpath)

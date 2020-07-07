@@ -22,7 +22,7 @@ fun initFragmentManger() {
     Fragmentation.builder()
         // show stack view. Mode: BUBBLE, SHAKE, NONE
         .stackViewMode(Fragmentation.NONE)
-        .debug(com.yh.video.pirate.BuildConfig.DEBUG)
+        .debug(BuildConfig.DEBUG)
         .install()
 }
 

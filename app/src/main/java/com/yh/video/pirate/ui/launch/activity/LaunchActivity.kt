@@ -37,6 +37,11 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
         super.initData()
         onClick()
         initCountDown()
+
+        //初始化DNS
+        lifecycleScope.launch {
+            mViewModel.getVideoType()
+        }
     }
 
     /**

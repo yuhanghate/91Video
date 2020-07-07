@@ -1,8 +1,10 @@
 package com.yh.video.pirate.utils
 
+import android.util.Log
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.orhanobut.logger.Logger
 import com.yh.video.pirate.base.BaseActivity
 import com.yh.video.pirate.base.BaseAdapter
 import com.yh.video.pirate.base.BaseFragment
@@ -47,7 +49,10 @@ fun <T : BaseAdapter<*>> T.addDefaultStateListener(
                 }
             }
             is LoadState.NotLoading -> { // 当前未加载中
-                refreshLayout.isRefreshing = false
+                if (!stateLayout.isLoading) {
+                    refreshLayout.isRefreshing = false
+                }
+
                 stateLayout.showContent()
             }
         }

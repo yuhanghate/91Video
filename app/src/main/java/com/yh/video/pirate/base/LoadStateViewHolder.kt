@@ -5,7 +5,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.yh.video.pirate.databinding.ItemNetworkStateBinding
 import com.yh.video.pirate.utils.isVisible
-import com.yuhang.novel.pirate.base.BaseViewHolder
 
 class LoadStateViewHolder(val view:View, private val retryCallback: () -> Unit): RecyclerView.ViewHolder(view),
     BaseViewHolder.OnBindDataListener<LoadState> {

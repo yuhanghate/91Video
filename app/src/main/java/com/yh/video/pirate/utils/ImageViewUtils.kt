@@ -28,7 +28,8 @@ fun ImageView.loadImage(context: Context, path: String?, placeholder: Int = R.dr
     val options = getOptions(placeholder, useCache)
     val factory =  DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
     val with = DrawableTransitionOptions.with(factory)
-    Glide.with(context).load(path?:placeholder).apply(options).transition(with).into(this)
+    Glide.with(context).load(path?:placeholder).apply(options).transition(with).priority( Priority.LOW )
+        .into(this)
 }
 
 /**

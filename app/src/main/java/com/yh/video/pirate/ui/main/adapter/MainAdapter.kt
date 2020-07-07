@@ -6,7 +6,7 @@ import com.yh.video.pirate.repository.network.result.Main
 import com.yh.video.pirate.ui.main.viewholder.ItemMainContentVH
 import com.yh.video.pirate.ui.main.viewholder.ItemMainSeparatorVH
 import com.yh.video.pirate.ui.main.viewholder.ItemMainTitleVH
-import com.yuhang.novel.pirate.base.BaseViewHolder
+import com.yh.video.pirate.base.BaseViewHolder
 
 /**
  * 首页

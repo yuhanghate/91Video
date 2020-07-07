@@ -9,7 +9,7 @@ import com.yh.video.pirate.repository.network.result.RecommendedLike
 import com.yh.video.pirate.ui.main.viewholder.intChange2Str
 import com.yh.video.pirate.ui.video.activity.VideoPlayActivity
 import com.yh.video.pirate.utils.loadImage
-import com.yuhang.novel.pirate.base.BaseViewHolder
+import com.yh.video.pirate.base.BaseViewHolder
 
 class ItemRecommendLikeVH(parent: ViewGroup) :
     BaseViewHolder<RecommendedLike, ItemRecommendLikeBinding>(
