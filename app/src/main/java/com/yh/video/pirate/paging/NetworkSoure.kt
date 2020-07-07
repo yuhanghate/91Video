@@ -19,10 +19,6 @@ class NetworkSoure<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->Cao
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
                 //过滤数据源
                 val list = filter.invoke(invoke)
-                if (page != 1) {
-                    delay(4000L)
-                }
-
                 return LoadResult.Page(
                     data = list,
                     prevKey = if (page == 1) null else page - 1,
