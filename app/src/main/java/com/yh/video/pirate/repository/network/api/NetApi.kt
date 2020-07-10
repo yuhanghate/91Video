@@ -38,9 +38,9 @@ interface NetApi {
      * 视频播放页面
      */
     @GET("api/videoplay/{id}")
-    fun getVideoPlay(
+    suspend fun getVideoPlay(
         @Path("id") id: Long, @QueryMap parsms: Map<String, String>
-    ): Flow<CaomeiResponse<Video>>
+    ): CaomeiResponse<Video>
 
     /**
      * 历史记录
@@ -52,7 +52,7 @@ interface NetApi {
      * 获取搜索关键字
      */
     @GET("api/videoSearchHot")
-     fun getSearchKeyword(@QueryMap parsms: Map<String, String>):Flow<CaomeiResponse<List<SearchKeywords>>>
+     suspend fun getSearchKeyword(@QueryMap parsms: Map<String, String>):CaomeiResponse<List<SearchKeywords>>
 
     /**
      * 搜索

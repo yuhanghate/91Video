@@ -25,6 +25,7 @@ import com.yh.video.pirate.video.cache.ProgressManagerImpl
 import com.yh.video.pirate.video.controller.StandardVideoController
 import com.yh.video.pirate.video.controller.component.*
 import kotlinx.android.synthetic.main.activity_video_play.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -86,6 +87,7 @@ class VideoPlayActivity : BaseActivity<ActivityVideoPlayBinding, VideoPlayViewMo
         //视频播放信息
         lifecycleScope.launchWhenCreated {
             mViewModel.getVideoPlay(getVideoId())
+//                .flowOn(Dispatchers.IO)
                 .onStart { mBinding.stateLayout.showLoading() }
                 .catch { mBinding.stateLayout.showError() }
                 .onCompletion { mBinding.stateLayout.showContent() }

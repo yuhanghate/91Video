@@ -23,7 +23,7 @@ object Http : AbstractHttp() {
 
     override val callAdapterFactories: Iterable<CallAdapter.Factory>
         get() = listOf(
-            FlowCallAdapterFactory()
+//            FlowCallAdapterFactory()
         )
 
     override val interceptors: Iterable<Interceptor>

@@ -7,10 +7,14 @@ import com.yh.video.pirate.repository.network.exception.CaomeiException
 import com.yh.video.pirate.repository.network.exception.HttpError
 import com.yh.video.pirate.repository.network.result.base.CaomeiPaged
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
-class NetworkSoure<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->CaomeiResponse<CaomeiPaged<T>>,
-                          val filter:suspend (CaomeiResponse<CaomeiPaged<T>>)->List<T>):PagingSource<Int, T>() {
+class NetworkSoure<T : Any>(
+    val network: suspend (pageNum: Int, pageSize: Int) -> CaomeiResponse<CaomeiPaged<T>>,
+    val filter: suspend (CaomeiResponse<CaomeiPaged<T>>) -> List<T>
+) : PagingSource<Int, T>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val page = params.key ?: 1
         // 每一页的数据长度
@@ -22,7 +26,7 @@ class NetworkSoure<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->Cao
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
                 //过滤数据源
                 val list = filter.invoke(invoke)
-                return LoadResult.Page(
+                LoadResult.Page(
                     data = list,
                     prevKey = if (page == 1) null else page - 1,
                     nextKey = if (invoke.rescont?.total!! - invoke.rescont.to > 0) page + 1 else null
@@ -38,8 +42,9 @@ class NetworkSoure<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->Cao
     }
 }
 
-class NetworkSourePage<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)->CaomeiResponse<CaomeiPaged<T>>
-                          ):PagingSource<Int, T>() {
+class NetworkSourePage<T : Any>(
+    val network: suspend (pageNum: Int, pageSize: Int) -> CaomeiResponse<CaomeiPaged<T>>
+) : PagingSource<Int, T>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val page = params.key ?: 1
         // 每一页的数据长度
@@ -52,7 +57,7 @@ class NetworkSourePage<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)-
                 //过滤数据源
 //                delay(5000L)
                 return LoadResult.Page(
-                    data = invoke.rescont?.data?: arrayListOf(),
+                    data = invoke.rescont?.data ?: arrayListOf(),
                     prevKey = if (page == 1) null else page - 1,
                     nextKey = if (invoke.rescont?.total!! - invoke.rescont.to > 0) page + 1 else null
                 )
@@ -68,11 +73,13 @@ class NetworkSourePage<T:Any>(val network:  suspend (pageNum:Int, pageSize:Int)-
 }
 
 
-
 /**
  * 不分页
  */
-class NetworkSoureSingleByFilter<T:Any>(val network:  suspend ()->CaomeiResponse<List<T>>, val filter:suspend (CaomeiResponse<List<T>>)->List<T>):PagingSource<Int, T>() {
+class NetworkSoureSingleByFilter<T : Any>(
+    val network: suspend () -> CaomeiResponse<List<T>>,
+    val filter: suspend (CaomeiResponse<List<T>>) -> List<T>
+) : PagingSource<Int, T>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val page = params.key ?: 1
         return try {
@@ -81,14 +88,17 @@ class NetworkSoureSingleByFilter<T:Any>(val network:  suspend ()->CaomeiResponse
             val invoke = network.invoke()
             Logger.t("OkHttp").i("NetworkSoureSingleByFilter -> end")
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
+
                 //过滤数据源
                 val list = filter.invoke(invoke)
+
 //                delay(3000L)
                 return LoadResult.Page(
                     data = list,
                     prevKey = if (page == 1) null else page - 1,
                     nextKey = null
                 )
+
             } else {
                 LoadResult.Error(CaomeiException(HttpError.USER_EXIST))
             }
@@ -101,7 +111,8 @@ class NetworkSoureSingleByFilter<T:Any>(val network:  suspend ()->CaomeiResponse
 /**
  * 不分页
  */
-class NetworkSoureSingle<T:Any>(val network:  suspend ()->CaomeiResponse<List<T>>):PagingSource<Int, T>() {
+class NetworkSoureSingle<T : Any>(val network: suspend () -> CaomeiResponse<List<T>>) :
+    PagingSource<Int, T>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val page = params.key ?: 1
         return try {
@@ -112,7 +123,7 @@ class NetworkSoureSingle<T:Any>(val network:  suspend ()->CaomeiResponse<List<T>
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
 //                delay(3000L)
                 return LoadResult.Page(
-                    data = invoke.rescont?: arrayListOf(),
+                    data = invoke.rescont ?: arrayListOf(),
                     prevKey = if (page == 1) null else page - 1,
                     nextKey = null
                 )
@@ -128,7 +139,8 @@ class NetworkSoureSingle<T:Any>(val network:  suspend ()->CaomeiResponse<List<T>
 /**
  * 不分页
  */
-class NetworkSoureSingleByCaomeiPaged<T:Any>(val network:  suspend ()->CaomeiResponse<CaomeiPaged<T>>):PagingSource<Int, T>() {
+class NetworkSoureSingleByCaomeiPaged<T : Any>(val network: suspend () -> CaomeiResponse<CaomeiPaged<T>>) :
+    PagingSource<Int, T>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val page = params.key ?: 1
         return try {
@@ -139,7 +151,7 @@ class NetworkSoureSingleByCaomeiPaged<T:Any>(val network:  suspend ()->CaomeiRes
             if (invoke.code == HttpConstant.HTTP_SUCCESS) {
 //                delay(3000L)
                 return LoadResult.Page(
-                    data = invoke.rescont?.data?: arrayListOf(),
+                    data = invoke.rescont?.data ?: arrayListOf(),
                     prevKey = if (page == 1) null else page - 1,
                     nextKey = null
                 )

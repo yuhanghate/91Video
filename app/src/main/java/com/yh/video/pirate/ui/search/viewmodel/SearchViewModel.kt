@@ -25,7 +25,7 @@ class SearchViewModel:BaseViewModel() {
     /**
      * 获取搜索关键字
      */
-    fun getSearchKeyword(): Flow<CaomeiResponse<List<SearchKeywords>>> {
+    suspend fun getSearchKeyword(): Flow<CaomeiResponse<List<SearchKeywords>>> {
         return mDataRepository.getSearchKeyword()
     }
 
@@ -41,7 +41,7 @@ class SearchViewModel:BaseViewModel() {
     /**
      * 获取本地搜索关键词
      */
-    suspend fun querySearchKeywords(): Flow<List<SearchHistoryEntity>> {
+    suspend fun querySearchKeywords(): List<SearchHistoryEntity> {
         return mDataRepository.querySearchKeywords()
     }
 

@@ -8,7 +8,10 @@ import com.yh.video.pirate.repository.network.result.*
 import com.yh.video.pirate.repository.network.result.base.CaomeiPaged
 import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
 import com.yh.video.pirate.utils.application
+import com.yh.video.pirate.utils.asFlow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import java.util.*
 
 object DataRepository {
@@ -55,9 +58,9 @@ object DataRepository {
     /**
      * 视频播放页面
      */
-    fun getVideoPlay(id: Long): Flow<CaomeiResponse<Video>> {
+    suspend fun getVideoPlay(id: Long): Flow<CaomeiResponse<Video>> {
         val map = mapOf<String, String>("uuid" to UUID.randomUUID().toString(), "device" to "0")
-        return mNetApi.getVideoPlay(id, map)
+        return mNetApi.getVideoPlay(id, map).asFlow()
     }
 
     /**
@@ -88,15 +91,15 @@ object DataRepository {
     /**
      * 获取搜索关键字
      */
-    fun getSearchKeyword(): Flow<CaomeiResponse<List<SearchKeywords>>> {
+    suspend fun getSearchKeyword(): Flow<CaomeiResponse<List<SearchKeywords>>> {
         val map = mapOf<String, String>("uuid" to "31649453ca3bb198", "device" to "0")
-        return mNetApi.getSearchKeyword(map)
+        return mNetApi.getSearchKeyword(map).asFlow()
     }
 
     /**
      * 获取本地搜索关键词
      */
-    fun querySearchKeywords(): Flow<List<SearchHistoryEntity>> {
+    suspend fun querySearchKeywords(): List<SearchHistoryEntity> {
         return mDatabase.searchHistoryDao.query()
     }
 

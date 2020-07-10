@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface SearchHistoryDao : IDao<SearchHistoryEntity> {
 
     @Query("select * from searchhistoryentity as s  group by s.keyword order by s.updateTime desc  limit 10")
-    fun query(): Flow<List<SearchHistoryEntity>>
+    suspend fun query(): List<SearchHistoryEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity:SearchHistoryEntity)
@@ -23,7 +23,7 @@ interface SearchHistoryDao : IDao<SearchHistoryEntity> {
      * 匹配模糊匹配取5个
      */
     @Query("select * from searchhistoryentity as s where s.keyword LIKE '%' || :keyword || '%'  order by s.updateTime desc limit 5")
-    fun queryList(keyword: String): List<SearchHistoryEntity?>
+    suspend fun queryList(keyword: String): List<SearchHistoryEntity?>
 
     /**
      * 清空历史记录

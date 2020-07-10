@@ -33,8 +33,10 @@ import com.yh.video.pirate.ui.video.activity.VideoPlayActivity
 import com.yh.video.pirate.utils.clickWithTrigger
 import com.yh.video.pirate.utils.dp
 import com.yh.video.pirate.utils.loadFooterAdapter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 /**
@@ -103,6 +105,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
         //加载服务器标签
         lifecycleScope.launch {
             mViewModel.getSearchKeyword()
+//                .flowOn(Dispatchers.IO)
                 .collect {
                     it.catchCode<List<SearchKeywords>>(
                         success = { list ->
@@ -115,10 +118,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
 
         //加载本地标签
         lifecycleScope.launch {
-            mViewModel.querySearchKeywords()
-                .collect {
-                    initLocalLabel(it)
-                }
+            initLocalLabel(mViewModel.querySearchKeywords())
         }
     }
 

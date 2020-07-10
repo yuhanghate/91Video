@@ -22,7 +22,7 @@ class VideoPlayViewModel : BaseViewModel() {
     /**
      * 视频播放页面
      */
-    fun getVideoPlay(id: Long): Flow<CaomeiResponse<Video>> {
+    suspend fun getVideoPlay(id: Long): Flow<CaomeiResponse<Video>> {
         return mDataRepository.getVideoPlay(id)
     }
 
