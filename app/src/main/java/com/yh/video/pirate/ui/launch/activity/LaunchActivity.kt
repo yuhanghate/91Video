@@ -13,6 +13,7 @@ import com.yh.video.pirate.utils.AppManagerUtils
 import com.yh.video.pirate.utils.isVisible
 import com.yh.video.pirate.utils.permissions.requestMultiplePermissions
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
@@ -39,8 +40,17 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
         initCountDown()
 
         //初始化DNS
+//        lifecycleScope.launch {
+//            mViewModel.getVideoType()
+//        }
+
         lifecycleScope.launch {
-            mViewModel.getVideoType()
+            mViewModel.getSearchKeyword()
+                .catch { }
+                .collect {
+                    mViewModel.insertSearchHot( it.rescont?.get(0))
+                    mViewModel.insertSearchRecomment(it.rescont?.get(1))
+                }
         }
     }
 
@@ -50,7 +60,7 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
     private fun initCountDown() {
         mBinding.countDownTv.isVisible = false
         lifecycleScope.launch {
-            flowOf( 3, 2, 1, 0).onEach { delay(1000) }.collect {
+            flowOf(3, 2, 1, 0).onEach { delay(1000) }.collect {
                 if (it == 3) {
                     mBinding.countDownTv.isVisible = true
                     mBinding.countDownTv.start()
@@ -70,7 +80,7 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
         }
     }
 
-     override fun onClick() {
+    override fun onClick() {
         mBinding.countDownTv.setOnClickListener {
             if (mBinding.countDownTv.text == "跳过") {
                 startMainActivity()

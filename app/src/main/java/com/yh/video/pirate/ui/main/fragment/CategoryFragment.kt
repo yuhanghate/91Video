@@ -18,8 +18,6 @@ import kotlinx.coroutines.launch
 
 class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel>() {
 
-    private var isCreate = false
-
     companion object {
         fun newInstance(): CategoryFragment {
             return CategoryFragment()

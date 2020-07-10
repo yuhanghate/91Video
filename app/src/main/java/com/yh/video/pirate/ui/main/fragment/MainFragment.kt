@@ -5,16 +5,21 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseFragment
 import com.yh.video.pirate.databinding.FragmentMainBinding
+import com.yh.video.pirate.repository.preferences.PreferenceUtil
 import com.yh.video.pirate.ui.history.activity.HistoryActivity
 import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
 import com.yh.video.pirate.ui.search.activity.SearchActivity
+import com.yh.video.pirate.utils.AppManagerUtils
 import com.yh.video.pirate.utils.BarConfig
 import com.yh.video.pirate.utils.addDefaultStateListener
 import com.yh.video.pirate.utils.dp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
@@ -62,6 +67,26 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
                     mViewModel.adapter.submitData(lifecycle, it)
                 }
         }
+
+        //延迟弹窗
+//        lifecycleScope.launch {
+//            flow {
+//                delay(1000 * 2L)
+//                emit(1)
+//            }.collect {
+//                val lastLogin = PreferenceUtil.getLong("last_time", System.currentTimeMillis())
+//                val showNote = PreferenceUtil.getBoolean("is_show_note", true)
+//                if (System.currentTimeMillis() - lastLogin > 86400 * 3L) {
+//                    showNoteMaxDialog()
+//                } else {
+//                    if (showNote) {
+//                        showNoteDialog()
+//                    }
+//
+//                }
+//
+//            }
+//        }
     }
 
     override fun initRefreshLayout() {
@@ -115,6 +140,28 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
         mBinding.btnHistory.setOnClickListener { HistoryActivity.start(requireContext()) }
         //搜索
         mBinding.searchCl.setOnClickListener { SearchActivity.start(requireContext()) }
+    }
+
+    private fun showNoteDialog() {
+        MaterialDialog(requireContext()).show {
+            message(text = "欢迎使用!新用户可以免费观看3天\n")
+            cancelable(false)
+            positiveButton(text = "确定", click = {
+                PreferenceUtil.commitLong("last_time",System.currentTimeMillis())
+                PreferenceUtil.commitBoolean("is_show_note" ,false)
+                it.dismiss()
+            })
+        }
+    }
+
+    private fun showNoteMaxDialog() {
+        MaterialDialog(requireContext()).show {
+            message(text = "试用期到已到,无法使用")
+            cancelable(false)
+            positiveButton(text = "确定", click = {
+                AppManagerUtils.getAppManager().AppExit(requireContext())
+            })
+        }
     }
 
 }

@@ -29,6 +29,7 @@ class SearchViewModel:BaseViewModel() {
         return mDataRepository.getSearchKeyword()
     }
 
+
     /**
      * 搜索关键字
      */
@@ -62,5 +63,19 @@ class SearchViewModel:BaseViewModel() {
         viewModelScope.launch {
             mDataRepository.cleanSearchkeywords()
         }
+    }
+
+    /**
+     * 获取热闹搜索
+     */
+    suspend fun querySearchHotList(): List<SearchHistoryEntity> {
+        return mDataRepository.querySearchHotList()
+    }
+
+    /**
+     * 获取推荐搜索
+     */
+    suspend fun querySearchRecommentList(): List<SearchHistoryEntity> {
+        return mDataRepository.querySearchRecommentList()
     }
 }

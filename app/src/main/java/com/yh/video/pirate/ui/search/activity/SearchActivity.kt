@@ -3,7 +3,6 @@ package com.yh.video.pirate.ui.search.activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
-import android.text.Editable
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
@@ -17,26 +16,20 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.flexbox.FlexboxLayout
 import com.gyf.immersionbar.ImmersionBar
-import com.orhanobut.logger.Logger
 import com.yh.video.pirate.R
 import com.yh.video.pirate.base.BaseActivity
 import com.yh.video.pirate.databinding.ActivitySearchBinding
 import com.yh.video.pirate.databinding.LayoutSearchLabelBinding
 import com.yh.video.pirate.listenter.OnClickItemListener
 import com.yh.video.pirate.repository.database.entity.SearchHistoryEntity
-import com.yh.video.pirate.repository.network.exception.catchCode
-import com.yh.video.pirate.repository.network.exception.convertHttpRes
-import com.yh.video.pirate.repository.network.result.SearchKeywords
 import com.yh.video.pirate.ui.search.viewmodel.SearchViewModel
 import com.yh.video.pirate.ui.video.activity.VideoPlayActivity
 import com.yh.video.pirate.utils.clickWithTrigger
 import com.yh.video.pirate.utils.dp
 import com.yh.video.pirate.utils.loadFooterAdapter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 /**
@@ -102,23 +95,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
     override fun initData() {
         super.initData()
 
-        //加载服务器标签
-        lifecycleScope.launch {
-            mViewModel.getSearchKeyword()
-//                .flowOn(Dispatchers.IO)
-                .collect {
-                    it.catchCode<List<SearchKeywords>>(
-                        success = { list ->
-                            initServiceLabel(list)
-                        },
-                        error = {}
-                    )
-                }
-        }
-
         //加载本地标签
         lifecycleScope.launch {
             initLocalLabel(mViewModel.querySearchKeywords())
+            initServiceLabel(mViewModel.querySearchHotList(), mBinding.hotFl)
+            initServiceLabel(mViewModel.querySearchRecommentList(), mBinding.recommendFl)
         }
     }
 
@@ -165,38 +146,22 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(),
     }
 
     /**
-     * 从服务器获取标签
+     * 加载热闹/推荐标签
      */
-    private fun initServiceLabel(list: List<SearchKeywords>) {
-        if (list.isNotEmpty()) {
-            //热闹搜索
-            mBinding.hotFl.removeAllViews()
-            list[0].lists?.forEach { label ->
-                val inflate = LayoutSearchLabelBinding.inflate(layoutInflater, null, false)
-                inflate.labelTv.text = label
-                mBinding.hotFl.addView(inflate.root)
-                inflate.labelLl.setOnClickListener {
-                    mViewModel.insertSearchKeywords(label)
-                    mBinding.searchEt.setText(label, null)
-                    mBinding.searchEt.clearFocus()
-                }
-            }
-        }
-        if (list.size == 2) {
-            //推荐
-            mBinding.recommendFl.removeAllViews()
-            list[1].lists?.forEach { label ->
-                val inflate = LayoutSearchLabelBinding.inflate(layoutInflater, null, false)
-                inflate.labelTv.text = label
-                mBinding.recommendFl.addView(inflate.root)
-                inflate.labelLl.setOnClickListener {
-                    mViewModel.insertSearchKeywords(label)
-                    mBinding.searchEt.setText(label, null)
-                    mBinding.searchEt.clearFocus()
-                }
+    private fun initServiceLabel(list: List<SearchHistoryEntity>, view: FlexboxLayout) {
+        view.removeAllViews()
+        list.forEach {entity ->
+            val inflate = LayoutSearchLabelBinding.inflate(layoutInflater, null, false)
+            inflate.labelTv.text = entity.keyword
+            view.addView(inflate.root)
+            inflate.labelLl.setOnClickListener {
+                mViewModel.insertSearchKeywords(entity.keyword)
+                mBinding.searchEt.setText(entity.keyword, null)
+                mBinding.searchEt.clearFocus()
             }
         }
     }
+
 
     /**
      * 加载本地标签

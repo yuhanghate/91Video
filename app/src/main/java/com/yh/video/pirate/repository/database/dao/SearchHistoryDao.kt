@@ -5,29 +5,61 @@ import com.yh.video.pirate.repository.database.entity.SearchHistoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface SearchHistoryDao : IDao<SearchHistoryEntity> {
+abstract class SearchHistoryDao : IDao<SearchHistoryEntity> {
 
-    @Query("select * from searchhistoryentity as s  group by s.keyword order by s.updateTime desc  limit 10")
-    suspend fun query(): List<SearchHistoryEntity>
+    /**
+     * 查询最近10条历史记录
+     */
+    @Query("select * from searchhistoryentity as s where s.type = :type  group by s.keyword order by s.updateTime desc  limit 10")
+    abstract suspend fun queryList10ByType(type:String): List<SearchHistoryEntity>
 
+    /**
+     * 根据类型获取所有记录
+     */
+    @Query("select * from searchhistoryentity as s where s.type = :type group by s.keyword order by s.updateTime desc")
+    abstract suspend fun queryListByType(type:String):List<SearchHistoryEntity>
+
+    /**
+     * 批量插入
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(entity:SearchHistoryEntity)
+    abstract suspend fun insert(vararg entity:SearchHistoryEntity)
+
+    /**
+     * 批量插入
+     */
+    @Insert
+    abstract suspend fun insert( entity:List<SearchHistoryEntity>)
 
     /**
      * 查询关键字
      */
-    @Query("select * from searchhistoryentity as s where s.keyword = :keyword order by s.updateTime limit 1")
-    suspend fun query(keyword: String): SearchHistoryEntity?
+    @Query("select * from searchhistoryentity as s where s.keyword = :keyword and type = :type order by s.updateTime limit 1")
+    abstract suspend fun queryEntityByType(keyword: String, type:String): SearchHistoryEntity?
+
 
     /**
-     * 匹配模糊匹配取5个
+     * 根据类型全部删除
      */
-    @Query("select * from searchhistoryentity as s where s.keyword LIKE '%' || :keyword || '%'  order by s.updateTime desc limit 5")
-    suspend fun queryList(keyword: String): List<SearchHistoryEntity?>
+    @Query("delete from searchhistoryentity where type = :type")
+    abstract suspend fun deleteListByType(type:String)
 
     /**
-     * 清空历史记录
+     * 插入最热
      */
-    @Query("delete from SearchHistoryEntity")
-    suspend fun clear()
+    @Transaction
+    open suspend fun insertHotList(list: List<SearchHistoryEntity>) {
+        deleteListByType(SearchHistoryEntity.TYPE_HOT)
+        insert(list)
+    }
+
+    /**
+     * 插入推荐
+     */
+    @Transaction
+    open suspend fun insertRecommentList(list: List<SearchHistoryEntity>) {
+        deleteListByType(SearchHistoryEntity.TYPE_RECOMMENT)
+        insert(list)
+    }
+
 }

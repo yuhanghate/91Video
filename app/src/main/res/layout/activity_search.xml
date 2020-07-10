@@ -61,10 +61,10 @@
                 android:id="@+id/btn_clear"
                 android:layout_width="35dp"
                 android:layout_height="match_parent"
-                android:padding="6dp"
-                android:layout_marginEnd="7dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
+                android:layout_marginEnd="7dp"
+                android:padding="6dp"
                 android:src="@drawable/btn_search_close"
                 android:visibility="visible" />
         </LinearLayout>
@@ -91,12 +91,13 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:background="@color/md_grey_900"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/md_grey_900">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
             <LinearLayout
                 android:id="@+id/history_ll"
@@ -201,20 +202,22 @@
                     app:showDivider="beginning|middle|end" />
 
             </LinearLayout>
+
+
         </androidx.core.widget.NestedScrollView>
 
 
         <com.yh.video.pirate.widget.StateLayout
             android:id="@+id/stateLayout"
             android:layout_width="match_parent"
-            android:visibility="gone"
+            android:layout_height="match_parent"
             android:background="@color/md_grey_900"
-            android:layout_height="match_parent">
+            android:visibility="gone">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                 />
+                android:layout_height="match_parent" />
         </com.yh.video.pirate.widget.StateLayout>
 
 

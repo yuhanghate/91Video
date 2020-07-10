@@ -1,0 +1,690 @@
+Index: app/src/main/java/com/yh/video/pirate/repository/database/AppDatabase.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/repository/database/AppDatabase.java	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/repository/database/AppDatabase.java	(date 1594372161000)
+@@ -20,7 +20,7 @@
+  * @author yuhang
+  */
+ @Database(entities = {VideoSortEntity.class, SearchHistoryEntity.class},
+-        version = 1, exportSchema = false)
++        version = 2, exportSchema = false)
+ @TypeConverters({ConvertersFactory.class})
+ public abstract class AppDatabase
+         extends RoomDatabase {
+Index: app/src/main/java/com/yh/video/pirate/ui/main/viewmodel/CategoryViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/ui/main/viewmodel/CategoryViewModel.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/ui/main/viewmodel/CategoryViewModel.kt	(date 1594352485000)
+@@ -1,6 +1,5 @@
+ package com.yh.video.pirate.ui.main.viewmodel
+ 
+-import com.yh.video.pirate.base.BaseFragment
+ import com.yh.video.pirate.base.BaseViewModel
+ import com.yh.video.pirate.repository.network.result.VideoType
+ import com.yh.video.pirate.ui.main.adapter.CategoryAdapter
+@@ -8,11 +7,6 @@
+ 
+ class CategoryViewModel : BaseViewModel() {
+ 
+-    //Fragment
+-    val fragments: ArrayList<BaseFragment<*, *>> = arrayListOf()
+-
+-
+-
+     val adapter by lazy { CategoryAdapter() }
+ 
+     /**
+Index: app/src/main/java/com/yh/video/pirate/repository/DataRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/repository/DataRepository.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/repository/DataRepository.kt	(date 1594371448000)
+@@ -1,5 +1,6 @@
+ package com.yh.video.pirate.repository
+ 
++import android.icu.text.SearchIterator
+ import com.yh.video.pirate.repository.database.AppDatabase
+ import com.yh.video.pirate.repository.database.entity.SearchHistoryEntity
+ import com.yh.video.pirate.repository.network.Http
+@@ -100,7 +101,7 @@
+      * 获取本地搜索关键词
+      */
+     suspend fun querySearchKeywords(): List<SearchHistoryEntity> {
+-        return mDatabase.searchHistoryDao.query()
++        return mDatabase.searchHistoryDao.queryList10ByType(SearchHistoryEntity.TYPE_HISTORY)
+     }
+ 
+     /**
+@@ -109,22 +110,22 @@
+     suspend fun insertSearchKeywords(keyword: String) {
+         if (keyword.isEmpty()) return
+ 
+-        val entity = mDatabase.searchHistoryDao.query(keyword)
++        val entity = mDatabase.searchHistoryDao.queryEntityByType(keyword, SearchHistoryEntity.TYPE_HISTORY)
+         if (entity == null) {
+             mDatabase.searchHistoryDao.insert(SearchHistoryEntity().apply {
+                 this.keyword = keyword
++                this.type = SearchHistoryEntity.TYPE_HISTORY
+             })
+         } else {
+             mDatabase.searchHistoryDao.update(entity.update())
+         }
+-
+     }
+ 
+     /**
+      * 清空本地记录
+      */
+     suspend fun cleanSearchkeywords() {
+-        mDatabase.searchHistoryDao.clear()
++        mDatabase.searchHistoryDao.deleteListByType(SearchHistoryEntity.TYPE_HISTORY)
+     }
+ 
+     /**
+@@ -144,4 +145,32 @@
+         return mNetApi.getCategoryList(id, map)
+ 
+     }
++
++    /**
++     * 保存热闹搜索
++     */
++    suspend fun insertSearchHot(list: List<SearchHistoryEntity>) {
++        mDatabase.searchHistoryDao.insertHotList(list)
++    }
++
++    /**
++     * 保存推荐搜索
++     */
++    suspend fun insertSearchRecomment(list: List<SearchHistoryEntity>) {
++        mDatabase.searchHistoryDao.insertRecommentList(list)
++    }
++
++    /**
++     * 获取热闹搜索
++     */
++    suspend fun querySearchHotList(): List<SearchHistoryEntity> {
++        return mDatabase.searchHistoryDao.queryListByType(SearchHistoryEntity.TYPE_HOT)
++    }
++
++    /**
++     * 获取推荐搜索
++     */
++    suspend fun querySearchRecommentList(): List<SearchHistoryEntity> {
++        return mDatabase.searchHistoryDao.queryListByType(SearchHistoryEntity.TYPE_RECOMMENT)
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/yh/video/pirate/ui/search/viewmodel/SearchViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/ui/search/viewmodel/SearchViewModel.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/ui/search/viewmodel/SearchViewModel.kt	(date 1594371687000)
+@@ -29,6 +29,7 @@
+         return mDataRepository.getSearchKeyword()
+     }
+ 
++
+     /**
+      * 搜索关键字
+      */
+@@ -63,4 +64,18 @@
+             mDataRepository.cleanSearchkeywords()
+         }
+     }
++
++    /**
++     * 获取热闹搜索
++     */
++    suspend fun querySearchHotList(): List<SearchHistoryEntity> {
++        return mDataRepository.querySearchHotList()
++    }
++
++    /**
++     * 获取推荐搜索
++     */
++    suspend fun querySearchRecommentList(): List<SearchHistoryEntity> {
++        return mDataRepository.querySearchRecommentList()
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/yh/video/pirate/ui/main/fragment/MainFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/ui/main/fragment/MainFragment.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/ui/main/fragment/MainFragment.kt	(date 1594364849000)
+@@ -5,16 +5,21 @@
+ import androidx.lifecycle.lifecycleScope
+ import androidx.recyclerview.widget.GridLayoutManager
+ import androidx.recyclerview.widget.RecyclerView
++import com.afollestad.materialdialogs.MaterialDialog
+ import com.yh.video.pirate.R
+ import com.yh.video.pirate.base.BaseFragment
+ import com.yh.video.pirate.databinding.FragmentMainBinding
++import com.yh.video.pirate.repository.preferences.PreferenceUtil
+ import com.yh.video.pirate.ui.history.activity.HistoryActivity
+ import com.yh.video.pirate.ui.main.viewmodel.MainViewModel
+ import com.yh.video.pirate.ui.search.activity.SearchActivity
++import com.yh.video.pirate.utils.AppManagerUtils
+ import com.yh.video.pirate.utils.BarConfig
+ import com.yh.video.pirate.utils.addDefaultStateListener
+ import com.yh.video.pirate.utils.dp
++import kotlinx.coroutines.delay
+ import kotlinx.coroutines.flow.collect
++import kotlinx.coroutines.flow.flow
+ import kotlinx.coroutines.launch
+ 
+ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
+@@ -62,6 +67,26 @@
+                     mViewModel.adapter.submitData(lifecycle, it)
+                 }
+         }
++
++        //延迟弹窗
++//        lifecycleScope.launch {
++//            flow {
++//                delay(1000 * 2L)
++//                emit(1)
++//            }.collect {
++//                val lastLogin = PreferenceUtil.getLong("last_time", System.currentTimeMillis())
++//                val showNote = PreferenceUtil.getBoolean("is_show_note", true)
++//                if (System.currentTimeMillis() - lastLogin > 86400 * 3L) {
++//                    showNoteMaxDialog()
++//                } else {
++//                    if (showNote) {
++//                        showNoteDialog()
++//                    }
++//
++//                }
++//
++//            }
++//        }
+     }
+ 
+     override fun initRefreshLayout() {
+@@ -117,4 +142,26 @@
+         mBinding.searchCl.setOnClickListener { SearchActivity.start(requireContext()) }
+     }
+ 
++    private fun showNoteDialog() {
++        MaterialDialog(requireContext()).show {
++            message(text = "欢迎使用!新用户可以免费观看3天\n")
++            cancelable(false)
++            positiveButton(text = "确定", click = {
++                PreferenceUtil.commitLong("last_time",System.currentTimeMillis())
++                PreferenceUtil.commitBoolean("is_show_note" ,false)
++                it.dismiss()
++            })
++        }
++    }
++
++    private fun showNoteMaxDialog() {
++        MaterialDialog(requireContext()).show {
++            message(text = "试用期到已到,无法使用")
++            cancelable(false)
++            positiveButton(text = "确定", click = {
++                AppManagerUtils.getAppManager().AppExit(requireContext())
++            })
++        }
++    }
++
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/yh/video/pirate/ui/main/fragment/CategoryFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/ui/main/fragment/CategoryFragment.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/ui/main/fragment/CategoryFragment.kt	(date 1594352498000)
+@@ -18,8 +18,6 @@
+ 
+ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel>() {
+ 
+-    private var isCreate = false
+-
+     companion object {
+         fun newInstance(): CategoryFragment {
+             return CategoryFragment()
+Index: app/src/main/java/com/yh/video/pirate/repository/mapper/SearchKeywords2SearchHistoryEntity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/repository/mapper/SearchKeywords2SearchHistoryEntity.kt	(date 1594370695000)
++++ app/src/main/java/com/yh/video/pirate/repository/mapper/SearchKeywords2SearchHistoryEntity.kt	(date 1594370695000)
+@@ -0,0 +1,17 @@
++package com.yh.video.pirate.repository.mapper
++
++import com.yh.video.pirate.repository.database.entity.SearchHistoryEntity
++import com.yh.video.pirate.repository.network.result.SearchKeywords
++
++class SearchKeywords2SearchHistoryEntity(val type:String) : Mapper<SearchKeywords, List<SearchHistoryEntity>> {
++    override fun map(input: SearchKeywords): List<SearchHistoryEntity> {
++        val t = type
++        return input.lists?.map { title ->
++            SearchHistoryEntity().apply {
++                type = t
++                keyword = title
++                updateTime = System.currentTimeMillis() / 1000
++            }
++        }?.toList()?: arrayListOf()
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/yh/video/pirate/repository/database/entity/SearchHistoryEntity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/repository/database/entity/SearchHistoryEntity.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/repository/database/entity/SearchHistoryEntity.kt	(date 1594365794000)
+@@ -9,6 +9,12 @@
+  */
+ @Entity
+ class SearchHistoryEntity: Identifiable<Int>{
++
++    companion object{
++        const val TYPE_HOT = "hot"//热门
++        const val TYPE_RECOMMENT = "recomment"//推荐
++        const val TYPE_HISTORY = "history"//历史
++    }
+     @PrimaryKey(autoGenerate = true)
+     override var id: Int = 0
+ 
+@@ -17,6 +23,14 @@
+      */
+     var keyword: String = ""
+ 
++    /**
++     * 类型:
++     * hot:热门
++     * recomment:推荐
++     * history:历史搜索
++     */
++    var type:String  = ""
++
+     /**
+      * 搜索的更新时间
+      */
+Index: app/src/main/java/com/yh/video/pirate/repository/database/dao/SearchHistoryDao.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/repository/database/dao/SearchHistoryDao.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/repository/database/dao/SearchHistoryDao.kt	(date 1594372208000)
+@@ -5,29 +5,61 @@
+ import kotlinx.coroutines.flow.Flow
+ 
+ @Dao
+-interface SearchHistoryDao : IDao<SearchHistoryEntity> {
++abstract class SearchHistoryDao : IDao<SearchHistoryEntity> {
+ 
+-    @Query("select * from searchhistoryentity as s  group by s.keyword order by s.updateTime desc  limit 10")
+-    suspend fun query(): List<SearchHistoryEntity>
++    /**
++     * 查询最近10条历史记录
++     */
++    @Query("select * from searchhistoryentity as s where s.type = :type  group by s.keyword order by s.updateTime desc  limit 10")
++    abstract suspend fun queryList10ByType(type:String): List<SearchHistoryEntity>
+ 
++    /**
++     * 根据类型获取所有记录
++     */
++    @Query("select * from searchhistoryentity as s where s.type = :type group by s.keyword order by s.updateTime desc")
++    abstract suspend fun queryListByType(type:String):List<SearchHistoryEntity>
++
++    /**
++     * 批量插入
++     */
+     @Insert(onConflict = OnConflictStrategy.REPLACE)
+-    suspend fun insert(entity:SearchHistoryEntity)
++    abstract suspend fun insert(vararg entity:SearchHistoryEntity)
++
++    /**
++     * 批量插入
++     */
++    @Insert
++    abstract suspend fun insert( entity:List<SearchHistoryEntity>)
+ 
+     /**
+      * 查询关键字
+      */
+-    @Query("select * from searchhistoryentity as s where s.keyword = :keyword order by s.updateTime limit 1")
+-    suspend fun query(keyword: String): SearchHistoryEntity?
++    @Query("select * from searchhistoryentity as s where s.keyword = :keyword and type = :type order by s.updateTime limit 1")
++    abstract suspend fun queryEntityByType(keyword: String, type:String): SearchHistoryEntity?
++
+ 
+     /**
+-     * 匹配模糊匹配取5个
++     * 根据类型全部删除
+      */
+-    @Query("select * from searchhistoryentity as s where s.keyword LIKE '%' || :keyword || '%'  order by s.updateTime desc limit 5")
+-    suspend fun queryList(keyword: String): List<SearchHistoryEntity?>
++    @Query("delete from searchhistoryentity where type = :type")
++    abstract suspend fun deleteListByType(type:String)
+ 
+     /**
+-     * 清空历史记录
++     * 插入最热
+      */
+-    @Query("delete from SearchHistoryEntity")
+-    suspend fun clear()
++    @Transaction
++    open suspend fun insertHotList(list: List<SearchHistoryEntity>) {
++        deleteListByType(SearchHistoryEntity.TYPE_HOT)
++        insert(list)
++    }
++
++    /**
++     * 插入推荐
++     */
++    @Transaction
++    open suspend fun insertRecommentList(list: List<SearchHistoryEntity>) {
++        deleteListByType(SearchHistoryEntity.TYPE_RECOMMENT)
++        insert(list)
++    }
++
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_search.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_search.xml	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/res/layout/activity_search.xml	(date 1594372551000)
+@@ -61,10 +61,10 @@
+                 android:id="@+id/btn_clear"
+                 android:layout_width="35dp"
+                 android:layout_height="match_parent"
+-                android:padding="6dp"
+-                android:layout_marginEnd="7dp"
+                 android:layout_gravity="center_vertical"
+                 android:layout_marginStart="10dp"
++                android:layout_marginEnd="7dp"
++                android:padding="6dp"
+                 android:src="@drawable/btn_search_close"
+                 android:visibility="visible" />
+         </LinearLayout>
+@@ -91,13 +91,14 @@
+ 
+     <FrameLayout
+         android:layout_width="match_parent"
+-        android:background="@color/md_grey_900"
+-        android:layout_height="match_parent">
++        android:layout_height="match_parent"
++        android:background="@color/md_grey_900">
+ 
+         <androidx.core.widget.NestedScrollView
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+ 
++
+             <LinearLayout
+                 android:id="@+id/history_ll"
+                 android:layout_width="match_parent"
+@@ -201,20 +202,22 @@
+                     app:showDivider="beginning|middle|end" />
+ 
+             </LinearLayout>
++
++
+         </androidx.core.widget.NestedScrollView>
+ 
+ 
+         <com.yh.video.pirate.widget.StateLayout
+             android:id="@+id/stateLayout"
+             android:layout_width="match_parent"
+-            android:visibility="gone"
++            android:layout_height="match_parent"
+             android:background="@color/md_grey_900"
+-            android:layout_height="match_parent">
++            android:visibility="gone">
++
+             <androidx.recyclerview.widget.RecyclerView
+                 android:id="@+id/recyclerView"
+                 android:layout_width="match_parent"
+-                android:layout_height="match_parent"
+-                 />
++                android:layout_height="match_parent" />
+         </com.yh.video.pirate.widget.StateLayout>
+ 
+ 
+Index: app/src/main/java/com/yh/video/pirate/ui/launch/viewmodel/LaunchViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/ui/launch/viewmodel/LaunchViewModel.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/ui/launch/viewmodel/LaunchViewModel.kt	(date 1594371448000)
+@@ -1,12 +1,41 @@
+ package com.yh.video.pirate.ui.launch.viewmodel
+ 
+ import com.yh.video.pirate.base.BaseViewModel
++import com.yh.video.pirate.repository.database.entity.SearchHistoryEntity
++import com.yh.video.pirate.repository.mapper.SearchKeywords2SearchHistoryEntity
++import com.yh.video.pirate.repository.network.result.SearchKeywords
+ import com.yh.video.pirate.repository.network.result.VideoType
+ import com.yh.video.pirate.repository.network.result.base.CaomeiResponse
++import kotlinx.coroutines.flow.Flow
+ 
+-class LaunchViewModel:BaseViewModel() {
++class LaunchViewModel : BaseViewModel() {
+ 
+     suspend fun getVideoType(): CaomeiResponse<List<VideoType>> {
+         return mDataRepository.getVideoType()
+     }
++
++    /**
++     * 获取搜索关键字
++     */
++    suspend fun getSearchKeyword(): Flow<CaomeiResponse<List<SearchKeywords>>> {
++        return mDataRepository.getSearchKeyword()
++    }
++
++    /**
++     * 保存热闹搜索
++     */
++    suspend fun insertSearchHot(keywords: SearchKeywords?) {
++        keywords ?: return
++        val list = SearchKeywords2SearchHistoryEntity(SearchHistoryEntity.TYPE_HOT).map(keywords)
++        mDataRepository.insertSearchHot(list)
++    }
++
++    /**
++     * 保存推荐搜索
++     */
++    suspend fun insertSearchRecomment(keywords: SearchKeywords?) {
++        keywords ?: return
++        val list = SearchKeywords2SearchHistoryEntity(SearchHistoryEntity.TYPE_RECOMMENT).map(keywords)
++        mDataRepository.insertSearchRecomment(list)
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/yh/video/pirate/ui/launch/activity/LaunchActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/ui/launch/activity/LaunchActivity.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/ui/launch/activity/LaunchActivity.kt	(date 1594370724000)
+@@ -13,6 +13,7 @@
+ import com.yh.video.pirate.utils.isVisible
+ import com.yh.video.pirate.utils.permissions.requestMultiplePermissions
+ import kotlinx.coroutines.delay
++import kotlinx.coroutines.flow.catch
+ import kotlinx.coroutines.flow.collect
+ import kotlinx.coroutines.flow.flowOf
+ import kotlinx.coroutines.flow.onEach
+@@ -39,8 +40,17 @@
+         initCountDown()
+ 
+         //初始化DNS
++//        lifecycleScope.launch {
++//            mViewModel.getVideoType()
++//        }
++
+         lifecycleScope.launch {
+-            mViewModel.getVideoType()
++            mViewModel.getSearchKeyword()
++                .catch { }
++                .collect {
++                    mViewModel.insertSearchHot( it.rescont?.get(0))
++                    mViewModel.insertSearchRecomment(it.rescont?.get(1))
++                }
+         }
+     }
+ 
+@@ -50,7 +60,7 @@
+     private fun initCountDown() {
+         mBinding.countDownTv.isVisible = false
+         lifecycleScope.launch {
+-            flowOf( 3, 2, 1, 0).onEach { delay(1000) }.collect {
++            flowOf(3, 2, 1, 0).onEach { delay(1000) }.collect {
+                 if (it == 3) {
+                     mBinding.countDownTv.isVisible = true
+                     mBinding.countDownTv.start()
+@@ -70,7 +80,7 @@
+         }
+     }
+ 
+-     override fun onClick() {
++    override fun onClick() {
+         mBinding.countDownTv.setOnClickListener {
+             if (mBinding.countDownTv.text == "跳过") {
+                 startMainActivity()
+Index: app/src/main/java/com/yh/video/pirate/ui/search/activity/SearchActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/yh/video/pirate/ui/search/activity/SearchActivity.kt	(revision b0e82563cc9bf7e0381ef729c53bc88ae2ff983e)
++++ app/src/main/java/com/yh/video/pirate/ui/search/activity/SearchActivity.kt	(date 1594372521000)
+@@ -3,7 +3,6 @@
+ import android.content.Context
+ import android.content.Intent
+ import android.graphics.Rect
+-import android.text.Editable
+ import android.text.TextUtils
+ import android.view.KeyEvent
+ import android.view.View
+@@ -17,26 +16,20 @@
+ import androidx.recyclerview.widget.GridLayoutManager
+ import androidx.recyclerview.widget.RecyclerView
+ import com.afollestad.materialdialogs.MaterialDialog
++import com.google.android.flexbox.FlexboxLayout
+ import com.gyf.immersionbar.ImmersionBar
+-import com.orhanobut.logger.Logger
+ import com.yh.video.pirate.R
+ import com.yh.video.pirate.base.BaseActivity
+ import com.yh.video.pirate.databinding.ActivitySearchBinding
+ import com.yh.video.pirate.databinding.LayoutSearchLabelBinding
+ import com.yh.video.pirate.listenter.OnClickItemListener
+ import com.yh.video.pirate.repository.database.entity.SearchHistoryEntity
+-import com.yh.video.pirate.repository.network.exception.catchCode
+-import com.yh.video.pirate.repository.network.exception.convertHttpRes
+-import com.yh.video.pirate.repository.network.result.SearchKeywords
+ import com.yh.video.pirate.ui.search.viewmodel.SearchViewModel
+ import com.yh.video.pirate.ui.video.activity.VideoPlayActivity
+ import com.yh.video.pirate.utils.clickWithTrigger
+ import com.yh.video.pirate.utils.dp
+ import com.yh.video.pirate.utils.loadFooterAdapter
+-import kotlinx.coroutines.Dispatchers
+-import kotlinx.coroutines.flow.catch
+ import kotlinx.coroutines.flow.collect
+-import kotlinx.coroutines.flow.flowOn
+ import kotlinx.coroutines.launch
+ 
+ /**
+@@ -102,23 +95,11 @@
+     override fun initData() {
+         super.initData()
+ 
+-        //加载服务器标签
+-        lifecycleScope.launch {
+-            mViewModel.getSearchKeyword()
+-//                .flowOn(Dispatchers.IO)
+-                .collect {
+-                    it.catchCode<List<SearchKeywords>>(
+-                        success = { list ->
+-                            initServiceLabel(list)
+-                        },
+-                        error = {}
+-                    )
+-                }
+-        }
+-
+         //加载本地标签
+         lifecycleScope.launch {
+             initLocalLabel(mViewModel.querySearchKeywords())
++            initServiceLabel(mViewModel.querySearchHotList(), mBinding.hotFl)
++            initServiceLabel(mViewModel.querySearchRecommentList(), mBinding.recommendFl)
+         }
+     }
+ 
+@@ -165,38 +146,22 @@
+     }
+ 
+     /**
+-     * 从服务器获取标签
++     * 加载热闹/推荐标签
+      */
+-    private fun initServiceLabel(list: List<SearchKeywords>) {
+-        if (list.isNotEmpty()) {
+-            //热闹搜索
+-            mBinding.hotFl.removeAllViews()
+-            list[0].lists?.forEach { label ->
+-                val inflate = LayoutSearchLabelBinding.inflate(layoutInflater, null, false)
+-                inflate.labelTv.text = label
+-                mBinding.hotFl.addView(inflate.root)
+-                inflate.labelLl.setOnClickListener {
+-                    mViewModel.insertSearchKeywords(label)
+-                    mBinding.searchEt.setText(label, null)
+-                    mBinding.searchEt.clearFocus()
+-                }
+-            }
+-        }
+-        if (list.size == 2) {
+-            //推荐
+-            mBinding.recommendFl.removeAllViews()
+-            list[1].lists?.forEach { label ->
+-                val inflate = LayoutSearchLabelBinding.inflate(layoutInflater, null, false)
+-                inflate.labelTv.text = label
+-                mBinding.recommendFl.addView(inflate.root)
+-                inflate.labelLl.setOnClickListener {
+-                    mViewModel.insertSearchKeywords(label)
+-                    mBinding.searchEt.setText(label, null)
+-                    mBinding.searchEt.clearFocus()
+-                }
++    private fun initServiceLabel(list: List<SearchHistoryEntity>, view: FlexboxLayout) {
++        view.removeAllViews()
++        list.forEach {entity ->
++            val inflate = LayoutSearchLabelBinding.inflate(layoutInflater, null, false)
++            inflate.labelTv.text = entity.keyword
++            view.addView(inflate.root)
++            inflate.labelLl.setOnClickListener {
++                mViewModel.insertSearchKeywords(entity.keyword)
++                mBinding.searchEt.setText(entity.keyword, null)
++                mBinding.searchEt.clearFocus()
+             }
+         }
+     }
++
+ 
+     /**
+      * 加载本地标签

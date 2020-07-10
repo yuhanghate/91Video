@@ -20,7 +20,7 @@ import com.yh.video.pirate.repository.database.entity.VideoSortEntity;
  * @author yuhang
  */
 @Database(entities = {VideoSortEntity.class, SearchHistoryEntity.class},
-        version = 1, exportSchema = false)
+        version = 2, exportSchema = false)
 @TypeConverters({ConvertersFactory.class})
 public abstract class AppDatabase
         extends RoomDatabase {

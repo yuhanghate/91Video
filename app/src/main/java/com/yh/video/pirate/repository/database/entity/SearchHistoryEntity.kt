@@ -9,6 +9,12 @@ import com.yh.video.pirate.common.Identifiable
  */
 @Entity
 class SearchHistoryEntity: Identifiable<Int>{
+
+    companion object{
+        const val TYPE_HOT = "hot"//热门
+        const val TYPE_RECOMMENT = "recomment"//推荐
+        const val TYPE_HISTORY = "history"//历史
+    }
     @PrimaryKey(autoGenerate = true)
     override var id: Int = 0
 
@@ -16,6 +22,14 @@ class SearchHistoryEntity: Identifiable<Int>{
      * 关键字
      */
     var keyword: String = ""
+
+    /**
+     * 类型:
+     * hot:热门
+     * recomment:推荐
+     * history:历史搜索
+     */
+    var type:String  = ""
 
     /**
      * 搜索的更新时间

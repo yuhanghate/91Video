@@ -1,5 +1,6 @@
 package com.yh.video.pirate.repository
 
+import android.icu.text.SearchIterator
 import com.yh.video.pirate.repository.database.AppDatabase
 import com.yh.video.pirate.repository.database.entity.SearchHistoryEntity
 import com.yh.video.pirate.repository.network.Http
@@ -100,7 +101,7 @@ object DataRepository {
      * 获取本地搜索关键词
      */
     suspend fun querySearchKeywords(): List<SearchHistoryEntity> {
-        return mDatabase.searchHistoryDao.query()
+        return mDatabase.searchHistoryDao.queryList10ByType(SearchHistoryEntity.TYPE_HISTORY)
     }
 
     /**
@@ -109,22 +110,22 @@ object DataRepository {
     suspend fun insertSearchKeywords(keyword: String) {
         if (keyword.isEmpty()) return
 
-        val entity = mDatabase.searchHistoryDao.query(keyword)
+        val entity = mDatabase.searchHistoryDao.queryEntityByType(keyword, SearchHistoryEntity.TYPE_HISTORY)
         if (entity == null) {
             mDatabase.searchHistoryDao.insert(SearchHistoryEntity().apply {
                 this.keyword = keyword
+                this.type = SearchHistoryEntity.TYPE_HISTORY
             })
         } else {
             mDatabase.searchHistoryDao.update(entity.update())
         }
-
     }
 
     /**
      * 清空本地记录
      */
     suspend fun cleanSearchkeywords() {
-        mDatabase.searchHistoryDao.clear()
+        mDatabase.searchHistoryDao.deleteListByType(SearchHistoryEntity.TYPE_HISTORY)
     }
 
     /**
@@ -143,5 +144,33 @@ object DataRepository {
         )
         return mNetApi.getCategoryList(id, map)
 
+    }
+
+    /**
+     * 保存热闹搜索
+     */
+    suspend fun insertSearchHot(list: List<SearchHistoryEntity>) {
+        mDatabase.searchHistoryDao.insertHotList(list)
+    }
+
+    /**
+     * 保存推荐搜索
+     */
+    suspend fun insertSearchRecomment(list: List<SearchHistoryEntity>) {
+        mDatabase.searchHistoryDao.insertRecommentList(list)
+    }
+
+    /**
+     * 获取热闹搜索
+     */
+    suspend fun querySearchHotList(): List<SearchHistoryEntity> {
+        return mDatabase.searchHistoryDao.queryListByType(SearchHistoryEntity.TYPE_HOT)
+    }
+
+    /**
+     * 获取推荐搜索
+     */
+    suspend fun querySearchRecommentList(): List<SearchHistoryEntity> {
+        return mDatabase.searchHistoryDao.queryListByType(SearchHistoryEntity.TYPE_RECOMMENT)
     }
 }
