@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "106433051941",
+    "firebase_url": "https://video-b3f6b.firebaseio.com",
+    "project_id": "video-b3f6b",
+    "storage_bucket": "video-b3f6b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106433051941:android:307ad2ee82f191df7caecc",
+        "android_client_info": {
+          "package_name": "com.yh.video91"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106433051941-i2qob4j93mgikl52tftl3pvoun80de7v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDW6-G5z1otOpSH6EO9GLkNpzy48rG2LKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106433051941-i2qob4j93mgikl52tftl3pvoun80de7v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
