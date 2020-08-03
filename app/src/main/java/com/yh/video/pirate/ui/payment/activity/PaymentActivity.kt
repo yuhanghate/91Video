@@ -139,15 +139,16 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding, PaymentViewModel>()
 //        val responseCode = billingClient.launchBillingFlow(this, flowParams)
     }
 
-    override fun onPurchasesUpdated(responseCode: BillingResult?, purchases: MutableList<Purchase>?) {
-        if (responseCode?.responseCode == OK && purchases != null) {
+    override fun onPurchasesUpdated(responseCode: BillingResult, purchases: MutableList<Purchase>?) {
+                if (responseCode.responseCode == OK && purchases != null) {
             // TODO 支付完成
-        } else if (responseCode?.responseCode == USER_CANCELED) {
+        } else if (responseCode.responseCode == USER_CANCELED) {
             // TODO 用户取消了支付
-        } else if (responseCode?.responseCode == ITEM_ALREADY_OWNED) {
+        } else if (responseCode.responseCode == ITEM_ALREADY_OWNED) {
             // TODO 商品已经购买过（重复购买了此商品，如果需要支持重复购买，需要将商品购买成功后消费掉）
         } else {
             // Handle any other error codes.
         }
     }
+
 }
