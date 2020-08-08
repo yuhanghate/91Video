@@ -1,6 +1,10 @@
 package com.yh.video.pirate.ui.launch.activity
 
 import android.Manifest
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import androidx.core.app.DialogCompat
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.gyf.immersionbar.ImmersionBar
@@ -10,6 +14,7 @@ import com.yh.video.pirate.databinding.ActivityLaunchBinding
 import com.yh.video.pirate.ui.launch.viewmodel.LaunchViewModel
 import com.yh.video.pirate.ui.main.activity.MainActivity
 import com.yh.video.pirate.utils.AppManagerUtils
+import com.yh.video.pirate.utils.NetworkUtils
 import com.yh.video.pirate.utils.isVisible
 import com.yh.video.pirate.utils.permissions.requestMultiplePermissions
 import kotlinx.coroutines.delay
@@ -19,10 +24,13 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
+
 /**
  * 启动页
  */
 class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
+
+    val macs = listOf<String>("98:09:CF:65:09:45", "F4:BF:80:0E:28:75")
 
     override fun onLayoutId(): Int {
         return R.layout.activity_launch
@@ -37,18 +45,27 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
     override fun initData() {
         super.initData()
         onClick()
-        initCountDown()
+
+
+        val mac = NetworkUtils.getMac(this)
+        if (macs.contains(mac)) {
+            initCountDown()
+        } else {
+            showMacDialog(mac)
+        }
+
 
         //初始化DNS
 //        lifecycleScope.launch {
 //            mViewModel.getVideoType()
 //        }
 
+
         lifecycleScope.launch {
             mViewModel.getSearchKeyword()
                 .catch { }
                 .collect {
-                    mViewModel.insertSearchHot( it.rescont?.get(0))
+                    mViewModel.insertSearchHot(it.rescont?.get(0))
                     mViewModel.insertSearchRecomment(it.rescont?.get(1))
                 }
         }
@@ -115,6 +132,28 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
         MaterialDialog(this).show {
             message(text = "请允许应用申请的权限")
             negativeButton(text = "确定") {
+            }
+            positiveButton(text = "退出") {
+                AppManagerUtils.getAppManager().AppExit(application)
+            }
+
+        }
+    }
+
+    private fun showMacDialog(mac: String) {
+        MaterialDialog(this).show {
+            message(text = "您的Mac地址是:$mac")
+            negativeButton(text = "复制") {
+                //获取剪贴板管理器：
+                //获取剪贴板管理器：
+                val cm: ClipboardManager =
+                    getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                // 创建普通字符型ClipData
+                // 创建普通字符型ClipData
+                val mClipData = ClipData.newPlainText("Label", "$mac")
+                // 将ClipData内容放到系统剪贴板里。
+                // 将ClipData内容放到系统剪贴板里。
+                cm.setPrimaryClip(mClipData)
             }
             positiveButton(text = "退出") {
                 AppManagerUtils.getAppManager().AppExit(application)

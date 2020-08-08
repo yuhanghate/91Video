@@ -92,7 +92,7 @@ public class StateButton extends AppCompatButton {
         states[3] = new int[] { -android.R.attr.state_enabled};
         states[2] = new int[] { android.R.attr.state_enabled };
 
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.StateButton);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.StateButton_);
 
         //get original text color as default
         //set text color
@@ -100,40 +100,40 @@ public class StateButton extends AppCompatButton {
         int mDefaultNormalTextColor = mTextColorStateList.getColorForState(states[2], getCurrentTextColor());
         int mDefaultPressedTextColor = mTextColorStateList.getColorForState(states[0], getCurrentTextColor());
         int mDefaultUnableTextColor = mTextColorStateList.getColorForState(states[3], getCurrentTextColor());
-        mNormalTextColor = a.getColor(R.styleable.StateButton_normalTextColor, mDefaultNormalTextColor);
-        mPressedTextColor = a.getColor(R.styleable.StateButton_pressedTextColor, mDefaultPressedTextColor);
-        mUnableTextColor = a.getColor(R.styleable.StateButton_unableTextColor, mDefaultUnableTextColor);
+        mNormalTextColor = a.getColor(R.styleable.StateButton__normalTextColor, mDefaultNormalTextColor);
+        mPressedTextColor = a.getColor(R.styleable.StateButton__pressedTextColor, mDefaultPressedTextColor);
+        mUnableTextColor = a.getColor(R.styleable.StateButton__unableTextColor, mDefaultUnableTextColor);
         setTextColor();
 
         //set animation duration
-        mDuration = a.getInteger(R.styleable.StateButton_animationDuration, mDuration);
+        mDuration = a.getInteger(R.styleable.StateButton__animationDuration, mDuration);
         mStateBackground.setEnterFadeDuration(mDuration);
         mStateBackground.setExitFadeDuration(mDuration);
 
         //set background color
-        mNormalBackgroundColor = a.getColor(R.styleable.StateButton_normalBackgroundColor, 0);
-        mPressedBackgroundColor = a.getColor(R.styleable.StateButton_pressedBackgroundColor, 0);
-        mUnableBackgroundColor = a.getColor(R.styleable.StateButton_unableBackgroundColor, 0);
+        mNormalBackgroundColor = a.getColor(R.styleable.StateButton__normalBackgroundColor, 0);
+        mPressedBackgroundColor = a.getColor(R.styleable.StateButton__pressedBackgroundColor, 0);
+        mUnableBackgroundColor = a.getColor(R.styleable.StateButton__unableBackgroundColor, 0);
         mNormalBackground.setColor(mNormalBackgroundColor);
         mPressedBackground.setColor(mPressedBackgroundColor);
         mUnableBackground.setColor(mUnableBackgroundColor);
 
         //set radius
-        mRadius = a.getDimensionPixelSize(R.styleable.StateButton_radius, 0);
-        mRound = a.getBoolean(R.styleable.StateButton_round, false);
+        mRadius = a.getDimensionPixelSize(R.styleable.StateButton__radius, 0);
+        mRound = a.getBoolean(R.styleable.StateButton__round_, false);
         mNormalBackground.setCornerRadius(mRadius);
         mPressedBackground.setCornerRadius(mRadius);
         mUnableBackground.setCornerRadius(mRadius);
 
         //set stroke
-        mStrokeDashWidth = a.getDimensionPixelSize(R.styleable.StateButton_strokeDashWidth, 0);
-        mStrokeDashGap = a.getDimensionPixelSize(R.styleable.StateButton_strokeDashWidth, 0);
-        mNormalStrokeWidth = a.getDimensionPixelSize(R.styleable.StateButton_normalStrokeWidth, 0);
-        mPressedStrokeWidth = a.getDimensionPixelSize(R.styleable.StateButton_pressedStrokeWidth, 0);
-        mUnableStrokeWidth = a.getDimensionPixelSize(R.styleable.StateButton_unableStrokeWidth, 0);
-        mNormalStrokeColor = a.getColor(R.styleable.StateButton_normalStrokeColor, 0);
-        mPressedStrokeColor = a.getColor(R.styleable.StateButton_pressedStrokeColor, 0);
-        mUnableStrokeColor = a.getColor(R.styleable.StateButton_unableStrokeColor, 0);
+        mStrokeDashWidth = a.getDimensionPixelSize(R.styleable.StateButton__strokeDashWidth, 0);
+        mStrokeDashGap = a.getDimensionPixelSize(R.styleable.StateButton__strokeDashWidth, 0);
+        mNormalStrokeWidth = a.getDimensionPixelSize(R.styleable.StateButton__normalStrokeWidth, 0);
+        mPressedStrokeWidth = a.getDimensionPixelSize(R.styleable.StateButton__pressedStrokeWidth, 0);
+        mUnableStrokeWidth = a.getDimensionPixelSize(R.styleable.StateButton__unableStrokeWidth, 0);
+        mNormalStrokeColor = a.getColor(R.styleable.StateButton__normalStrokeColor, 0);
+        mPressedStrokeColor = a.getColor(R.styleable.StateButton__pressedStrokeColor, 0);
+        mUnableStrokeColor = a.getColor(R.styleable.StateButton__unableStrokeColor, 0);
         setStroke();
 
         //set background

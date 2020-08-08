@@ -45,7 +45,7 @@
 
             app:pressedTextColor="@color/md_grey_100"
             app:radius="8dp"
-            app:round="true"
+            app:round_="true"
 
             app:strokeDashGap="2dp"
             app:strokeDashWidth="5dp"

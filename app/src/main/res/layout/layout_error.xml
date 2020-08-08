@@ -31,7 +31,7 @@
         android:textStyle="normal"
 
         app:radius="8dp"
-        app:round="true"
+        app:round_="true"
         app:animationDuration="200"
 
         app:strokeDashGap="2dp"
