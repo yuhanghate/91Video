@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.ViewCompat.getDisplay
 import com.yh.video.pirate.app.ActivityLifecycleCallbacks
 import com.yh.video.pirate.app.Application
+import com.yh.video.pirate.exception.CrashHandler
 
 
 private class GlobalContext(context: Context) : ContextWrapper(context)
@@ -28,6 +29,7 @@ fun initContext(application: Application) {
     if (!::sApplication.isInitialized) {
         sApplication = application
         sApplication.registerActivityLifecycleCallbacks(ActivityLifecycleCallbacks())
+        CrashHandler.instance?.init(sApplication);
     }
     if (!::sGlobalContext.isInitialized) {
         sGlobalContext = GlobalContext(application.applicationContext)

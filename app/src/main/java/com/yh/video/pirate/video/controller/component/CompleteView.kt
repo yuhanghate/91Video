@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.animation.Animation
 import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.dueeeke.videoplayer.controller.ControlWrapper
 import com.dueeeke.videoplayer.controller.IControlComponent
 import com.dueeeke.videoplayer.player.VideoView
@@ -72,7 +73,7 @@ class CompleteView : FrameLayout, IControlComponent {
             val orientation = activity.requestedOrientation
             val cutoutHeight = mControlWrapper!!.cutoutHeight
             val sflp =
-                mBinding.btnStopFullscreen.layoutParams as LayoutParams
+                mBinding.btnStopFullscreen.layoutParams as ConstraintLayout.LayoutParams
             if (orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 sflp.setMargins(0, 0, 0, 0)
             } else if (orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {

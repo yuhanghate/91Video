@@ -145,27 +145,29 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
         printWriter.close()
         val result = writer.toString()
         sb.append(result)
-        try {
-            val timestamp = System.currentTimeMillis()
-            val time = format.format(Date())
-            val fileName = "crash-$time-$timestamp.log"
-            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-                val path = Environment.getExternalStorageDirectory()
-                    .absolutePath + "/crash/"
-                val dir = File(path)
-                copyPath(dir.absolutePath + File.separator + fileName)
-                Toast.makeText(application,"异常信息已保存系统剪贴板", Toast.LENGTH_LONG).show()
-                if (!dir.exists()) {
-                    dir.mkdirs()
-                }
-                val fos = FileOutputStream(path + fileName)
-                fos.write(sb.toString().toByteArray())
-                fos.close()
-            }
-            return fileName
-        } catch (e: Exception) {
-            Log.e(TAG, "an error occured while writing file...", e)
-        }
+
+        copyPath(sb.toString())
+//        try {
+//            val timestamp = System.currentTimeMillis()
+//            val time = format.format(Date())
+//            val fileName = "crash-$time-$timestamp.log"
+//            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+//                val path = Environment.getExternalStorageDirectory()
+//                    .absolutePath + "/crash/"
+//                val dir = File(path)
+//                copyPath(dir.absolutePath + File.separator + fileName)
+////                Toast.makeText(application,"异常信息已保存系统剪贴板", Toast.LENGTH_LONG).show()
+//                if (!dir.exists()) {
+//                    dir.mkdirs()
+//                }
+//                val fos = FileOutputStream(path + fileName)
+//                fos.write(sb.toString().toByteArray())
+//                fos.close()
+//            }
+//            return fileName
+//        } catch (e: Exception) {
+//            Log.e(TAG, "an error occured while writing file...", e)
+//        }
         return null
     }
 

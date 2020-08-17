@@ -54,13 +54,6 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
             showMacDialog(mac)
         }
 
-
-        //初始化DNS
-//        lifecycleScope.launch {
-//            mViewModel.getVideoType()
-//        }
-
-
         lifecycleScope.launch {
             mViewModel.getSearchKeyword()
                 .catch { }
@@ -99,6 +92,7 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
 
     override fun onClick() {
         mBinding.countDownTv.setOnClickListener {
+
             if (mBinding.countDownTv.text == "跳过") {
                 startMainActivity()
             }
