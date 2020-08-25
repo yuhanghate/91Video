@@ -12,5 +12,6 @@ class Application : Application() {
         initPreference()
         initFragmentManger()
         initRefreshLayout()
+        initPlayer()
     }
 }

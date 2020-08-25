@@ -1,5 +1,9 @@
 package com.yh.video.pirate.utils
 
+import com.dueeeke.videoplayer.exo.ExoMediaPlayerFactory
+import com.dueeeke.videoplayer.player.AndroidMediaPlayerFactory
+import com.dueeeke.videoplayer.player.VideoViewConfig
+import com.dueeeke.videoplayer.player.VideoViewManager
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
@@ -48,4 +52,20 @@ fun initRefreshLayout() {
 //    SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, _ ->
 //        MaterialHeader(context).setColorSchemeResources(R.color.primary)//.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
 //    }
+}
+
+/**
+ * 初始化播放器内核
+ */
+fun initPlayer() {
+    VideoViewManager.setConfig(
+        VideoViewConfig.newBuilder()
+            .setLogEnabled(BuildConfig.DEBUG)
+        //使用使用IjkPlayer解码
+//        .setPlayerFactory(IjkPlayerFactory.create())
+        //使用ExoPlayer解码
+        .setPlayerFactory(ExoMediaPlayerFactory.create())
+        //使用MediaPlayer解码
+//        .setPlayerFactory(AndroidMediaPlayerFactory.create())
+        .build());
 }

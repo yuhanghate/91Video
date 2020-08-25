@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
  */
 class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
 
-    val macs = listOf<String>("98:09:CF:65:09:45", "F4:BF:80:0E:28:75")
+    val macs = listOf<String>("98:09:CF:65:09:45", "F4:BF:80:0E:28:75", "24:FB:65:34:90:8C")
 
     override fun onLayoutId(): Int {
         return R.layout.activity_launch

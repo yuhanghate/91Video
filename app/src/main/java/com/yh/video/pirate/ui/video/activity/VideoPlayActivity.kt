@@ -21,13 +21,18 @@ import com.yh.video.pirate.repository.network.result.Video
 import com.yh.video.pirate.ui.main.viewholder.intChange2Str
 import com.yh.video.pirate.ui.video.viewmodel.VideoPlayViewModel
 import com.yh.video.pirate.utils.loadImage
+import com.yh.video.pirate.video.cache.PreloadManager
 import com.yh.video.pirate.video.cache.ProgressManagerImpl
+import com.yh.video.pirate.video.cache.ProxyVideoCacheManager
 import com.yh.video.pirate.video.controller.StandardVideoController
 import com.yh.video.pirate.video.controller.component.*
 import kotlinx.android.synthetic.main.activity_video_play.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+
 
 /**
  * 视频播放页面
@@ -174,7 +179,7 @@ class VideoPlayActivity : BaseActivity<ActivityVideoPlayBinding, VideoPlayViewMo
 //        mBinding.videoView.setPlayerFactory(AndroidMediaPlayerFactory.create());
 
 
-        mBinding.videoView.setCacheEnabled(true)
+//        mBinding.videoView.setCacheEnabled(true)
     }
 
     override fun initRecyclerView() {
@@ -228,6 +233,9 @@ class VideoPlayActivity : BaseActivity<ActivityVideoPlayBinding, VideoPlayViewMo
             placeholder = R.color.md_black_1000
         )
         mTitleView.text = data.title
+
+//        val cacheServer = ProxyVideoCacheManager.getProxy(this)
+//        val proxyUrl = cacheServer.getProxyUrl(data.videopath)
         mBinding.videoView.setUrl(data.videopath)
         mBinding.videoView.start()
 
