@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
-import com.idescout.sql.SqlScoutServer
 import com.orhanobut.logger.Logger
 import com.yh.video.pirate.R
 import com.yh.video.pirate.repository.preferences.PreferenceUtil
@@ -23,7 +22,6 @@ import com.yh.video.pirate.utils.TopSmoothScroller
 import com.yh.video.pirate.utils.viewbinding.ActivityViewBinderUtils
 import me.yokeyword.fragmentation.SupportActivity
 import org.greenrobot.eventbus.EventBus
-import java.io.IOException
 import java.lang.reflect.ParameterizedType
 
 
@@ -63,11 +61,11 @@ abstract class BaseActivity<D : ViewBinding, VM : BaseViewModel> : SupportActivi
      * 初始化数据库
      */
     private fun initSqlScoutServer() {
-        try {
-            SqlScoutServer.create(this, packageName)
-        } catch (e: IOException) {
-
-        }
+//        try {
+//            SqlScoutServer.create(this, packageName)
+//        } catch (e: IOException) {
+//
+//        }
 
     }
 

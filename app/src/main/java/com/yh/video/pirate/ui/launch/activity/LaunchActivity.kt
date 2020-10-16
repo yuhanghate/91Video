@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.DialogCompat
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
@@ -16,7 +17,7 @@ import com.yh.video.pirate.ui.main.activity.MainActivity
 import com.yh.video.pirate.utils.AppManagerUtils
 import com.yh.video.pirate.utils.NetworkUtils
 import com.yh.video.pirate.utils.isVisible
-import com.yh.video.pirate.utils.permissions.requestMultiplePermissions
+import com.yh.video.pirate.utils.permissions.requestMultiplePermissionsByLanuch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -30,8 +31,15 @@ import kotlinx.coroutines.launch
  */
 class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
 
-    val macs = listOf<String>("98:09:CF:65:09:45", "F4:BF:80:0E:28:75", "24:FB:65:34:90:8C")
+    val macs = listOf<String>(
+        "98:09:CF:65:09:45",
+        "F4:BF:80:0E:28:75",
+        "24:FB:65:34:90:8C",
+        "34:D7:12:A1:CE:4F",
+        "BE:8B:15:12:2F:35"
+    )
 
+    val launch = getLanuch()
     override fun onLayoutId(): Int {
         return R.layout.activity_launch
     }
@@ -77,7 +85,12 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
                 }
                 when {
                     it == 0 -> {
-                        startMainActivity()
+                        launch.launch(
+                            arrayOf(
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            )
+                        )
                     }
                     it <= 1 -> {
                         mBinding.countDownTv.text = "跳过"
@@ -94,7 +107,12 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
         mBinding.countDownTv.setOnClickListener {
 
             if (mBinding.countDownTv.text == "跳过") {
-                startMainActivity()
+                launch.launch(
+                    arrayOf(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
+                )
             }
         }
     }
@@ -103,10 +121,8 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
     /**
      * 打开主页
      */
-    private fun startMainActivity() {
-        requestMultiplePermissions(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
+    private fun startMainActivity(): ActivityResultLauncher<Array<String>> {
+        return requestMultiplePermissionsByLanuch(
             allGranted = {
                 MainActivity.start(this)
                 finish()
@@ -117,6 +133,23 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
             explained = {
                 showDialog()
             })
+
+
+    }
+
+    private fun getLanuch(): ActivityResultLauncher<Array<String>> {
+        return requestMultiplePermissionsByLanuch(
+            allGranted = {
+                MainActivity.start(this)
+                finish()
+            },
+            denied = {
+                showDialog()
+            },
+            explained = {
+                showDialog()
+            })
+
     }
 
     /**

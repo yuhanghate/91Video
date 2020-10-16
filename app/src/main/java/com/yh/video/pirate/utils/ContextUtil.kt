@@ -29,7 +29,7 @@ fun initContext(application: Application) {
     if (!::sApplication.isInitialized) {
         sApplication = application
         sApplication.registerActivityLifecycleCallbacks(ActivityLifecycleCallbacks())
-        CrashHandler.instance?.init(sApplication);
+        CrashHandler.instance?.init(sApplication)
     }
     if (!::sGlobalContext.isInitialized) {
         sGlobalContext = GlobalContext(application.applicationContext)
