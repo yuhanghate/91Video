@@ -36,7 +36,8 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
         "F4:BF:80:0E:28:75",
         "24:FB:65:34:90:8C",
         "34:D7:12:A1:CE:4F",
-        "BE:8B:15:12:2F:35"
+        "BE:8B:15:12:2F:35",
+        "18:9E:2C:5F:E7:B0"
     )
 
     val launch = getLanuch()
@@ -78,7 +79,7 @@ class LaunchActivity : BaseActivity<ActivityLaunchBinding, LaunchViewModel>() {
     private fun initCountDown() {
         mBinding.countDownTv.isVisible = false
         lifecycleScope.launch {
-            flowOf(3, 2, 1, 0).onEach { delay(1000) }.collect {
+            flowOf( 0).onEach { delay(1000) }.collect {
                 if (it == 3) {
                     mBinding.countDownTv.isVisible = true
                     mBinding.countDownTv.start()
